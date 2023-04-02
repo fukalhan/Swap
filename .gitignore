@@ -12,6 +12,7 @@
 /build
 /app/build
 /library/**/build
+/feature/**/build
 /captures
 .externalNativeBuild
 .cxx
