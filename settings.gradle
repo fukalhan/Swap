@@ -16,3 +16,4 @@ rootProject.name = "Swap"
 include ':app'
 include ':library:design'
 include ':feature:swap-search'
+include ':feature:login'
