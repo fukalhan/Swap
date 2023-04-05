@@ -13,10 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.login.R
+import cz.cvut.fukalhan.swap.login.presentation.SignUpViewModel
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(viewModel: SignUpViewModel) {
     var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordCheck by remember { mutableStateOf("") }
     var passwordMatch by remember { mutableStateOf(true) }
@@ -29,6 +31,11 @@ fun SignUpScreen() {
     ) {
         EmailView(email) {
             email = it
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+
+        UsernameView(username) {
+            username = it
         }
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -50,7 +57,7 @@ fun SignUpScreen() {
 
         Button(
             colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary),
-            onClick = { /*TODO*/ }
+            onClick = { viewModel.signUpUser(email, username, password) }
         ) {
             Text(
                 text = stringResource(id = R.string.signUp),
