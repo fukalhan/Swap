@@ -8,13 +8,13 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".system.App"
         android:supportsRtl="true"
         android:theme="@style/Theme.Swap"
         tools:targetApi="31">
         <activity
             android:name=".system.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Swap">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
