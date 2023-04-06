@@ -1,8 +1,16 @@
 package cz.cvut.fukalhan.swap.login.system
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -30,7 +38,7 @@ fun PasswordView(password: String, onValueChange: (String) -> Unit) {
             onValueChange = onValueChange,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                val image = if(passwordVisible) {
+                val image = if (passwordVisible) {
                     painterResource(id = R.drawable.visibility_on)
                 } else {
                     painterResource(id = R.drawable.visibility_off)

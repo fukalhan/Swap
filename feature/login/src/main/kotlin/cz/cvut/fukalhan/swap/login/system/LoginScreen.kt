@@ -3,8 +3,14 @@ package cz.cvut.fukalhan.swap.login.system
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cz.cvut.fukalhan.design.system.SwapAppTheme
@@ -23,15 +29,16 @@ fun LoginScreen(signUpViewModel: SignUpViewModel) {
             selectedTabIndex = tabIndex,
         ) {
             tabs.forEachIndexed { index, title ->
-                Tab(text = { Text(title)},
+                Tab(
+                    text = { Text(title) },
                     modifier = Modifier.background(SwapAppTheme.colors.secondary),
                     selected = tabIndex == index,
-                    onClick = { tabIndex = index}
+                    onClick = { tabIndex = index }
                 )
             }
         }
 
-        when(tabIndex) {
+        when (tabIndex) {
             0 -> SignInScreen()
             1 -> SignUpScreen(signUpViewModel)
         }

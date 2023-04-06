@@ -11,7 +11,6 @@ import cz.cvut.fukalhan.swap.login.R
 
 @Composable
 fun EmailView(email: String, onValueChange: (String) -> Unit) {
-
     Column {
         Text(
             text = stringResource(id = R.string.email),

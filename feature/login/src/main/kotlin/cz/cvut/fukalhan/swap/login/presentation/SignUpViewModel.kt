@@ -7,7 +7,7 @@ import cz.cvut.fukalhan.swap.auth.model.SignUpCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SignUpViewModel(private val signUpUserUseCase: SignUpUserUseCase): ViewModel() {
+class SignUpViewModel(private val signUpUserUseCase: SignUpUserUseCase) : ViewModel() {
 
     fun signUpUser(email: String, username: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
