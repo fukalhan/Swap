@@ -1,6 +1,8 @@
 package cz.cvut.fukalhan.swap.login.system
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,15 +19,20 @@ import cz.cvut.fukalhan.swap.login.presentation.SignUpViewModel
 
 @Composable
 fun SignUpScreen(viewModel: SignUpViewModel) {
+    val scroolState = rememberScrollState()
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordCheck by remember { mutableStateOf("") }
     var passwordMatch by remember { mutableStateOf(true) }
+    var passwordTooShort by remember { mutableStateOf(true) }
+    var fieldsEmpty by remember { mutableStateOf(false) }
 
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scroolState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -42,6 +49,7 @@ fun SignUpScreen(viewModel: SignUpViewModel) {
         PasswordView(password) {
             password = it
             passwordMatch = password == passwordCheck
+            passwordTooShort = password.length < 6
         }
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -51,13 +59,21 @@ fun SignUpScreen(viewModel: SignUpViewModel) {
         }
         Spacer(modifier = Modifier.height(10.dp))
 
-        PasswordDontMatchMessage(passwordMatch)
+        PasswordTooShortMessage(passwordTooShort)
+        PasswordsDontMatchMessage(passwordMatch)
+        FieldsEmptyMessage(fieldsEmpty)
 
         Spacer(modifier = Modifier.height(40.dp))
 
         Button(
             colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary),
-            onClick = { viewModel.signUpUser(email, username, password) }
+            onClick = {
+                fieldsEmpty = email.isEmpty() || username.isEmpty() || password.isEmpty()
+
+                if (passwordMatch && !passwordTooShort && !fieldsEmpty) {
+                    viewModel.signUpUser(email, username, password)
+                }
+            }
         ) {
             Text(
                 text = stringResource(id = R.string.signUp),
@@ -68,7 +84,16 @@ fun SignUpScreen(viewModel: SignUpViewModel) {
 }
 
 @Composable
-fun PasswordDontMatchMessage(passwordMatch: Boolean) {
+fun PasswordTooShortMessage(passwordTooShort: Boolean) {
+    if(passwordTooShort) {
+        Text(
+            text = stringResource(id = R.string.passwordTooShort)
+        )
+    }
+}
+
+@Composable
+fun PasswordsDontMatchMessage(passwordMatch: Boolean) {
     if(!passwordMatch) {
         Text(
             text = stringResource(id = R.string.passwordMustBeTheSame),
@@ -76,3 +101,11 @@ fun PasswordDontMatchMessage(passwordMatch: Boolean) {
     }
 }
 
+@Composable
+fun FieldsEmptyMessage(fieldsEmpty: Boolean) {
+    if(fieldsEmpty) {
+        Text(
+            text = stringResource(id = R.string.fieldsMustBeFilled),
+        )
+    }
+}
