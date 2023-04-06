@@ -6,4 +6,6 @@
     <string name="signIn">Přihlásit</string>
     <string name="signUp">Registrovat</string>
     <string name="passwordMustBeTheSame">Hesla se musí shodovat</string>
+    <string name="passwordTooShort">Heslo musí být aspoň 6 znaků</string>
+    <string name="fieldsMustBeFilled">Všechna pole musí být vyplněna</string>
 </resources>
