@@ -11,7 +11,11 @@ class FirebaseRepository : Repository {
     private val auth = Firebase.auth
 
     override suspend fun signUpUser(signUpCredentials: SignUpCredentials) {
-        val credentials = auth.createUserWithEmailAndPassword(signUpCredentials.email, signUpCredentials.password).await()
+        val credentials = auth
+            .createUserWithEmailAndPassword(
+                signUpCredentials.email,
+                signUpCredentials.password
+            ).await()
         val profileChangeRequest = userProfileChangeRequest {
             displayName = signUpCredentials.username
         }

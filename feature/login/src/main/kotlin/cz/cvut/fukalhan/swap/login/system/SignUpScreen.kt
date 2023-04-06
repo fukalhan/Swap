@@ -1,13 +1,19 @@
 package cz.cvut.fukalhan.swap.login.system
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,9 +23,11 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.login.R
 import cz.cvut.fukalhan.swap.login.presentation.SignUpViewModel
 
+const val PASSWORD_MIN_LENGTH = 6
+
 @Composable
 fun SignUpScreen(viewModel: SignUpViewModel) {
-    val scroolState = rememberScrollState()
+    val scrollState = rememberScrollState()
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -28,11 +36,10 @@ fun SignUpScreen(viewModel: SignUpViewModel) {
     var passwordTooShort by remember { mutableStateOf(true) }
     var fieldsEmpty by remember { mutableStateOf(false) }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scroolState),
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -49,7 +56,7 @@ fun SignUpScreen(viewModel: SignUpViewModel) {
         PasswordView(password) {
             password = it
             passwordMatch = password == passwordCheck
-            passwordTooShort = password.length < 6
+            passwordTooShort = password.length < PASSWORD_MIN_LENGTH
         }
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -85,7 +92,7 @@ fun SignUpScreen(viewModel: SignUpViewModel) {
 
 @Composable
 fun PasswordTooShortMessage(passwordTooShort: Boolean) {
-    if(passwordTooShort) {
+    if (passwordTooShort) {
         Text(
             text = stringResource(id = R.string.passwordTooShort)
         )
@@ -94,7 +101,7 @@ fun PasswordTooShortMessage(passwordTooShort: Boolean) {
 
 @Composable
 fun PasswordsDontMatchMessage(passwordMatch: Boolean) {
-    if(!passwordMatch) {
+    if (!passwordMatch) {
         Text(
             text = stringResource(id = R.string.passwordMustBeTheSame),
         )
@@ -103,7 +110,7 @@ fun PasswordsDontMatchMessage(passwordMatch: Boolean) {
 
 @Composable
 fun FieldsEmptyMessage(fieldsEmpty: Boolean) {
-    if(fieldsEmpty) {
+    if (fieldsEmpty) {
         Text(
             text = stringResource(id = R.string.fieldsMustBeFilled),
         )
