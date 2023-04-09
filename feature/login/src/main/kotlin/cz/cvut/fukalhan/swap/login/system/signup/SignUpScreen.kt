@@ -27,7 +27,8 @@ const val PASSWORD_MIN_LENGTH = 6
 
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel
+    viewModel: SignUpViewModel,
+    navigateToMainScreen: () -> Unit
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -44,7 +45,7 @@ fun SignUpScreen(
 
     var showOnSignUpFailureMessage by remember { mutableStateOf(false) }
 
-    ResolveSignUpState(viewModel, signUpState, onSuccess = { }) {
+    ResolveSignUpState(viewModel, signUpState, onSuccess = navigateToMainScreen) {
         showOnSignUpFailureMessage = signUpState.result == LoginState.State.FAILED
     }
 

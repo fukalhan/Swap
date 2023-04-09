@@ -19,7 +19,13 @@ fun LoginNavHost() {
     ) {
         NavHost(navController, Screen.Login.route) {
             composable(Screen.Login.route) {
-                LoginScreen(koinViewModel(), koinViewModel())
+                LoginScreen(koinViewModel(), koinViewModel()) {
+                    navController.navigate(Screen.Main.route)
+                }
+            }
+
+            composable(Screen.Main.route) {
+                MainNavHost()
             }
         }
     }

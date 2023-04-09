@@ -22,7 +22,10 @@ import cz.cvut.fukalhan.swap.login.system.common.PasswordView
 import cz.cvut.fukalhan.swap.login.system.common.ShowLoginStateMessage
 
 @Composable
-fun SignInScreen(viewModel: SignInViewModel) {
+fun SignInScreen(
+    viewModel: SignInViewModel,
+    navigateToMainScreen: () -> Unit
+) {
     val context = LocalContext.current
     val signInState: LoginState by viewModel.signInState.collectAsState()
 
@@ -32,7 +35,7 @@ fun SignInScreen(viewModel: SignInViewModel) {
     var fieldsEmpty by remember { mutableStateOf(false) }
     var showOnSignInFailureMessage by remember { mutableStateOf(false) }
 
-    ResolveSignInState(viewModel, signInState, onSuccess = { /*TODO*/ }) {
+    ResolveSignInState(viewModel, signInState, onSuccess = navigateToMainScreen) {
         showOnSignInFailureMessage = true
     }
 
