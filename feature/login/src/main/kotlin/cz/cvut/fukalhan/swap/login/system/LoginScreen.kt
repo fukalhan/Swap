@@ -21,7 +21,11 @@ import cz.cvut.fukalhan.swap.login.system.signin.SignInScreen
 import cz.cvut.fukalhan.swap.login.system.signup.SignUpScreen
 
 @Composable
-fun LoginScreen(signInViewModel: SignInViewModel, signUpViewModel: SignUpViewModel) {
+fun LoginScreen(
+    signInViewModel: SignInViewModel,
+    signUpViewModel: SignUpViewModel,
+    navigateToMainScreen: () -> Unit
+) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(R.string.signIn), stringResource(R.string.signUp))
 
@@ -42,8 +46,8 @@ fun LoginScreen(signInViewModel: SignInViewModel, signUpViewModel: SignUpViewMod
         }
 
         when (tabIndex) {
-            0 -> SignInScreen(signInViewModel)
-            1 -> SignUpScreen(signUpViewModel)
+            0 -> SignInScreen(signInViewModel, navigateToMainScreen)
+            1 -> SignUpScreen(signUpViewModel, navigateToMainScreen)
         }
     }
 }
