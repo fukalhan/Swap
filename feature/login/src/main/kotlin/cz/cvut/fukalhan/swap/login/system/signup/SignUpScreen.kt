@@ -1,17 +1,10 @@
 package cz.cvut.fukalhan.swap.login.system.signup
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,15 +14,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.login.R
-import cz.cvut.fukalhan.swap.login.presentation.signup.SignUpState
+import cz.cvut.fukalhan.swap.login.presentation.common.LoginState
 import cz.cvut.fukalhan.swap.login.presentation.signup.SignUpViewModel
-import cz.cvut.fukalhan.swap.login.system.LoginValidityCheckMessage
-import cz.cvut.fukalhan.swap.login.system.LoginView
-import cz.cvut.fukalhan.swap.login.system.PasswordView
+import cz.cvut.fukalhan.swap.login.system.common.LoginButton
+import cz.cvut.fukalhan.swap.login.system.common.LoginValidityCheckMessage
+import cz.cvut.fukalhan.swap.login.system.common.LoginView
+import cz.cvut.fukalhan.swap.login.system.common.PasswordView
+import cz.cvut.fukalhan.swap.login.system.common.ShowLoginStateMessage
 
 const val PASSWORD_MIN_LENGTH = 6
 
@@ -39,7 +31,7 @@ fun SignUpScreen(
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
-    val signUpState: SignUpState by viewModel.signUpState.collectAsState()
+    val signUpState: LoginState by viewModel.signUpState.collectAsState()
 
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -52,14 +44,11 @@ fun SignUpScreen(
 
     var showOnSignUpFailureMessage by remember { mutableStateOf(false) }
 
-    ResolveSignUpState(
-        viewModel,
-        signUpState,
-        onSuccess = { },
-        onFailure = { showOnSignUpFailureMessage = signUpState.result == SignUpState.State.FAILED }
-    )
+    ResolveSignUpState(viewModel, signUpState, onSuccess = { }) {
+        showOnSignUpFailureMessage = signUpState.result == LoginState.State.FAILED
+    }
 
-    ShowSignUpStateMessage(context, signUpState.messageResId, showOnSignUpFailureMessage) {
+    ShowLoginStateMessage(context, signUpState.messageResId, showOnSignUpFailureMessage) {
         showOnSignUpFailureMessage = false
     }
 
@@ -70,17 +59,13 @@ fun SignUpScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LoginView(
-            loginField = email,
-            loginFieldLabel = R.string.email,
-            onValueChange = { email = it }
-        )
+        LoginView(email, R.string.email) {
+            email = it
+        }
 
-        LoginView(
-            loginField = username,
-            loginFieldLabel = R.string.username,
-            onValueChange = { username = it }
-        )
+        LoginView(username, R.string.username) {
+            username = it
+        }
 
         PasswordView(password) {
             password = it
@@ -97,11 +82,11 @@ fun SignUpScreen(
         LoginValidityCheckMessage(passwordMatch, R.string.passwordMustBeTheSame)
         LoginValidityCheckMessage(!fieldsEmpty, R.string.fieldsMustBeFilled)
 
-        SignUpButton {
+        LoginButton(R.string.signUp) {
             fieldsEmpty = username.isEmpty() || email.isEmpty() || password.isEmpty()
 
             if (passwordMatch && passwordValid && !fieldsEmpty) {
-                viewModel.signUpUser(email, username, password)
+                viewModel.signUpUser(email.trim(), username.trim(), password.trim())
             }
         }
     }
@@ -110,33 +95,10 @@ fun SignUpScreen(
 @Composable
 fun ResolveSignUpState(
     viewModel: SignUpViewModel,
-    signUpState: SignUpState,
+    signUpState: LoginState,
     onSuccess: () -> Unit,
     onFailure: () -> Unit
 ) {
     signUpState.resolve(onSuccess, onFailure)
     viewModel.setSignUpStateNeutral()
-}
-
-@Composable
-fun ShowSignUpStateMessage(context: Context, messageId: Int, showMessage: Boolean, afterShowMessage: () -> Unit) {
-    if (showMessage) {
-        Toast.makeText(context, stringResource(messageId), Toast.LENGTH_SHORT).show()
-        afterShowMessage()
-    }
-}
-
-@Composable
-fun SignUpButton(onClick: () -> Unit) {
-    Spacer(modifier = Modifier.height(40.dp))
-
-    Button(
-        colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary),
-        onClick = onClick
-    ) {
-        Text(
-            text = stringResource(id = R.string.signUp),
-            color = SwapAppTheme.colors.buttonText
-        )
-    }
 }
