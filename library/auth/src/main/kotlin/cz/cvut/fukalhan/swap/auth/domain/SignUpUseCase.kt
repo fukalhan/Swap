@@ -1,7 +1,7 @@
 package cz.cvut.fukalhan.swap.auth.domain
 
-import cz.cvut.fukalhan.swap.auth.model.SignUpCredentials
-import cz.cvut.fukalhan.swap.auth.model.SignUpResult
+import cz.cvut.fukalhan.swap.auth.model.signup.SignUpCredentials
+import cz.cvut.fukalhan.swap.auth.model.signup.SignUpResult
 
 class SignUpUseCase(private val repository: Repository) {
 

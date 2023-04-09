@@ -1,7 +1,7 @@
-package cz.cvut.fukalhan.swap.login.presentation.signup
+package cz.cvut.fukalhan.swap.login.presentation.common
 
-class SignUpState(
-    val result: State = State.BEFORE_SIGN_UP,
+class LoginState(
+    val result: State = State.PENDING,
     val messageResId: Int = 0
 ) {
     fun resolve(onSuccessResultAction: () -> Unit, onFailedResultAction: () -> Unit) {
@@ -13,6 +13,6 @@ class SignUpState(
     }
 
     enum class State {
-        SUCCESS, FAILED, BEFORE_SIGN_UP
+        SUCCESS, FAILED, PENDING
     }
 }

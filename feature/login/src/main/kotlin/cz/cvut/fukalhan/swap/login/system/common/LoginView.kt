@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.login.system
+package cz.cvut.fukalhan.swap.login.system.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
