@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="email">Email</string>
+    <string name="username">Uživatelské jméno</string>
     <string name="password">Heslo</string>
     <string name="signIn">Přihlásit</string>
     <string name="signUp">Registrovat</string>
     <string name="passwordMustBeTheSame">Hesla se musí shodovat</string>
+    <string name="passwordTooShort">Heslo musí být aspoň 6 znaků</string>
+    <string name="fieldsMustBeFilled">Všechna pole musí být vyplněna</string>
+    <string name="weakPassword">Slabé heslo, zvolte si silnější heslo</string>
+    <string name="emailTaken">Tento email je již spojený s existujícím účtem</string>
+    <string name="loginFailed">Něco se pokazilo, zkuste to prosím znovu</string>
+    <string name="loginSuccess">Přihlášení proběhlo v pořádku</string>
+    <string name="usernameTaken">Toto uživatelské jméno je již zabrané, zkuste jiné</string>
+    <string name="serviceUnavailable">Služba je aktuálně nedostupná, zkuste to prosím později</string>
+    <string name="wrongPassword">Zadané heslo je nesprávné</string>
+    <string name="nonExistantAccount">Uživatelský účet s těmito údaji neexistuje.</string>
 </resources>
