@@ -15,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.login.R
-import cz.cvut.fukalhan.swap.login.presentation.SignUpViewModel
+import cz.cvut.fukalhan.swap.login.presentation.signup.SignUpViewModel
+import cz.cvut.fukalhan.swap.login.system.signin.SignInScreen
+import cz.cvut.fukalhan.swap.login.system.signup.SignUpScreen
 
 @Composable
 fun LoginScreen(signUpViewModel: SignUpViewModel) {

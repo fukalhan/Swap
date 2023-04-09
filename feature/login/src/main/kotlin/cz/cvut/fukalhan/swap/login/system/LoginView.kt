@@ -1,23 +1,26 @@
 package cz.cvut.fukalhan.swap.login.system
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.login.R
 
 @Composable
-fun UsernameView(username: String, onValueChange: (String) -> Unit) {
+fun LoginView(loginField: String, loginFieldLabel: Int, onValueChange: (String) -> Unit) {
     Column {
         Text(
-            text = stringResource(id = R.string.username),
+            text = stringResource(loginFieldLabel),
         )
 
         TextField(
-            value = username,
+            value = loginField,
             singleLine = true,
             onValueChange = onValueChange,
             colors = TextFieldDefaults
@@ -26,5 +29,7 @@ fun UsernameView(username: String, onValueChange: (String) -> Unit) {
                     focusedIndicatorColor = SwapAppTheme.colors.primary
                 )
         )
+
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }

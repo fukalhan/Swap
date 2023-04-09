@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.login.system
+package cz.cvut.fukalhan.swap.login.system.signin
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.login.R
+import cz.cvut.fukalhan.swap.login.system.LoginView
+import cz.cvut.fukalhan.swap.login.system.PasswordView
 
 @Composable
 fun SignInScreen() {
@@ -30,10 +32,11 @@ fun SignInScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        EmailView(email) {
-            email = it
-        }
-        Spacer(modifier = Modifier.height(10.dp))
+        LoginView(
+            loginField = email,
+            loginFieldLabel = R.string.email,
+            onValueChange = { email = it }
+        )
 
         PasswordView(password) {
             password = it
