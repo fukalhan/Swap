@@ -11,6 +11,7 @@
         android:name=".system.App"
         android:supportsRtl="true"
         android:theme="@style/Theme.Swap"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".system.MainActivity"
