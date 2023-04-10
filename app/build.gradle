@@ -50,7 +50,9 @@ android {
 
 dependencies {
     implementation project(':feature:login')
+    implementation project(':feature:profile')
     implementation project(':library:auth')
+    implementation project(':library:design')
 
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
