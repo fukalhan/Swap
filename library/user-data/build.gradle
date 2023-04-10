@@ -1,25 +1,19 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'
     id "io.gitlab.arturbosch.detekt" version "1.22.0"
 }
 
 android {
-    namespace 'cz.cvut.fukalhan.swap'
+    namespace 'cz.cvut.fukalhan.swap.userdata'
     compileSdk 33
 
     defaultConfig {
-        applicationId "cz.cvut.fukalhan.swap"
         minSdk 26
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -35,37 +29,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.4.0'
-    }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
 }
 
 dependencies {
-    implementation project(':feature:login')
-    implementation project(':feature:profile')
-    implementation project(':library:auth')
-    implementation project(':library:design')
-    implementation project(':library:user-data')
-
     implementation 'androidx.core:core-ktx:1.10.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    implementation 'androidx.activity:activity-compose:1.7.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation "io.insert-koin:koin-android:3.3.3"
-    implementation "io.insert-koin:koin-core:3.3.3"
-    implementation "io.insert-koin:koin-androidx-compose:3.4.2"
-
     // Handles all Firebase libraries' versions
     implementation platform('com.google.firebase:firebase-bom:31.3.0')
+    implementation 'com.google.firebase:firebase-functions-ktx'
 
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
 }
