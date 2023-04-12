@@ -7,5 +7,5 @@ class Response<S, T>(
 )
 
 enum class ResponseFlag {
-    SUCCESS, FAIL
+    SUCCESS, DATA_NOT_FOUND, STORAGE_ERROR, DB_ERROR
 }

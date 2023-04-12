@@ -24,6 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
+import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -37,7 +38,7 @@ fun MainNavHost() {
     ) {
         NavHost(navController, MainScreen.Profile.route) {
             composable(MainScreen.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(koinViewModel())
             }
         }
     }
