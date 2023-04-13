@@ -7,14 +7,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
-import cz.cvut.fukalhan.swap.auth.domain.Repository
+import cz.cvut.fukalhan.swap.auth.domain.AuthRepository
 import cz.cvut.fukalhan.swap.auth.model.signin.SignInCredentials
 import cz.cvut.fukalhan.swap.auth.model.signin.SignInResult
 import cz.cvut.fukalhan.swap.auth.model.signup.SignUpCredentials
 import cz.cvut.fukalhan.swap.auth.model.signup.SignUpResult
 import kotlinx.coroutines.tasks.await
 
-class FirebaseRepository : Repository {
+class FirebaseAuthRepository : AuthRepository {
     private val functions = Firebase.functions
     private val auth = Firebase.auth
 
