@@ -1,0 +1,26 @@
+package cz.cvut.fukalhan.design.system
+
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+
+@Immutable
+data class SwapAppDimensions(
+    val sidePadding: Dp,
+    val smallSidePadding: Dp,
+    val smallSpacer: Dp,
+    val mediumSpacer: Dp,
+    val largeSpacer: Dp,
+    val roundCorners: Dp,
+    val elevation: Dp
+)
+
+val swapAppDimensions = SwapAppDimensions(
+    sidePadding = 10.dp,
+    smallSidePadding = 5.dp,
+    smallSpacer = 10.dp,
+    mediumSpacer = 25.dp,
+    largeSpacer = 40.dp,
+    roundCorners = 20.dp,
+    elevation = 5.dp
+)

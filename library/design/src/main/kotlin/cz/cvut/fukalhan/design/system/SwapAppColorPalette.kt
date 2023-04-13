@@ -1,7 +1,9 @@
 package cz.cvut.fukalhan.design.system
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
+@Immutable
 data class SwapAppColorPalette(
     val primary: Color,
     val secondary: Color,
