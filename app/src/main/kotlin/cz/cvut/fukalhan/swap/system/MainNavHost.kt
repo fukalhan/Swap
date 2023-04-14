@@ -56,7 +56,9 @@ fun MainNavHost() {
             }
 
             composable(MainScreen.AddItem.route) {
-                AddItemScreen()
+                AddItemScreen(koinViewModel()) {
+                    navController.navigate(MainScreen.Profile.route)
+                }
             }
         }
     }
