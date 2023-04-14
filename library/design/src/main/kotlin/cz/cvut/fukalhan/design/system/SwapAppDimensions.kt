@@ -11,8 +11,11 @@ data class SwapAppDimensions(
     val smallSpacer: Dp,
     val mediumSpacer: Dp,
     val largeSpacer: Dp,
+    val smallRoundCorners: Dp,
     val roundCorners: Dp,
-    val elevation: Dp
+    val borderWidth: Dp,
+    val elevation: Dp,
+    val image: Dp,
 )
 
 val swapAppDimensions = SwapAppDimensions(
@@ -21,6 +24,9 @@ val swapAppDimensions = SwapAppDimensions(
     smallSpacer = 10.dp,
     mediumSpacer = 25.dp,
     largeSpacer = 40.dp,
+    smallRoundCorners = 10.dp,
     roundCorners = 20.dp,
-    elevation = 5.dp
+    borderWidth = 1.dp,
+    elevation = 5.dp,
+    image = 180.dp
 )
