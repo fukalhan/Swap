@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="empty"></string>
     <string name="addImage">Přidat obrázky</string>
     <string name="name">Název</string>
     <string name="description">Popis</string>
     <string name="category">Kategorie</string>
     <string name="cancel">Zrušit</string>
     <string name="save">Uložit</string>
+    <string name="itemSaveSuccess">Předmět úspěšně uložen</string>
+    <string name="itemSaveFail">Uložení předmětu se nezdařilo</string>
 </resources>

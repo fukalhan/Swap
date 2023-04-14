@@ -28,14 +28,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.R
-import cz.cvut.fukalhan.swap.itemdata.infrastructure.Category
-import cz.cvut.fukalhan.swap.itemdata.infrastructure.Default
-import cz.cvut.fukalhan.swap.itemdata.infrastructure.categories
+import cz.cvut.fukalhan.swap.itemdata.model.Category
+import cz.cvut.fukalhan.swap.itemdata.model.categories
 
 @Composable
-fun CategoryList() {
+fun CategoryList(
+    selectedCategory: Category,
+    onItemClick: (Category) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedCategory by remember { mutableStateOf<Category>(Default) }
     val categories = categories
 
     Column {
@@ -45,7 +46,7 @@ fun CategoryList() {
 
         if (expanded) {
             CollapsingList(categories, selectedCategory) {
-                selectedCategory = it
+                onItemClick(it)
                 expanded = false
             }
         }
