@@ -13,6 +13,10 @@ sealed class MainScreen(
     val iconRes: Int
 ) {
     object Profile : MainScreen("profile", R.string.profile, R.drawable.profile)
+    object AddItem : MainScreen("addItem", R.string.addItem, R.drawable.add)
 }
 
-val items = listOf(MainScreen.Profile)
+val items = listOf(
+    MainScreen.Profile,
+    MainScreen.AddItem
+)
