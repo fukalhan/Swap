@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.profile.system
 
 import android.net.Uri
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,30 +34,37 @@ import cz.cvut.fukalhan.swap.profile.presentation.ProfileViewModel
 fun ProfileInfo(viewModel: ProfileViewModel) {
     val profileState by viewModel.profileState.collectAsState()
 
-    Row(
+    Surface(
+        elevation = SwapAppTheme.dimensions.elevation,
+        color = SwapAppTheme.colors.backgroundSecondary,
+        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
         modifier = Modifier
-            .padding(SwapAppTheme.dimensions.sidePadding)
-            .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners))
-            .background(SwapAppTheme.colors.backgroundSecondary)
-            .wrapContentHeight()
-            .padding(SwapAppTheme.dimensions.sidePadding)
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start
+            .padding(SwapAppTheme.dimensions.smallSidePadding)
+            .fillMaxWidth()
+            .wrapContentHeight(),
     ) {
-        profileState.profilePicUri?.let {
-            ProfilePicture(it)
-        }
-        Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start,
+        Row(
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(SwapAppTheme.dimensions.sidePadding),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ) {
-            UsernameView(profileState.username)
-            JoinDateView {
-                profileState.joinDate()
+            profileState.profilePicUri?.let {
+                ProfilePicture(it)
+            }
+            Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                UsernameView(profileState.username)
+                JoinDateView {
+                    profileState.joinDate()
+                }
             }
         }
     }

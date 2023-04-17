@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-functions-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
 }

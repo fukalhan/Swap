@@ -8,6 +8,6 @@ import cz.cvut.fukalhan.swap.itemdata.model.Item
 
 interface ItemRepository {
     suspend fun createItemRecord(item: Item): DataResponse<ResponseFlag, String>
-
     suspend fun updateItemImages(saveImagesRequest: SaveImagesRequest): Response<ResponseFlag>
+    suspend fun getUsersItems(uid: String): DataResponse<ResponseFlag, List<Item>>
 }
