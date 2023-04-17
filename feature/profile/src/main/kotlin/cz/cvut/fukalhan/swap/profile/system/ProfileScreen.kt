@@ -21,7 +21,6 @@ fun ProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top = SwapAppTheme.dimensions.smallSidePadding,
                 bottom = SwapAppTheme.dimensions.bottomScreenPadding
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
