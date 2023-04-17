@@ -96,7 +96,7 @@ fun AddItemScreen(
                     selectedCategory = it
                 }
 
-                ButtonRow({}) {
+                ButtonRow(navigateBack) {
                     user?.let {
                         viewModel.saveItem(
                             it.uid,

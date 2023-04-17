@@ -1,6 +1,6 @@
 package cz.cvut.fukalhan.swap.itemdata.domain
 
-
+import cz.cvut.fukalhan.swap.itemdata.data.SaveImagesRequest
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 
 class SaveItemUseCase(
@@ -8,21 +8,21 @@ class SaveItemUseCase(
     private val imageRepository: ImageRepository
 ) {
     suspend fun saveItem(item: Item): SaveItemResponse {
-        val saveItemResponse = itemRepository.saveItem(item)
-        return if (saveItemResponse.success) {
-            saveItemResponse.data?.let { itemId ->
-                val response = imageRepository.saveItemImages(itemId, item.imagesUri)
-                response.data?.let {imagesUri ->
-                    itemRepository.updateItemImages(itemId, imagesUri)
-                    SaveItemResponse.SUCCESS
-                } ?: run {
-                    SaveItemResponse.FAIL
+        val createItemRecordResult = itemRepository.createItemRecord(item)
+        createItemRecordResult.data?.let { itemId ->
+            val saveItemImagesResult = imageRepository.saveItemImages(itemId, item.imagesUri)
+            saveItemImagesResult.data?.let { imagesUri ->
+                val updateItemImagesResult = itemRepository.updateItemImages(SaveImagesRequest(itemId, imagesUri))
+                if (updateItemImagesResult.success) {
+                    return SaveItemResponse.SUCCESS
+                } else {
+                    return SaveItemResponse.FAIL
                 }
             } ?: run {
-                SaveItemResponse.FAIL
+                return SaveItemResponse.FAIL
             }
-        } else {
-            SaveItemResponse.FAIL
+        } ?: run {
+            return SaveItemResponse.FAIL
         }
     }
 }
