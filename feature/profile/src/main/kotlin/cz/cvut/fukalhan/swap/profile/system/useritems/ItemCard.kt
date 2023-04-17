@@ -34,7 +34,7 @@ fun ItemCard(itemState: ItemState) {
             Text(
                 text = itemState.name,
                 style = SwapAppTheme.typography.titleSecondary,
-                modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
+                modifier = Modifier.padding(SwapAppTheme.dimensions.sidePadding)
             )
         }
     }
