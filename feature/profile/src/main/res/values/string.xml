@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="memberSince">Členem od %1$s</string>
+    <string name="myItems">Moje předměty</string>
+    <string name="likedItems">Oblíbené předměty</string>
 </resources>

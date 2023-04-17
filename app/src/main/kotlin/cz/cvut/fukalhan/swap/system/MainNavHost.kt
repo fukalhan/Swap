@@ -84,7 +84,7 @@ fun BottomBar(navController: NavController) {
         backgroundColor = SwapAppTheme.colors.backgroundSecondary,
         contentColor = SwapAppTheme.colors.primary,
         elevation = SwapAppTheme.dimensions.elevation,
-        modifier = Modifier.height(60.dp)
+        modifier = Modifier.height(SwapAppTheme.dimensions.bottomBar)
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
