@@ -9,7 +9,7 @@ import com.google.firebase.ktx.Firebase
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import cz.cvut.fukalhan.swap.itemdata.domain.ItemRepository
+import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemdata.model.ItemState
@@ -67,6 +67,30 @@ class FirebaseItemRepository : ItemRepository {
     override suspend fun getUsersItems(uid: String): DataResponse<ResponseFlag, List<Item>> {
         return try {
             val querySnapshot = db.collection("items").whereEqualTo("ownerId", uid).get().await()
+            val items = if (querySnapshot.isEmpty) {
+                emptyList()
+            } else {
+                querySnapshot.documents.map { doc ->
+                    Item(
+                        id = doc.id,
+                        ownerId = doc.getString("ownerId") ?: "",
+                        name = doc.getString("name") ?: "",
+                        description = doc.getString("description") ?: "",
+                        imagesUri = (doc.get("images") as? List<String>)?.map { Uri.parse(it) } ?: emptyList(),
+                        category = Category.valueOf(doc.getString("category") ?: Category.DEFAULT.name),
+                        state = ItemState.valueOf(doc.getString("state") ?: ItemState.AVAILABLE.name),
+                    )
+                }
+            }
+            DataResponse(true, ResponseFlag.SUCCESS, items)
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse(false, ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun getItems(uid: String): DataResponse<ResponseFlag, List<Item>> {
+        return try {
+            val querySnapshot = db.collection("items").whereNotEqualTo("ownerId", uid).get().await()
             val items = if (querySnapshot.isEmpty) {
                 emptyList()
             } else {

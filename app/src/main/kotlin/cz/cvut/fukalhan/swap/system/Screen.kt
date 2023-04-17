@@ -12,11 +12,13 @@ sealed class MainScreen(
     val labelRes: Int,
     val iconRes: Int
 ) {
+    object Items : MainScreen("items", R.string.itemsForSwap, R.drawable.blender)
     object Profile : MainScreen("profile", R.string.profile, R.drawable.profile)
     object AddItem : MainScreen("addItem", R.string.addItem, R.drawable.add)
 }
 
 val items = listOf(
+    MainScreen.Items,
     MainScreen.Profile,
     MainScreen.AddItem
 )

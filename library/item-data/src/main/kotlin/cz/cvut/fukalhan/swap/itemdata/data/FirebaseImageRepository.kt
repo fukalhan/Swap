@@ -3,7 +3,7 @@ package cz.cvut.fukalhan.swap.itemdata.data
 import android.net.Uri
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import cz.cvut.fukalhan.swap.itemdata.domain.ImageRepository
+import cz.cvut.fukalhan.swap.itemdata.domain.repo.ImageRepository
 import kotlinx.coroutines.tasks.await
 
 class FirebaseImageRepository : ImageRepository {

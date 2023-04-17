@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.itemdata.domain
+package cz.cvut.fukalhan.swap.itemdata.domain.repo
 
 import android.net.Uri
 import cz.cvut.fukalhan.swap.itemdata.data.DataResponse

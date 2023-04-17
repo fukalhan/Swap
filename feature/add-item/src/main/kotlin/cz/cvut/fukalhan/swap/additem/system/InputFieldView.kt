@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
@@ -19,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 
@@ -51,6 +54,10 @@ fun RegularTextFieldView(
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
         colors = getTextFieldColors(),
         modifier = inputFieldModifier,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Words
+        )
     )
 }
 
@@ -69,7 +76,11 @@ fun DescriptionView(
             },
             modifier = inputFieldModifier.height(120.dp),
             maxLines = Int.MAX_VALUE,
-            colors = getTextFieldColors()
+            colors = getTextFieldColors(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.Words
+            )
         )
 
         Text(

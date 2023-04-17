@@ -2,10 +2,11 @@ package cz.cvut.fukalhan.swap.itemdata.di
 
 import cz.cvut.fukalhan.swap.itemdata.data.FirebaseImageRepository
 import cz.cvut.fukalhan.swap.itemdata.data.FirebaseItemRepository
+import cz.cvut.fukalhan.swap.itemdata.domain.GetItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetUserItemsUseCase
-import cz.cvut.fukalhan.swap.itemdata.domain.ImageRepository
-import cz.cvut.fukalhan.swap.itemdata.domain.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.domain.SaveItemUseCase
+import cz.cvut.fukalhan.swap.itemdata.domain.repo.ImageRepository
+import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -16,4 +17,5 @@ val itemDataModule = module {
     singleOf(::FirebaseImageRepository) bind ImageRepository::class
     factoryOf(::SaveItemUseCase)
     factoryOf(::GetUserItemsUseCase)
+    factoryOf(::GetItemsUseCase)
 }
