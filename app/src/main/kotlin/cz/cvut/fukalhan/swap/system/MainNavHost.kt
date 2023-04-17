@@ -34,6 +34,7 @@ import androidx.navigation.compose.rememberNavController
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.R
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
+import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -56,6 +57,10 @@ fun MainNavHost() {
         bottomBar = { AnimatedBottomBar(navController, bottomBarVisible) }
     ) {
         NavHost(navController, MainScreen.Profile.route) {
+            composable(MainScreen.Items.route) {
+                ItemListScreen(koinViewModel())
+            }
+
             composable(MainScreen.Profile.route) {
                 ProfileScreen(koinViewModel(), koinViewModel())
             }
@@ -95,6 +100,7 @@ fun TopBar(navController: NavController) {
 }
 fun getScreenLabelRes(route: String): Int {
     return when (route) {
+        "items" -> R.string.itemsForSwap
         "profile" -> R.string.profile
         else -> R.string.addItem
     }

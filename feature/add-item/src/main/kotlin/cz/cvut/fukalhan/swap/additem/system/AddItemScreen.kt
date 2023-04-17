@@ -58,7 +58,7 @@ fun AddItemScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(SwapAppTheme.dimensions.sidePadding),
+            .padding(SwapAppTheme.dimensions.smallSidePadding),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

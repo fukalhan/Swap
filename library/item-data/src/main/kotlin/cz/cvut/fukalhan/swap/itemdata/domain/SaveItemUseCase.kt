@@ -1,6 +1,8 @@
 package cz.cvut.fukalhan.swap.itemdata.domain
 
 import cz.cvut.fukalhan.swap.itemdata.data.SaveImagesRequest
+import cz.cvut.fukalhan.swap.itemdata.domain.repo.ImageRepository
+import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 
 class SaveItemUseCase(
