@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -20,17 +20,23 @@ import cz.cvut.fukalhan.swap.profile.presentation.useritems.ItemState
 
 @Composable
 fun ItemCard(itemState: ItemState) {
-    Column(
-        modifier = Modifier
-            .padding(SwapAppTheme.dimensions.sidePadding)
-            .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners))
+    Surface(
+        elevation = SwapAppTheme.dimensions.elevation,
+        color = SwapAppTheme.colors.backgroundSecondary,
+        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
+        modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
     ) {
-        ItemPicture(itemState.imageUri)
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            ItemPicture(itemState.imageUri)
 
-        Text(
-            text = itemState.name,
-            style = SwapAppTheme.typography.titleSecondary,
-        )
+            Text(
+                text = itemState.name,
+                style = SwapAppTheme.typography.titleSecondary,
+                modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
+            )
+        }
     }
 }
 
