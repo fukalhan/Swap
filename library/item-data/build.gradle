@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id "io.gitlab.arturbosch.detekt" version "1.22.0"
 }
 
 android {
@@ -35,12 +36,21 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation "io.insert-koin:koin-android:3.3.3"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-
+    implementation "com.squareup.moshi:moshi:1.13.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
 
     // Handles all Firebase libraries' versions
     implementation platform('com.google.firebase:firebase-bom:31.3.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-functions-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
-    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
+}
+
+detekt {
+    toolVersion = "1.22.0"
+    source = files("src/main/kotlin")
+    config = files("${project.rootDir}/detekt.yml")
+    buildUponDefaultConfig = true
 }

@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.itemdata.model
 
 import cz.cvut.fukalhan.swap.itemdata.R
-
 enum class Category(val labelId: Int) {
     DEFAULT(R.string.category),
     WOMEN_CLOTHES(R.string.womenClothes),
