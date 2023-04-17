@@ -52,7 +52,7 @@ fun MainNavHost() {
     ) {
         NavHost(navController, MainScreen.Profile.route) {
             composable(MainScreen.Profile.route) {
-                ProfileScreen(koinViewModel())
+                ProfileScreen(koinViewModel(), koinViewModel())
             }
 
             composable(MainScreen.AddItem.route) {
