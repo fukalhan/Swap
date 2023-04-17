@@ -39,7 +39,7 @@ fun ProfileInfo(viewModel: ProfileViewModel) {
         color = SwapAppTheme.colors.backgroundSecondary,
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
         modifier = Modifier
-            .padding(bottom = SwapAppTheme.dimensions.sidePadding)
+            .padding(SwapAppTheme.dimensions.smallSidePadding)
             .fillMaxWidth()
             .wrapContentHeight(),
     ) {
