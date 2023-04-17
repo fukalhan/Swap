@@ -36,7 +36,7 @@ val swapAppTypography = SwapAppTypography(
         letterSpacing = 0.15.sp
     ),
     button = TextStyle(
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
         letterSpacing = 0.15.sp,
     )
