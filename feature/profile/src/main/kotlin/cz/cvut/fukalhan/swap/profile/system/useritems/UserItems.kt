@@ -17,7 +17,7 @@ fun UserItems() {
         modifier = Modifier
             .padding(SwapAppTheme.dimensions.sidePadding)
             .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners))
-            .background(SwapAppTheme.colors.componentBackground)
+            .background(SwapAppTheme.colors.backgroundSecondary)
             .fillMaxWidth(),
         columns = GridCells.Fixed(2)
     ) {

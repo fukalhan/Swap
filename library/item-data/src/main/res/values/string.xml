@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category">Kategorie</string>
+    <string name="womenClothes">Dámské oblečení</string>
+    <string name="menClothes">Pánské oblečení</string>
+    <string name="childrenClothes">Dětské oblečení</string>
+    <string name="cosmetics">Kosmetika</string>
+    <string name="accessories">Doplňky</string>
+    <string name="householdSupplies">Potřeby pro domácnost</string>
+    <string name="appliances">Spotřebiče</string>
+    <string name="electronics">Elektronika</string>
+    <string name="toys">Hračky</string>
+    <string name="booksMoviesMusic">Knihy, filmy a hudba</string>
+</resources>
