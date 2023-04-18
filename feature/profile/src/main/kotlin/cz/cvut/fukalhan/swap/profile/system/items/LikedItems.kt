@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.system
+package cz.cvut.fukalhan.swap.profile.system.items
 
 import androidx.compose.runtime.Composable
 

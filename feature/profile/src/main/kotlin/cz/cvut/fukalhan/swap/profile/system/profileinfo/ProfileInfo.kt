@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.system
+package cz.cvut.fukalhan.swap.profile.system.profileinfo
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,7 +46,7 @@ fun ProfileInfo(viewModel: ProfileViewModel) {
     ) {
         Row(
             modifier = Modifier
-                .wrapContentHeight()
+                .height(150.dp)
                 .fillMaxWidth()
                 .padding(SwapAppTheme.dimensions.sidePadding),
             verticalAlignment = Alignment.CenterVertically,
@@ -75,10 +76,11 @@ fun ProfilePicture(pictureUri: Uri) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(pictureUri)
+            .placeholder(R.drawable.placeholder)
             .crossfade(true)
             .build(),
         placeholder = painterResource(R.drawable.placeholder),
-        contentDescription = "Profile picture",
+        contentDescription = null,
         modifier = Modifier
             .clip(CircleShape)
             .size(130.dp),

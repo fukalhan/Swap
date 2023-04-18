@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="addItem">Přidat předmět</string>
     <string name="empty"></string>
     <string name="addImage">Přidat obrázky</string>
     <string name="name">Název</string>
