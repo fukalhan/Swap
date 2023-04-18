@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.presentation.useritems
+package cz.cvut.fukalhan.swap.profile.presentation.items
 
 import android.net.Uri
 

@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import cz.cvut.fukalhan.design.system.ScreenState
+import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.R
 import cz.cvut.fukalhan.swap.additem.presentation.AddItemState

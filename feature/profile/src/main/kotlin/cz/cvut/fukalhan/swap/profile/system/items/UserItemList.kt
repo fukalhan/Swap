@@ -10,8 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.profile.presentation.useritems.ItemListState
-import cz.cvut.fukalhan.swap.profile.presentation.useritems.UserItemsViewModel
+import cz.cvut.fukalhan.swap.profile.presentation.items.ItemListState
+import cz.cvut.fukalhan.swap.profile.presentation.items.UserItemsViewModel
 
 @Composable
 fun UserItemList(viewModel: UserItemsViewModel) {

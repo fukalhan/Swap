@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.design.system
+package cz.cvut.fukalhan.design.presentation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
