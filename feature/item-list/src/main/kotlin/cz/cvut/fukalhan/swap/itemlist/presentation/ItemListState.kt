@@ -1,0 +1,27 @@
+package cz.cvut.fukalhan.swap.itemlist.presentation
+
+import android.net.Uri
+import cz.cvut.fukalhan.swap.itemdata.model.Item
+import cz.cvut.fukalhan.swap.itemlist.R
+
+sealed class ItemListState()
+
+object Init : ItemListState()
+object Loading : ItemListState()
+data class Success(
+    val items: List<ItemState> = emptyList()
+) : ItemListState()
+
+data class ItemState(
+    val imageUri: Uri,
+    val name: String,
+)
+
+class Failure(val message: Int = R.string.cannotLoadItems) : ItemListState()
+
+internal fun Item.toItemState(): ItemState {
+    return ItemState(
+        this.imagesUri.first(),
+        this.name
+    )
+}
