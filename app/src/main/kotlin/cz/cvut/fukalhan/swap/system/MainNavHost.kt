@@ -7,23 +7,22 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -31,17 +30,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import cz.cvut.fukalhan.design.system.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.R
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
 import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
+import cz.cvut.fukalhan.swap.profile.system.settings.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainNavHost() {
+fun MainNavHost(
+    signOut: () -> Unit
+) {
     val navController = rememberNavController()
+    var screenState by remember { mutableStateOf(ScreenState()) }
     var bottomBarVisible by remember { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -53,20 +56,41 @@ fun MainNavHost() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         backgroundColor = SwapAppTheme.colors.background,
-        topBar = { TopBar(navController) },
+        topBar = { TopBar(screenState) },
         bottomBar = { AnimatedBottomBar(navController, bottomBarVisible) }
     ) {
         NavHost(navController, MainScreen.Profile.route) {
             composable(MainScreen.Items.route) {
-                ItemListScreen(koinViewModel())
+                ItemListScreen(
+                    koinViewModel()
+                ) {
+                    screenState = it
+                }
             }
 
             composable(MainScreen.Profile.route) {
-                ProfileScreen(koinViewModel(), koinViewModel())
+                ProfileScreen(
+                    koinViewModel(),
+                    koinViewModel(),
+                    { screenState = it }
+                ) {
+                    navController.navigate(MainScreen.Settings.route)
+                }
+            }
+
+            composable(MainScreen.Settings.route) {
+                SettingsScreen(
+                    onScreenInit = { screenState = it },
+                    onNavigateBack = { navController.popBackStack() },
+                    signOut = { signOut() }
+                )
             }
 
             composable(MainScreen.AddItem.route) {
-                AddItemScreen(koinViewModel()) {
+                AddItemScreen(
+                    koinViewModel(),
+                    { screenState = it }
+                ) {
                     navController.navigate(MainScreen.Profile.route)
                 }
             }
@@ -75,34 +99,22 @@ fun MainNavHost() {
 }
 
 @Composable
-fun TopBar(navController: NavController) {
-    val currentScreen = navController.currentDestination?.route
-
+fun TopBar(
+    screenState: ScreenState
+) {
     TopAppBar(
         backgroundColor = SwapAppTheme.colors.primary,
         contentColor = SwapAppTheme.colors.buttonText,
         elevation = SwapAppTheme.dimensions.elevation,
-        modifier = Modifier.height(SwapAppTheme.dimensions.bar)
+        modifier = Modifier.height(SwapAppTheme.dimensions.bar),
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            currentScreen?.let {
-                val labelRes = getScreenLabelRes(it)
-                Text(
-                    text = stringResource(labelRes),
-                    style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText
-                )
-            }
+            screenState.topBarContent?.invoke(this)
         }
-    }
-}
-fun getScreenLabelRes(route: String): Int {
-    return when (route) {
-        "items" -> R.string.itemsForSwap
-        "profile" -> R.string.profile
-        else -> R.string.addItem
     }
 }
 
@@ -137,7 +149,7 @@ fun BottomBar(navController: NavController) {
                     Icon(
                         painter = painterResource(screen.iconRes),
                         contentDescription = null,
-                        modifier = Modifier.size(35.dp)
+                        modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,

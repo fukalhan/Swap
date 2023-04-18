@@ -25,7 +25,11 @@ fun LoginNavHost() {
             }
 
             composable(Screen.Main.route) {
-                MainNavHost()
+                MainNavHost {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Main.route)
+                    }
+                }
             }
         }
     }

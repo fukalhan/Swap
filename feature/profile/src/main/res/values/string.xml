@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="profile">Profil</string>
     <string name="memberSince">Členem od %1$s</string>
     <string name="myItems">Moje předměty</string>
     <string name="likedItems">Oblíbené předměty</string>
+    <string name="signOut">Odhlásit se</string>
 </resources>

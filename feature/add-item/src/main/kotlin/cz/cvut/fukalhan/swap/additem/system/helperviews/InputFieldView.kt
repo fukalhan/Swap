@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.additem.system
+package cz.cvut.fukalhan.swap.additem.system.helperviews
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.swap.additem.system.DESCRIPTION_CHAR_LIMIT
 
 @Composable
 fun InputFieldView(

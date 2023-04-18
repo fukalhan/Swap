@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.system.useritems
+package cz.cvut.fukalhan.swap.profile.system.items
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
