@@ -19,6 +19,7 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.presentation.ProfileViewModel
 import cz.cvut.fukalhan.swap.profile.presentation.useritems.UserItemsViewModel
+import cz.cvut.fukalhan.swap.profile.system.profileinfo.ProfileInfo
 
 @Composable
 fun ProfileScreen(
