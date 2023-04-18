@@ -26,9 +26,9 @@ fun LoginNavHost() {
 
             composable(Screen.Main.route) {
                 MainNavHost {
-                    navController.navigate(Screen.Login.route)
-                    // Clear the backstack
-                    navController.popBackStack()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Main.route)
+                    }
                 }
             }
         }
