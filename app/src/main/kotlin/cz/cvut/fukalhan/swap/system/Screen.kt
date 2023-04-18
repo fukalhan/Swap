@@ -14,6 +14,7 @@ sealed class MainScreen(
 ) {
     object Items : MainScreen("items", R.string.itemsForSwap, R.drawable.blender)
     object Profile : MainScreen("profile", R.string.profile, R.drawable.profile)
+    object Settings : MainScreen("settings", R.string.settings, R.drawable.settings)
     object AddItem : MainScreen("addItem", R.string.addItem, R.drawable.add)
 }
 
