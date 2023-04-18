@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.system
+package cz.cvut.fukalhan.swap.system.navigation
 
 import cz.cvut.fukalhan.swap.R
 

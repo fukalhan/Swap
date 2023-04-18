@@ -2,17 +2,20 @@ package cz.cvut.fukalhan.swap.profile.system.profileinfo
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,16 +27,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
-import cz.cvut.fukalhan.swap.profile.presentation.ProfileViewModel
+import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Failure
+import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Loading
+import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoState
+import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoViewModel
+import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Success
 
 @Composable
-fun ProfileInfo(viewModel: ProfileViewModel) {
-    val profileState by viewModel.profileState.collectAsState()
+fun ProfileInfo(viewModel: ProfileInfoViewModel) {
+    val profileInfoState by viewModel.profileInfoState.collectAsState()
 
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
@@ -42,19 +51,39 @@ fun ProfileInfo(viewModel: ProfileViewModel) {
         modifier = Modifier
             .padding(SwapAppTheme.dimensions.smallSidePadding)
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .height(150.dp),
     ) {
+        LoadingView(profileInfoState)
+        ProfileInfoContent(profileInfoState)
+        FailView(profileInfoState)
+    }
+}
+
+@Composable
+fun LoadingView(profileInfoState: ProfileInfoState) {
+    if (profileInfoState is Loading) {
+        Box(modifier = Modifier.wrapContentSize()) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(SwapAppTheme.dimensions.icon),
+                color = SwapAppTheme.colors.primary
+            )
+        }
+    }
+}
+
+@Composable
+fun ProfileInfoContent(profileInfoState: ProfileInfoState) {
+    if (profileInfoState is Success) {
         Row(
             modifier = Modifier
-                .height(150.dp)
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(SwapAppTheme.dimensions.sidePadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            profileState.profilePicUri?.let {
-                ProfilePicture(it)
-            }
+            ProfilePicture(profileInfoState.profilePicUri)
+
             Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
 
             Column(
@@ -62,10 +91,8 @@ fun ProfileInfo(viewModel: ProfileViewModel) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start,
             ) {
-                UsernameView(profileState.username)
-                JoinDateView {
-                    profileState.joinDate()
-                }
+                InfoView(profileInfoState.username, SwapAppTheme.typography.titleSecondary)
+                InfoView(profileInfoState.joinDate, SwapAppTheme.typography.body)
             }
         }
     }
@@ -89,19 +116,21 @@ fun ProfilePicture(pictureUri: Uri) {
 }
 
 @Composable
-fun UsernameView(text: String) {
+fun InfoView(text: String, style: TextStyle) {
     Text(
         text = text,
-        style = SwapAppTheme.typography.titleSecondary,
+        style = style,
         modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
     )
 }
 
 @Composable
-fun JoinDateView(textRes: @Composable () -> String) {
-    Text(
-        text = textRes(),
-        style = SwapAppTheme.typography.body,
-        modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
-    )
+fun FailView(profileInfoState: ProfileInfoState) {
+    if (profileInfoState is Failure) {
+        Text(
+            text = stringResource(profileInfoState.message),
+            style = SwapAppTheme.typography.titleSecondary,
+            color = SwapAppTheme.colors.textPrimary
+        )
+    }
 }

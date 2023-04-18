@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.R
@@ -50,6 +51,7 @@ fun PictureSelectionView(
             .padding(bottom = SwapAppTheme.dimensions.sidePadding)
             .fillMaxWidth()
             .height(250.dp)
+            .zIndex(0f)
     ) {
         Column(
             modifier = Modifier

@@ -6,6 +6,6 @@ import cz.cvut.fukalhan.swap.di.setupKoin
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        setupKoin()
+        setupKoin(this@App)
     }
 }

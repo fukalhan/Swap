@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.presentation.useritems
+package cz.cvut.fukalhan.swap.profile.presentation.items
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class UserItemsViewModel(private val getUserItemsUseCase: GetUserItemsUseCase) : ViewModel() {
-    private val _items = MutableStateFlow(ItemListState())
-    val items: StateFlow<ItemListState>
-        get() = _items
+    private val _itemListState: MutableStateFlow<ItemListState> = MutableStateFlow(Init)
+    val itemListState: StateFlow<ItemListState>
+        get() = _itemListState
 
     init {
         val user = Firebase.auth.currentUser
@@ -23,16 +23,17 @@ class UserItemsViewModel(private val getUserItemsUseCase: GetUserItemsUseCase) :
     }
 
     private fun getUserItems(uid: String) {
+        _itemListState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
             val response = getUserItemsUseCase.getUserItems(uid)
-            if (response.success) {
-                response.data?.let { items ->
-                    _items.value = ItemListState(
-                        items.map {
-                            it.toItemState()
-                        }
-                    )
-                }
+            response.data?.let { items ->
+                _itemListState.value = Success(
+                    items.map {
+                        it.toItemState()
+                    }
+                )
+            } ?: run {
+                _itemListState.value = Failure()
             }
         }
     }
