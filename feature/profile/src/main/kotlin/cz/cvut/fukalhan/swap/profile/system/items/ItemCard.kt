@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.system.useritems
+package cz.cvut.fukalhan.swap.profile.system.items
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
