@@ -15,7 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,22 +40,9 @@ const val DESCRIPTION_CHAR_LIMIT = 150
 @Composable
 fun AddItemScreen(
     viewModel: AddItemViewModel,
+    onScreenInit: (ScreenState) -> Unit,
     navigateBack: () -> Unit,
-    onComposing: (ScreenState) -> Unit,
 ) {
-    LaunchedEffect(key1 = true) {
-        onComposing(
-            ScreenState {
-                Text(
-                    text = stringResource(R.string.addItem),
-                    style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
-                    modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
-                )
-            }
-        )
-    }
-
     val user = Firebase.auth.currentUser
     val scrollState = rememberScrollState()
 
@@ -68,6 +54,8 @@ fun AddItemScreen(
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(Category.DEFAULT) }
+
+    TopBar(onScreenInit)
 
     DisplaySaveItemResponseMessage(viewModel, LocalContext.current, saveItemState, navigateBack)
 
@@ -127,6 +115,20 @@ fun AddItemScreen(
             }
         }
     }
+}
+
+@Composable
+fun TopBar(onScreenInit: (ScreenState) -> Unit) {
+    onScreenInit(
+        ScreenState {
+            Text(
+                text = stringResource(R.string.addItem),
+                style = SwapAppTheme.typography.screenTitle,
+                color = SwapAppTheme.colors.buttonText,
+                modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
+            )
+        }
+    )
 }
 
 @Composable

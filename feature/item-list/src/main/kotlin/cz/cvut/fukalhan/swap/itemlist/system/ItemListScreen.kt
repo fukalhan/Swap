@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,23 +20,33 @@ import cz.cvut.fukalhan.swap.itemlist.presentation.ItemListViewModel
 @Composable
 fun ItemListScreen(
     viewModel: ItemListViewModel,
-    onComposing: (ScreenState) -> Unit,
+    onScreenInit: (ScreenState) -> Unit,
 ) {
     val itemListState: ItemListState by viewModel.items.collectAsState()
 
-    LaunchedEffect(key1 = true) {
-        onComposing(
-            ScreenState {
-                Text(
-                    text = stringResource(R.string.items),
-                    style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
-                    modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
-                )
-            }
-        )
-    }
+    TopBar(onScreenInit)
 
+    ItemList(itemListState)
+}
+
+@Composable
+fun TopBar(
+    onScreenInit: (ScreenState) -> Unit
+) {
+    onScreenInit(
+        ScreenState {
+            Text(
+                text = stringResource(R.string.items),
+                style = SwapAppTheme.typography.screenTitle,
+                color = SwapAppTheme.colors.buttonText,
+                modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
+            )
+        }
+    )
+}
+
+@Composable
+fun ItemList(itemListState: ItemListState) {
     LazyVerticalGrid(
         modifier = androidx.compose.ui.Modifier
             .fillMaxWidth(),
