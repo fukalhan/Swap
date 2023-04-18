@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.login.system.signup
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
@@ -13,15 +14,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import cz.cvut.fukalhan.swap.login.R
 import cz.cvut.fukalhan.swap.login.presentation.common.LoginState
 import cz.cvut.fukalhan.swap.login.presentation.signup.SignUpViewModel
+import cz.cvut.fukalhan.swap.login.system.common.LoadingView
 import cz.cvut.fukalhan.swap.login.system.common.LoginButton
 import cz.cvut.fukalhan.swap.login.system.common.LoginValidityCheckMessage
 import cz.cvut.fukalhan.swap.login.system.common.LoginView
 import cz.cvut.fukalhan.swap.login.system.common.PasswordView
-import cz.cvut.fukalhan.swap.login.system.common.ShowLoginStateMessage
+import cz.cvut.fukalhan.swap.login.system.common.ResolveSignInState
 
 const val PASSWORD_MIN_LENGTH = 6
 
@@ -30,7 +31,6 @@ fun SignUpScreen(
     viewModel: SignUpViewModel,
     navigateToMainScreen: () -> Unit
 ) {
-    val context = LocalContext.current
     val scrollState = rememberScrollState()
     val signUpState: LoginState by viewModel.signUpState.collectAsState()
 
@@ -43,63 +43,56 @@ fun SignUpScreen(
     var passwordValid by remember { mutableStateOf(true) }
     var fieldsEmpty by remember { mutableStateOf(false) }
 
-    var showOnSignUpFailureMessage by remember { mutableStateOf(false) }
-
-    ResolveSignUpState(viewModel, signUpState, onSuccess = navigateToMainScreen) {
-        showOnSignUpFailureMessage = signUpState.result == LoginState.State.FAILED
-    }
-
-    ShowLoginStateMessage(context, signUpState.messageResId, showOnSignUpFailureMessage) {
-        showOnSignUpFailureMessage = false
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    ResolveSignInState(
+        signUpState,
+        setStateToInit = { viewModel.setStateToInit() }
     ) {
-        LoginView(email, R.string.email) {
-            email = it
-        }
+        navigateToMainScreen()
+    }
 
-        LoginView(username, R.string.username) {
-            username = it
-        }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        LoadingView(signUpState)
 
-        PasswordView(password) {
-            password = it
-            passwordMatch = password == passwordCheck
-            passwordValid = password.length >= PASSWORD_MIN_LENGTH
-        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LoginView(email, R.string.email) {
+                email = it
+            }
 
-        PasswordView(passwordCheck) {
-            passwordCheck = it
-            passwordMatch = password == passwordCheck
-        }
+            LoginView(username, R.string.username) {
+                username = it
+            }
 
-        LoginValidityCheckMessage(passwordValid, R.string.passwordTooShort)
-        LoginValidityCheckMessage(passwordMatch, R.string.passwordMustBeTheSame)
-        LoginValidityCheckMessage(!fieldsEmpty, R.string.fieldsMustBeFilled)
+            PasswordView(password) {
+                password = it
+                passwordMatch = password == passwordCheck
+                passwordValid = password.length >= PASSWORD_MIN_LENGTH
+            }
 
-        LoginButton(R.string.signUp) {
-            fieldsEmpty = username.isEmpty() || email.isEmpty() || password.isEmpty()
+            PasswordView(passwordCheck) {
+                passwordCheck = it
+                passwordMatch = password == passwordCheck
+            }
 
-            if (passwordMatch && passwordValid && !fieldsEmpty) {
-                viewModel.signUpUser(email.trim(), username.trim(), password.trim())
+            LoginValidityCheckMessage(passwordValid, R.string.passwordTooShort)
+            LoginValidityCheckMessage(passwordMatch, R.string.passwordMustBeTheSame)
+            LoginValidityCheckMessage(!fieldsEmpty, R.string.fieldsMustBeFilled)
+
+            LoginButton(R.string.signUp) {
+                fieldsEmpty = username.isEmpty() || email.isEmpty() || password.isEmpty()
+
+                if (passwordMatch && passwordValid && !fieldsEmpty) {
+                    viewModel.signUpUser(email.trim(), username.trim(), password.trim())
+                }
             }
         }
     }
-}
-
-@Composable
-fun ResolveSignUpState(
-    viewModel: SignUpViewModel,
-    signUpState: LoginState,
-    onSuccess: () -> Unit,
-    onFailure: () -> Unit
-) {
-    signUpState.resolve(onSuccess, onFailure)
-    viewModel.setSignUpStateNeutral()
 }
