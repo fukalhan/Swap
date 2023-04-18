@@ -19,28 +19,21 @@ import cz.cvut.fukalhan.swap.login.presentation.common.LoginState
 import cz.cvut.fukalhan.swap.login.presentation.common.Success
 
 @Composable
-fun ResolveSignInState(
-    signInState: LoginState,
-    setStateToInit: () -> Unit,
+fun OnSuccessState(
+    loginState: LoginState,
     navigateToMainScreen: () -> Unit
 ) {
-    when (signInState) {
-        is Success -> {
-            setStateToInit()
-            navigateToMainScreen()
-        }
-        is Failure -> {
-            setStateToInit()
-            ShowErrorMessage(signInState.message)
-        }
-        else -> {}
+    if (loginState is Success) {
+        navigateToMainScreen()
     }
 }
 
 @Composable
-fun ShowErrorMessage(message: Int) {
-    val context = LocalContext.current
-    Toast.makeText(context, stringResource(message), Toast.LENGTH_SHORT).show()
+fun OnFailState(loginState: LoginState) {
+    if (loginState is Failure) {
+        val context = LocalContext.current
+        Toast.makeText(context, stringResource(loginState.message), Toast.LENGTH_SHORT).show()
+    }
 }
 
 @Composable

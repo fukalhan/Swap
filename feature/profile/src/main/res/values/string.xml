@@ -5,4 +5,6 @@
     <string name="myItems">Moje předměty</string>
     <string name="likedItems">Oblíbené předměty</string>
     <string name="signOut">Odhlásit se</string>
+    <string name="cannotLoadData">Data nelze načíst</string>
+    <string name="cannotLoadItems">Předměty nelze načíst</string>
 </resources>

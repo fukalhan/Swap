@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AddItemViewModel(private val saveItemUseCase: SaveItemUseCase) : ViewModel() {
-    private val _saveItemState = MutableStateFlow<AddItemState>(PendingState)
-    val saveItemState: StateFlow<AddItemState>
-        get() = _saveItemState
+    private val _addItemState: MutableStateFlow<AddItemState> = MutableStateFlow(Init)
+    val addItemState: StateFlow<AddItemState>
+        get() = _addItemState
 
     fun saveItem(
         ownerId: String,
@@ -23,6 +23,7 @@ class AddItemViewModel(private val saveItemUseCase: SaveItemUseCase) : ViewModel
         imagesUri: List<Uri>,
         category: Category
     ) {
+        _addItemState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
             val item = Item(
                 ownerId = ownerId,
@@ -32,11 +33,15 @@ class AddItemViewModel(private val saveItemUseCase: SaveItemUseCase) : ViewModel
                 category = category
             )
             val saveItemResponse = saveItemUseCase.saveItem(item)
-            _saveItemState.value = saveItemResponse.toAddItemState()
+            _addItemState.value = if (saveItemResponse.success) {
+                Success()
+            } else {
+                Failure()
+            }
         }
     }
 
-    fun neutralizeItemState() {
-        _saveItemState.value = PendingState
+    fun setStateToInit() {
+        _addItemState.value = Init
     }
 }

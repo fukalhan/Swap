@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
-import cz.cvut.fukalhan.swap.profile.presentation.useritems.UserItemsViewModel
+import cz.cvut.fukalhan.swap.profile.presentation.items.UserItemsViewModel
 import cz.cvut.fukalhan.swap.profile.system.items.LikedItemsList
 import cz.cvut.fukalhan.swap.profile.system.items.UserItemList
 
