@@ -13,7 +13,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import cz.cvut.fukalhan.design.system.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.R
 import cz.cvut.fukalhan.swap.additem.presentation.AddItemState
@@ -38,8 +41,22 @@ const val DESCRIPTION_CHAR_LIMIT = 150
 @Composable
 fun AddItemScreen(
     viewModel: AddItemViewModel,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    onComposing: (ScreenState) -> Unit,
 ) {
+    LaunchedEffect(key1 = true) {
+        onComposing(
+            ScreenState {
+                Text(
+                    text = stringResource(R.string.addItem),
+                    style = SwapAppTheme.typography.screenTitle,
+                    color = SwapAppTheme.colors.buttonText,
+                    modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
+                )
+            }
+        )
+    }
+
     val user = Firebase.auth.currentUser
     val scrollState = rememberScrollState()
 
