@@ -26,7 +26,7 @@ val swapAppTypography = SwapAppTypography(
         letterSpacing = 0.15.sp
     ),
     titleSecondary = TextStyle(
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
         letterSpacing = 0.15.sp
     ),
