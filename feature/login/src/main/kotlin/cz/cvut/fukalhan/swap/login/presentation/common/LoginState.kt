@@ -1,18 +1,8 @@
 package cz.cvut.fukalhan.swap.login.presentation.common
 
-class LoginState(
-    val result: State = State.PENDING,
-    val messageResId: Int = 0
-) {
-    fun resolve(onSuccessResultAction: () -> Unit, onFailedResultAction: () -> Unit) {
-        when (result) {
-            State.SUCCESS -> onSuccessResultAction()
-            State.FAILED -> onFailedResultAction()
-            else -> {}
-        }
-    }
+sealed class LoginState
 
-    enum class State {
-        SUCCESS, FAILED, PENDING
-    }
-}
+object Init : LoginState()
+object Loading : LoginState()
+object Success : LoginState()
+class Failure(val message: Int) : LoginState()
