@@ -16,7 +16,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
-import cz.cvut.fukalhan.swap.profile.presentation.useritems.ItemState
+import cz.cvut.fukalhan.swap.profile.presentation.items.ItemState
 
 @Composable
 fun ItemCard(itemState: ItemState) {
