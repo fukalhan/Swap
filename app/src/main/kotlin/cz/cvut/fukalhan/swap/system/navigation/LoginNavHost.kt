@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.system
+package cz.cvut.fukalhan.swap.system.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
@@ -17,7 +17,7 @@ fun LoginNavHost() {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        NavHost(navController, Screen.Login.route) {
+        NavHost(navController, Screen.Main.route) {
             composable(Screen.Login.route) {
                 LoginScreen(koinViewModel(), koinViewModel()) {
                     navController.navigate(Screen.Main.route)
