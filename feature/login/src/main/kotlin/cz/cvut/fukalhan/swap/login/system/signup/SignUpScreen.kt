@@ -21,8 +21,9 @@ import cz.cvut.fukalhan.swap.login.system.common.LoadingView
 import cz.cvut.fukalhan.swap.login.system.common.LoginButton
 import cz.cvut.fukalhan.swap.login.system.common.LoginValidityCheckMessage
 import cz.cvut.fukalhan.swap.login.system.common.LoginView
+import cz.cvut.fukalhan.swap.login.system.common.OnFailState
+import cz.cvut.fukalhan.swap.login.system.common.OnSuccessState
 import cz.cvut.fukalhan.swap.login.system.common.PasswordView
-import cz.cvut.fukalhan.swap.login.system.common.ResolveSignInState
 
 const val PASSWORD_MIN_LENGTH = 6
 
@@ -43,18 +44,16 @@ fun SignUpScreen(
     var passwordValid by remember { mutableStateOf(true) }
     var fieldsEmpty by remember { mutableStateOf(false) }
 
-    ResolveSignInState(
-        signUpState,
-        setStateToInit = { viewModel.setStateToInit() }
-    ) {
-        navigateToMainScreen()
-    }
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         LoadingView(signUpState)
+        OnSuccessState(signUpState) {
+            viewModel.setStateToInit()
+            navigateToMainScreen()
+        }
+        OnFailState(signUpState)
 
         Column(
             modifier = Modifier
