@@ -14,5 +14,11 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Swap"
 include ':app'
+include ':feature:login'
+include ':library:auth'
 include ':library:design'
-include ':feature:swap-search'
+include ':feature:profile'
+include ':library:user-data'
+include ':feature:add-item'
+include ':library:item-data'
+include ':feature:item-list'
