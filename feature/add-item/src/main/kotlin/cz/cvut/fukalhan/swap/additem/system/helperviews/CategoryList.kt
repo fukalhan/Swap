@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.additem.system
+package cz.cvut.fukalhan.swap.additem.system.helperviews
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

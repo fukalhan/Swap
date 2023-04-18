@@ -33,6 +33,12 @@ import cz.cvut.fukalhan.swap.additem.presentation.AddItemState
 import cz.cvut.fukalhan.swap.additem.presentation.AddItemViewModel
 import cz.cvut.fukalhan.swap.additem.presentation.FailedState
 import cz.cvut.fukalhan.swap.additem.presentation.SuccessfulState
+import cz.cvut.fukalhan.swap.additem.system.helperviews.ButtonRow
+import cz.cvut.fukalhan.swap.additem.system.helperviews.CategoryList
+import cz.cvut.fukalhan.swap.additem.system.helperviews.DescriptionView
+import cz.cvut.fukalhan.swap.additem.system.helperviews.InputFieldView
+import cz.cvut.fukalhan.swap.additem.system.helperviews.PictureSelectionView
+import cz.cvut.fukalhan.swap.additem.system.helperviews.RegularTextFieldView
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 
 const val DESCRIPTION_CHAR_LIMIT = 150
@@ -43,21 +49,59 @@ fun AddItemScreen(
     onScreenInit: (ScreenState) -> Unit,
     navigateBack: () -> Unit,
 ) {
-    val user = Firebase.auth.currentUser
-    val scrollState = rememberScrollState()
-
     val saveItemState by viewModel.saveItemState.collectAsState()
+
+    TopBar(onScreenInit)
+
+    DisplaySaveItemResponseMessage(viewModel, LocalContext.current, saveItemState, navigateBack)
+
+    ItemData(viewModel, navigateBack)
+}
+
+@Composable
+fun TopBar(onScreenInit: (ScreenState) -> Unit) {
+    onScreenInit(
+        ScreenState {
+            Text(
+                text = stringResource(R.string.addItem),
+                style = SwapAppTheme.typography.screenTitle,
+                color = SwapAppTheme.colors.buttonText,
+                modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
+            )
+        }
+    )
+}
+
+@Composable
+fun DisplaySaveItemResponseMessage(
+    viewModel: AddItemViewModel,
+    context: Context,
+    itemState: AddItemState,
+    navigateBack: () -> Unit
+) {
+    viewModel.neutralizeItemState()
+    if (itemState is SuccessfulState || itemState is FailedState) {
+        Toast.makeText(context, stringResource(itemState.messageRes), Toast.LENGTH_SHORT).show()
+    }
+
+    if (itemState is SuccessfulState) {
+        navigateBack()
+    }
+}
+
+@Composable
+fun ItemData(
+    viewModel: AddItemViewModel,
+    navigateBack: () -> Unit
+) {
+    val scrollState = rememberScrollState()
 
     var selectedImagesUri by remember {
         mutableStateOf<List<Uri>>(emptyList())
     }
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf(Category.DEFAULT) }
-
-    TopBar(onScreenInit)
-
-    DisplaySaveItemResponseMessage(viewModel, LocalContext.current, saveItemState, navigateBack)
+    var category by remember { mutableStateOf(Category.DEFAULT) }
 
     Column(
         modifier = Modifier
@@ -97,53 +141,23 @@ fun AddItemScreen(
                     }
                 }
 
-                CategoryList(selectedCategory) {
-                    selectedCategory = it
+                CategoryList(category) {
+                    category = it
                 }
 
                 ButtonRow(navigateBack) {
+                    val user = Firebase.auth.currentUser
                     user?.let {
                         viewModel.saveItem(
                             it.uid,
                             name,
                             description,
                             selectedImagesUri,
-                            selectedCategory
+                            category
                         )
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun TopBar(onScreenInit: (ScreenState) -> Unit) {
-    onScreenInit(
-        ScreenState {
-            Text(
-                text = stringResource(R.string.addItem),
-                style = SwapAppTheme.typography.screenTitle,
-                color = SwapAppTheme.colors.buttonText,
-                modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
-            )
-        }
-    )
-}
-
-@Composable
-fun DisplaySaveItemResponseMessage(
-    viewModel: AddItemViewModel,
-    context: Context,
-    itemState: AddItemState,
-    navigateBack: () -> Unit
-) {
-    viewModel.neutralizeItemState()
-    if (itemState is SuccessfulState || itemState is FailedState) {
-        Toast.makeText(context, stringResource(itemState.messageRes), Toast.LENGTH_SHORT).show()
-    }
-
-    if (itemState is SuccessfulState) {
-        navigateBack()
     }
 }
