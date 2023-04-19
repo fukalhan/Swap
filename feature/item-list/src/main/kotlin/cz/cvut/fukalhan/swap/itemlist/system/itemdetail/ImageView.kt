@@ -37,7 +37,7 @@ fun ImageRow(images: List<Uri>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(SwapAppTheme.dimensions.imageView)
+            .height(350.dp)
     ) {
         HorizontalPager(
             pageCount = images.size,

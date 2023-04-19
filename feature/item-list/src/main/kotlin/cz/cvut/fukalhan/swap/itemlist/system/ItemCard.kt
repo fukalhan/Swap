@@ -33,7 +33,7 @@ fun ItemCard(
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
+        shape = RoundedCornerShape(SwapAppTheme.dimensions.smallRoundCorners),
         modifier = Modifier
             .clickable {
                 navigateToItemDetail(itemState.id)
