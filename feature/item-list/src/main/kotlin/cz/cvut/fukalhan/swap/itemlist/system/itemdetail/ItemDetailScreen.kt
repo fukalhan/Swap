@@ -1,33 +1,56 @@
 package cz.cvut.fukalhan.swap.itemlist.system.itemdetail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.zIndex
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.itemlist.R
+import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Failure
+import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailState
+import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailViewModel
+import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Loading
+import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Success
 
 @Composable
 fun ItemDetailScreen(
+    itemId: String,
+    viewModel: ItemDetailViewModel,
     onNavigateBack: () -> Unit,
     onScreenInit: (ScreenState) -> Unit
 ) {
+    val itemDetailState: ItemDetailState by viewModel.itemDetailState.collectAsState()
+    val effect = remember { { viewModel.getItemDetail(itemId) } }
+    LaunchedEffect(Unit) {
+        effect()
+    }
+
     TopBar(onNavigateBack, onScreenInit)
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
+        LoadingView(itemDetailState)
+        OnSuccessView(itemDetailState)
+        OnFailureView(itemDetailState)
     }
 }
 
@@ -59,11 +82,38 @@ fun TopBar(
 }
 
 @Composable
-fun ItemDetail() {
-    Column(
-        modifier = Modifier
-            .padding(SwapAppTheme.dimensions.smallSidePadding)
-            .fillMaxSize()
-    ) {
+fun OnSuccessView(itemDetailState: ItemDetailState) {
+    if (itemDetailState is Success) {
+        ItemDetail(itemDetailState)
+    }
+}
+
+@Composable
+fun LoadingView(itemDetailState: ItemDetailState) {
+    if (itemDetailState is Loading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.5f))
+                .zIndex(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(SwapAppTheme.dimensions.icon),
+                color = SwapAppTheme.colors.primary
+            )
+        }
+    }
+}
+
+@Composable
+fun OnFailureView(itemDetailState: ItemDetailState) {
+    if (itemDetailState is Failure) {
+        Text(
+            text = stringResource(itemDetailState.message),
+            style = SwapAppTheme.typography.titleSecondary,
+            color = SwapAppTheme.colors.textPrimary
+        )
     }
 }

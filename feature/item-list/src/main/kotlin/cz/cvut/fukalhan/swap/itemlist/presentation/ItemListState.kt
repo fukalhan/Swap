@@ -13,6 +13,7 @@ data class Success(
 ) : ItemListState()
 
 data class ItemState(
+    val id: String,
     val imageUri: Uri,
     val name: String,
 )
@@ -21,6 +22,7 @@ class Failure(val message: Int = R.string.cannotLoadItems) : ItemListState()
 
 internal fun Item.toItemState(): ItemState {
     return ItemState(
+        this.id,
         this.imagesUri.first(),
         this.name
     )

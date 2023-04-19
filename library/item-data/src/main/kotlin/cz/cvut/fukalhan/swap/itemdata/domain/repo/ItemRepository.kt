@@ -11,4 +11,5 @@ interface ItemRepository {
     suspend fun updateItemImages(saveImagesRequest: SaveImagesRequest): Response<ResponseFlag>
     suspend fun getUsersItems(uid: String): DataResponse<ResponseFlag, List<Item>>
     suspend fun getItems(uid: String): DataResponse<ResponseFlag, List<Item>>
+    suspend fun getItemDetail(id: String): DataResponse<ResponseFlag, Item>
 }
