@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.itemlist.system
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -90,9 +91,16 @@ fun OnSuccess(
         LazyVerticalGrid(
             modifier = Modifier
                 .background(SwapAppTheme.colors.backgroundSecondary)
-                .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
+                .padding(
+                    start = SwapAppTheme.dimensions.smallSidePadding,
+                    top = SwapAppTheme.dimensions.smallSidePadding,
+                    end = SwapAppTheme.dimensions.smallSidePadding,
+                    bottom = SwapAppTheme.dimensions.bottomScreenPadding
+                )
                 .fillMaxWidth(),
-            columns = GridCells.Fixed(2)
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding),
+            horizontalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding)
         ) {
             items(itemListState.items) {
                 ItemCard(it, navigateToItemDetail)

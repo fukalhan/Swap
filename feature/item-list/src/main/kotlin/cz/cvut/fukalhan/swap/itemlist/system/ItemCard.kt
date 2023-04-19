@@ -38,7 +38,6 @@ fun ItemCard(
             .clickable {
                 navigateToItemDetail(itemState.id)
             }
-            .padding(SwapAppTheme.dimensions.smallSidePadding)
     ) {
         Column(
             modifier = Modifier

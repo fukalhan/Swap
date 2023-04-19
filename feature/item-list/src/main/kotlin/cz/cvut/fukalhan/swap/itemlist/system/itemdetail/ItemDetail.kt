@@ -55,4 +55,3 @@ fun TextView(text: String, style: TextStyle) {
         color = SwapAppTheme.colors.textPrimary
     )
 }
-
