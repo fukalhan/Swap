@@ -1,6 +1,6 @@
-package cz.cvut.fukalhan.swap.system.navigation
+package cz.cvut.fukalhan.swap.navigation.presentation
 
-import cz.cvut.fukalhan.swap.R
+import cz.cvut.fukalhan.swap.navigation.R
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")

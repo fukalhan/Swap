@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.swap.login.R
 import cz.cvut.fukalhan.swap.login.presentation.common.LoginState
 import cz.cvut.fukalhan.swap.login.presentation.signup.SignUpViewModel
@@ -24,13 +25,14 @@ import cz.cvut.fukalhan.swap.login.system.common.LoginView
 import cz.cvut.fukalhan.swap.login.system.common.OnFailState
 import cz.cvut.fukalhan.swap.login.system.common.OnSuccessState
 import cz.cvut.fukalhan.swap.login.system.common.PasswordView
+import cz.cvut.fukalhan.swap.navigation.presentation.Screen
 
 const val PASSWORD_MIN_LENGTH = 6
 
 @Composable
 fun SignUpScreen(
     viewModel: SignUpViewModel,
-    navigateToMainScreen: () -> Unit
+    navController: NavHostController
 ) {
     val scrollState = rememberScrollState()
     val signUpState: LoginState by viewModel.signUpState.collectAsState()
@@ -51,7 +53,7 @@ fun SignUpScreen(
         LoadingView(signUpState)
         OnSuccessState(signUpState) {
             viewModel.setStateToInit()
-            navigateToMainScreen()
+            navController.navigate(Screen.Main.route)
         }
         OnFailState(signUpState)
 

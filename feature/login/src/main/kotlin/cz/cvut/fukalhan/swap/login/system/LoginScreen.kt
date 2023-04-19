@@ -13,8 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.login.R
 import cz.cvut.fukalhan.swap.login.presentation.signin.SignInViewModel
@@ -26,13 +25,8 @@ import cz.cvut.fukalhan.swap.login.system.signup.SignUpScreen
 fun LoginScreen(
     signInViewModel: SignInViewModel,
     signUpViewModel: SignUpViewModel,
-    navigateToMainScreen: () -> Unit
+    navController: NavHostController,
 ) {
-    val user = Firebase.auth.currentUser
-    user?.let {
-        navigateToMainScreen()
-    }
-
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(R.string.signIn), stringResource(R.string.signUp))
 
@@ -53,8 +47,8 @@ fun LoginScreen(
         }
 
         when (tabIndex) {
-            0 -> SignInScreen(signInViewModel, navigateToMainScreen)
-            1 -> SignUpScreen(signUpViewModel, navigateToMainScreen)
+            0 -> SignInScreen(signInViewModel, navController)
+            1 -> SignUpScreen(signUpViewModel, navController)
         }
     }
 }
