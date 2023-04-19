@@ -16,8 +16,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +25,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
@@ -36,38 +33,30 @@ import cz.cvut.fukalhan.swap.itemlist.R
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImageRow(images: List<Uri>) {
-    Surface(
-        elevation = SwapAppTheme.dimensions.elevation,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
+    val pagerState = rememberPagerState()
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(SwapAppTheme.dimensions.imageView)
-            .padding(bottom = SwapAppTheme.dimensions.smallSidePadding)
-            .zIndex(0f)
     ) {
-        val pagerState = rememberPagerState()
-        Box(
+        HorizontalPager(
+            pageCount = images.size,
+            beyondBoundsPageCount = images.size,
+            state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) {
-            HorizontalPager(
-                pageCount = images.size,
-                beyondBoundsPageCount = images.size,
-                state = pagerState,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                ItemImage(uri = images[it])
-            }
-
-            ImageIndicator(
-                images.size,
-                pagerState,
-                Modifier
-                    .padding(SwapAppTheme.dimensions.sidePadding)
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter),
-            )
+            ItemImage(uri = images[it])
         }
+
+        ImageIndicator(
+            images.size,
+            pagerState,
+            Modifier
+                .padding(SwapAppTheme.dimensions.sidePadding)
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
+        )
     }
 }
 

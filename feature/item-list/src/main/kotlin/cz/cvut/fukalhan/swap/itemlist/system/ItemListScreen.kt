@@ -89,6 +89,7 @@ fun OnSuccess(
     if (itemListState is Success) {
         LazyVerticalGrid(
             modifier = Modifier
+                .background(SwapAppTheme.colors.backgroundSecondary)
                 .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
                 .fillMaxWidth(),
             columns = GridCells.Fixed(2)
