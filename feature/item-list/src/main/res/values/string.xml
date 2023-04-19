@@ -2,4 +2,5 @@
 <resources>
     <string name="items">Předměty</string>
     <string name="cannotLoadItems">Předměty nelze načíst</string>
+    <string name="itemDetail">Detail předmětu</string>
 </resources>

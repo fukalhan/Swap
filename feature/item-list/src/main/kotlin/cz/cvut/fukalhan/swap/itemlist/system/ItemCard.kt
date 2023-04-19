@@ -68,7 +68,7 @@ fun ItemPicture(
             .data(uri)
             .crossfade(true)
             .build(),
-        placeholder = painterResource(R.drawable.camera),
+        placeholder = painterResource(R.drawable.item_placeholder),
         contentDescription = null,
         modifier = modifier,
         contentScale = ContentScale.Crop
