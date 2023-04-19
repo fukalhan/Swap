@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +32,6 @@ fun ItemCard(
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.smallRoundCorners),
         modifier = Modifier
             .clickable {
                 navigateToItemDetail(itemState.id)

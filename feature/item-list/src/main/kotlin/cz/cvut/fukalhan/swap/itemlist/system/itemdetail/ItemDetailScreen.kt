@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.itemlist.system.itemdetail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -61,8 +62,14 @@ fun TopBar(
 ) {
     onScreenInit(
         ScreenState {
-            Row {
-                IconButton(onClick = onNavigateBack) {
+            Row(
+                modifier = Modifier.fillMaxHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = onNavigateBack,
+                    modifier = Modifier.fillMaxHeight()
+                ) {
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
                         contentDescription = null,

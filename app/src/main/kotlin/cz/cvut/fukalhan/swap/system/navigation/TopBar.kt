@@ -2,7 +2,7 @@ package cz.cvut.fukalhan.swap.system.navigation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
@@ -22,7 +22,7 @@ fun TopBar(
         modifier = Modifier.height(SwapAppTheme.dimensions.bar),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
