@@ -19,6 +19,7 @@ import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
 import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
+import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profile.system.settings.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
@@ -70,7 +71,7 @@ fun MainNavHost(
                 SettingsScreen(
                     onScreenInit = { screenState = it },
                     onNavigateBack = { navController.popBackStack() },
-                    signOut = { signOut() }
+                    signOut = signOut
                 )
             }
 

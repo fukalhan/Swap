@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import cz.cvut.fukalhan.swap.login.system.LoginScreen
+import cz.cvut.fukalhan.swap.navigation.presentation.Screen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -19,9 +20,7 @@ fun LoginNavHost() {
     ) {
         NavHost(navController, Screen.Main.route) {
             composable(Screen.Login.route) {
-                LoginScreen(koinViewModel(), koinViewModel()) {
-                    navController.navigate(Screen.Main.route)
-                }
+                LoginScreen(koinViewModel(), koinViewModel(), navController)
             }
 
             composable(Screen.Main.route) {

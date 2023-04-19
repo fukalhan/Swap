@@ -87,8 +87,8 @@ fun Settings(
         ) {
             Button(
                 onClick = {
-                    val user = Firebase.auth
-                    user.signOut()
+                    val auth = Firebase.auth
+                    auth.signOut()
                     signOut()
                 },
                 colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary)
