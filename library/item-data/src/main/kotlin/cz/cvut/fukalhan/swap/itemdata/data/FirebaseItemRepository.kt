@@ -111,4 +111,27 @@ class FirebaseItemRepository : ItemRepository {
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
+
+    override suspend fun getItemDetail(id: String): DataResponse<ResponseFlag, Item> {
+        return try {
+            val docSnapshot = db.collection("items").document(id).get().await()
+            if (docSnapshot.exists()) {
+                val imagesList: List<*>? = docSnapshot.get("images") as? List<*>
+                val item = docSnapshot.toObject(Item::class.java)?.let { it ->
+                    it.copy(
+                        imagesUri = imagesList?.map { Uri.parse(it as String?) } ?: emptyList()
+                    )
+                }
+                DataResponse(
+                    true,
+                    ResponseFlag.SUCCESS,
+                    item
+                )
+            } else {
+                DataResponse(false, ResponseFlag.FAIL)
+            }
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse(false, ResponseFlag.FAIL)
+        }
+    }
 }

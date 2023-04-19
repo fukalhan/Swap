@@ -3,4 +3,5 @@
     <string name="items">Předměty</string>
     <string name="cannotLoadItems">Předměty nelze načíst</string>
     <string name="itemDetail">Detail předmětu</string>
+    <string name="cannotLoadItemDetail">Předmět nelze načíst</string>
 </resources>

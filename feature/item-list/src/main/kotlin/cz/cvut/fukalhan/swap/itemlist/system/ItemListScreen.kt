@@ -31,6 +31,7 @@ import cz.cvut.fukalhan.swap.itemlist.presentation.Success
 fun ItemListScreen(
     viewModel: ItemListViewModel,
     onScreenInit: (ScreenState) -> Unit,
+    navigateToItemDetail: (String) -> Unit
 ) {
     val itemListState: ItemListState by viewModel.itemListState.collectAsState()
 
@@ -41,7 +42,7 @@ fun ItemListScreen(
         contentAlignment = Alignment.Center
     ) {
         LoadingView(itemListState)
-        OnSuccess(itemListState)
+        OnSuccess(itemListState, navigateToItemDetail)
         OnFailure(itemListState)
     }
 }
@@ -81,15 +82,19 @@ fun LoadingView(itemListState: ItemListState) {
 }
 
 @Composable
-fun OnSuccess(itemListState: ItemListState) {
+fun OnSuccess(
+    itemListState: ItemListState,
+    navigateToItemDetail: (String) -> Unit
+) {
     if (itemListState is Success) {
         LazyVerticalGrid(
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
+                .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
                 .fillMaxWidth(),
             columns = GridCells.Fixed(2)
         ) {
             items(itemListState.items) {
-                ItemCard(it)
+                ItemCard(it, navigateToItemDetail)
             }
         }
     }

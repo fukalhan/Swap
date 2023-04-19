@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.itemdata.di
 
 import cz.cvut.fukalhan.swap.itemdata.data.FirebaseImageRepository
 import cz.cvut.fukalhan.swap.itemdata.data.FirebaseItemRepository
+import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetUserItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.SaveItemUseCase
@@ -18,4 +19,5 @@ val itemDataModule = module {
     factoryOf(::SaveItemUseCase)
     factoryOf(::GetUserItemsUseCase)
     factoryOf(::GetItemsUseCase)
+    factoryOf(::GetItemDetailUseCase)
 }

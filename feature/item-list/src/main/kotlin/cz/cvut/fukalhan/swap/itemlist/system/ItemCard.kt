@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.itemlist.system
 
 import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,12 +26,19 @@ import cz.cvut.fukalhan.swap.itemlist.presentation.ItemState
 const val MAX_LINES = 1
 
 @Composable
-fun ItemCard(itemState: ItemState) {
+fun ItemCard(
+    itemState: ItemState,
+    navigateToItemDetail: (String) -> Unit
+) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
-        modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
+        modifier = Modifier
+            .clickable {
+                navigateToItemDetail(itemState.id)
+            }
+            .padding(SwapAppTheme.dimensions.smallSidePadding)
     ) {
         Column(
             modifier = Modifier
