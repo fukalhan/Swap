@@ -30,7 +30,7 @@ fun ItemCard(itemState: ItemState) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
+        shape = RoundedCornerShape(SwapAppTheme.dimensions.smallRoundCorners),
         modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
     ) {
         Column(

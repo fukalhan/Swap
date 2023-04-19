@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Success
 
@@ -22,6 +24,7 @@ fun ItemDetail(itemDetailState: Success) {
             .fillMaxSize()
     ) {
         ImageRow(images = itemDetailState.images)
+
         Column(
             modifier = Modifier
                 .background(SwapAppTheme.colors.backgroundSecondary)
@@ -33,6 +36,13 @@ fun ItemDetail(itemDetailState: Success) {
             TextView(stringResource(itemDetailState.category.labelId), SwapAppTheme.typography.titleSecondary)
             Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
             TextView(itemDetailState.description, SwapAppTheme.typography.body)
+            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.smallSpacer))
+
+            Divider(
+                modifier = Modifier.fillMaxWidth(),
+                thickness = 1.dp,
+                color = SwapAppTheme.colors.component
+            )
         }
     }
 }
@@ -45,3 +55,4 @@ fun TextView(text: String, style: TextStyle) {
         color = SwapAppTheme.colors.textPrimary
     )
 }
+
