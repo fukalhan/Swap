@@ -44,42 +44,11 @@ fun ItemDetail(
             .fillMaxSize()
     ) {
         ImageRow(images = itemDetailState.images)
-
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .padding(SwapAppTheme.dimensions.sidePadding)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentHeight()
-                ) {
-                    Text(
-                        text = itemDetailState.name,
-                        style = SwapAppTheme.typography.titlePrimary,
-                        color = SwapAppTheme.colors.textPrimary,
-                    )
-                    TextView(stringResource(itemDetailState.category.labelId), SwapAppTheme.typography.titleSecondary)
-                }
-
-                LikeButton(itemDetailState) { isLiked ->
-                    user?.let {
-                        viewModel.toggleItemLike(it.uid, itemDetailState.id, isLiked)
-                    }
-                }
+        ItemInfo(itemDetailState, Modifier.weight(1f)) { isLiked ->
+            user?.let { user ->
+                viewModel.toggleItemLike(user.uid, itemDetailState.id, isLiked)
             }
-            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
-            TextView(itemDetailState.description, SwapAppTheme.typography.body)
-            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
         }
-
         Divider(
             modifier = Modifier
                 .padding(SwapAppTheme.dimensions.smallSidePadding)
@@ -87,8 +56,44 @@ fun ItemDetail(
             thickness = 1.dp,
             color = SwapAppTheme.colors.component
         )
-
         ItemOwnerInfo(itemDetailState.ownerInfo)
+    }
+}
+
+@Composable
+fun ItemInfo(
+    itemDetailState: Success,
+    modifier: Modifier,
+    onLikeButtonClick: (Boolean) -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(SwapAppTheme.dimensions.sidePadding)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentHeight()
+            ) {
+                Text(
+                    text = itemDetailState.name,
+                    style = SwapAppTheme.typography.titlePrimary,
+                    color = SwapAppTheme.colors.textPrimary,
+                )
+                TextView(stringResource(itemDetailState.category.labelId), SwapAppTheme.typography.titleSecondary)
+            }
+
+            LikeButton(itemDetailState, onLikeButtonClick)
+        }
+        Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
+        TextView(itemDetailState.description, SwapAppTheme.typography.body)
+        Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
     }
 }
 
