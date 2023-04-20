@@ -85,6 +85,7 @@ fun MainNavHost(
                 ProfileScreen(
                     koinViewModel(),
                     koinViewModel(),
+                    koinViewModel(),
                     { screenState = it }
                 ) {
                     navController.navigate(MainScreen.Settings.route)

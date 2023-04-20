@@ -13,6 +13,7 @@ class Success(
 ) : ItemListState()
 
 data class ItemState(
+    val id: String,
     val imageUri: Uri,
     val name: String,
 )

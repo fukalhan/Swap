@@ -8,7 +8,7 @@ import cz.cvut.fukalhan.swap.itemdata.model.Item
 class GetItemsUseCase(private val itemRepository: ItemRepository) {
     suspend fun getItems(uid: String): DataResponse<ResponseFlag, Pair<List<Item>, List<String>>> {
         val getItemsResponse = itemRepository.getItems(uid)
-        val getItemsLikedByUserResponse = itemRepository.getItemsLikedByUser(uid)
+        val getItemsLikedByUserResponse = itemRepository.getItemIdsLikedByUser(uid)
         return if (getItemsResponse.data != null && getItemsLikedByUserResponse.data != null) {
             DataResponse(
                 true,
