@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.swap.login.R
 import cz.cvut.fukalhan.swap.login.presentation.common.LoginState
 import cz.cvut.fukalhan.swap.login.presentation.signin.SignInViewModel
@@ -22,11 +23,12 @@ import cz.cvut.fukalhan.swap.login.system.common.LoginView
 import cz.cvut.fukalhan.swap.login.system.common.OnFailState
 import cz.cvut.fukalhan.swap.login.system.common.OnSuccessState
 import cz.cvut.fukalhan.swap.login.system.common.PasswordView
+import cz.cvut.fukalhan.swap.navigation.presentation.Screen
 
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel,
-    navigateToMainScreen: () -> Unit
+    navController: NavHostController
 ) {
     val signInState: LoginState by viewModel.signInState.collectAsState()
 
@@ -42,7 +44,7 @@ fun SignInScreen(
         LoadingView(signInState)
         OnSuccessState(signInState) {
             viewModel.setStateToInit()
-            navigateToMainScreen()
+            navController.navigate(Screen.Main.route)
         }
         OnFailState(signInState)
 

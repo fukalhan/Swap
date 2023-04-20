@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.profile.system.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,7 +42,10 @@ fun TopBar(
 ) {
     onInitScreen(
         ScreenState {
-            Row {
+            Row(
+                modifier = Modifier.fillMaxHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(onClick = onNavigateBack) {
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
@@ -51,7 +55,7 @@ fun TopBar(
                     )
                 }
                 Text(
-                    text = stringResource(R.string.profile),
+                    text = stringResource(R.string.settings),
                     style = SwapAppTheme.typography.screenTitle,
                     color = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
@@ -87,8 +91,8 @@ fun Settings(
         ) {
             Button(
                 onClick = {
-                    val user = Firebase.auth
-                    user.signOut()
+                    val auth = Firebase.auth
+                    auth.signOut()
                     signOut()
                 },
                 colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary)

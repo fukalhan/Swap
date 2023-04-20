@@ -17,19 +17,22 @@ import androidx.compose.ui.res.stringResource
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
+import cz.cvut.fukalhan.swap.profile.presentation.items.LikedItemListViewModel
 import cz.cvut.fukalhan.swap.profile.presentation.items.UserItemsViewModel
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoViewModel
+import cz.cvut.fukalhan.swap.profile.system.items.ItemsView
 import cz.cvut.fukalhan.swap.profile.system.profileinfo.ProfileInfo
 
 @Composable
 fun ProfileScreen(
     profileInfoViewModel: ProfileInfoViewModel,
     userItemsViewModel: UserItemsViewModel,
+    likedItemListViewModel: LikedItemListViewModel,
     onScreenInit: (ScreenState) -> Unit,
     onSettingsClick: () -> Unit
 ) {
     TopBar(onScreenInit, onSettingsClick)
-    Profile(profileInfoViewModel, userItemsViewModel)
+    Profile(profileInfoViewModel, userItemsViewModel, likedItemListViewModel)
 }
 
 @Composable
@@ -60,7 +63,8 @@ fun TopBar(
 @Composable
 fun Profile(
     profileInfoViewModel: ProfileInfoViewModel,
-    userItemsViewModel: UserItemsViewModel
+    userItemsViewModel: UserItemsViewModel,
+    likedItemListViewModel: LikedItemListViewModel,
 ) {
     Column(
         modifier = Modifier
@@ -74,6 +78,7 @@ fun Profile(
         ProfileInfo(profileInfoViewModel)
         ItemsView(
             userItemsViewModel,
+            likedItemListViewModel,
             Modifier
                 .weight(1f)
                 .fillMaxWidth()

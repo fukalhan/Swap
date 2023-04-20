@@ -50,7 +50,7 @@ fun PictureSelectionView(
         modifier = Modifier
             .padding(bottom = SwapAppTheme.dimensions.sidePadding)
             .fillMaxWidth()
-            .height(250.dp)
+            .height(SwapAppTheme.dimensions.imageView)
             .zIndex(0f)
     ) {
         Column(
