@@ -15,7 +15,7 @@ class FirebaseUserRepository : UserRepository {
 
     override suspend fun getUserProfileData(uid: String): Response<ResponseFlag, UserProfile> {
         try {
-            val profilePicRef = storage.getReference("usersProfileImages/$uid")
+            val profilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + uid)
 
             val profilePicExists = try {
                 profilePicRef.metadata.await()
@@ -27,18 +27,17 @@ class FirebaseUserRepository : UserRepository {
             val imageUri = if (profilePicExists) {
                 profilePicRef.downloadUrl.await()
             } else {
-                val defaultProfilePicRef = storage.getReference("usersProfileImages/profilePicPlaceholder.png")
+                val defaultProfilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + PROFILE_IMAGE_PLACEHOLDER)
                 defaultProfilePicRef.downloadUrl.await()
             }
 
-            val userRef = db.collection("Users").document(uid)
-            val userDoc = userRef.get().await()
-
+            val userDoc = db.collection(USERS).document(uid).get().await()
             return if (userDoc.exists()) {
                 val userProfile = UserProfile(
+                    userDoc.id,
                     imageUri,
-                    userDoc.getString("username") ?: "",
-                    userDoc.getString("joinDate") ?: ""
+                    userDoc.getString(USERNAME) ?: EMPTY_FIELD,
+                    userDoc.getString(JOIN_DATE) ?: EMPTY_FIELD
                 )
                 Response(true, ResponseFlag.SUCCESS, userProfile)
             } else {

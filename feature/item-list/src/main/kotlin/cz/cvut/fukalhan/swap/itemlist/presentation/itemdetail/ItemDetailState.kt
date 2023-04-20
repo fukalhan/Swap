@@ -18,10 +18,16 @@ class Success(
     val images: List<Uri>,
     val category: Category,
     val state: ItemState,
-    val isLiked: Boolean
+    val isLiked: Boolean,
+    val ownerInfo: OwnerInfo
 ) : ItemDetailState()
 
-internal fun ItemDetail.toItemDetailState(): Success {
+data class OwnerInfo(
+    val id: String,
+    val username: String,
+    val profilePic: Uri
+)
+internal fun ItemDetail.toItemDetailState(ownerId: String, ownerUsername: String, ownerProfilePic: Uri): Success {
     return Success(
         this.id,
         this.name,
@@ -29,7 +35,12 @@ internal fun ItemDetail.toItemDetailState(): Success {
         this.imagesUri,
         this.category,
         this.state,
-        this.isLiked
+        this.isLiked,
+        OwnerInfo(
+            ownerId,
+            ownerUsername,
+            ownerProfilePic
+        )
     )
 }
 

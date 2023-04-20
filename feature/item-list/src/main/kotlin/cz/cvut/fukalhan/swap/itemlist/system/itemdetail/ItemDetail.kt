@@ -40,13 +40,13 @@ fun ItemDetail(
     val user = Firebase.auth.currentUser
     Column(
         modifier = Modifier
+            .background(SwapAppTheme.colors.backgroundSecondary)
             .fillMaxSize()
     ) {
         ImageRow(images = itemDetailState.images)
 
         Column(
             modifier = Modifier
-                .background(SwapAppTheme.colors.backgroundSecondary)
                 .weight(1f)
                 .fillMaxWidth()
                 .padding(SwapAppTheme.dimensions.sidePadding)
@@ -56,29 +56,39 @@ fun ItemDetail(
                     .fillMaxWidth()
                     .wrapContentHeight(),
             ) {
-                Text(
-                    text = itemDetailState.name,
-                    style = SwapAppTheme.typography.titlePrimary,
-                    color = SwapAppTheme.colors.textPrimary,
-                    modifier = Modifier.weight(1f)
-                )
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentHeight()
+                ) {
+                    Text(
+                        text = itemDetailState.name,
+                        style = SwapAppTheme.typography.titlePrimary,
+                        color = SwapAppTheme.colors.textPrimary,
+                    )
+                    TextView(stringResource(itemDetailState.category.labelId), SwapAppTheme.typography.titleSecondary)
+                }
+
                 LikeButton(itemDetailState) { isLiked ->
                     user?.let {
                         viewModel.toggleItemLike(it.uid, itemDetailState.id, isLiked)
                     }
                 }
             }
-            TextView(stringResource(itemDetailState.category.labelId), SwapAppTheme.typography.titleSecondary)
             Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
             TextView(itemDetailState.description, SwapAppTheme.typography.body)
-            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.smallSpacer))
-
-            Divider(
-                modifier = Modifier.fillMaxWidth(),
-                thickness = 1.dp,
-                color = SwapAppTheme.colors.component
-            )
+            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
         }
+
+        Divider(
+            modifier = Modifier
+                .padding(SwapAppTheme.dimensions.smallSidePadding)
+                .fillMaxWidth(),
+            thickness = 1.dp,
+            color = SwapAppTheme.colors.component
+        )
+
+        ItemOwnerInfo(itemDetailState.ownerInfo)
     }
 }
 
@@ -95,7 +105,7 @@ fun LikeButton(
             onLikeButtonClick(isLiked)
         },
         modifier = Modifier
-            .padding(SwapAppTheme.dimensions.sidePadding)
+            .padding(start = SwapAppTheme.dimensions.smallSidePadding)
             .size(50.dp)
     ) {
         Icon(
