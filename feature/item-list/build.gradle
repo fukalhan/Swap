@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation project(':library:item-data')
+    implementation project(':library:user-data')
     implementation project(':library:design')
     implementation project(':library:navigation')
 
