@@ -12,9 +12,10 @@ interface ItemRepository {
     suspend fun updateItemImages(saveImagesRequest: SaveImagesRequest): Response<ResponseFlag>
     suspend fun getUsersItems(uid: String): DataResponse<ResponseFlag, List<Item>>
     suspend fun getItems(uid: String): DataResponse<ResponseFlag, List<Item>>
+    suspend fun getItemsById(ids: List<String>): DataResponse<ResponseFlag, List<Item>>
     suspend fun getItemDetail(id: String): DataResponse<ResponseFlag, ItemDetail>
     suspend fun getItemLikeState(userId: String, itemId: String): DataResponse<ResponseFlag, Boolean>
     suspend fun likeItem(userId: String, itemId: String): Response<ResponseFlag>
     suspend fun dislikeItem(userId: String, itemId: String): Response<ResponseFlag>
-    suspend fun getItemsLikedByUser(userId: String): DataResponse<ResponseFlag, List<String>>
+    suspend fun getItemIdsLikedByUser(userId: String): DataResponse<ResponseFlag, List<String>>
 }

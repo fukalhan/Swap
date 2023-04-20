@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.itemdata.data
 
 import android.net.Uri
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
@@ -73,15 +74,7 @@ class FirebaseItemRepository : ItemRepository {
                 emptyList()
             } else {
                 querySnapshot.documents.map { doc ->
-                    Item(
-                        id = doc.id,
-                        ownerId = doc.getString(OWNER_ID) ?: EMPTY_FIELD,
-                        name = doc.getString(NAME) ?: EMPTY_FIELD,
-                        description = doc.getString(DESCRIPTION) ?: EMPTY_FIELD,
-                        imagesUri = (doc.get(IMAGES) as? List<*>)?.mapNotNull { Uri.parse(it.toString()) } ?: emptyList(),
-                        category = Category.valueOf(doc.getString(CATEGORY) ?: Category.DEFAULT.name),
-                        state = ItemState.valueOf(doc.getString(STATE) ?: ItemState.AVAILABLE.name),
-                    )
+                    mapDocSnapshotToItem(doc)
                 }
             }
             DataResponse(true, ResponseFlag.SUCCESS, items)
@@ -97,15 +90,27 @@ class FirebaseItemRepository : ItemRepository {
                 emptyList()
             } else {
                 querySnapshot.documents.map { doc ->
-                    Item(
-                        id = doc.id,
-                        ownerId = doc.getString(OWNER_ID) ?: EMPTY_FIELD,
-                        name = doc.getString(NAME) ?: EMPTY_FIELD,
-                        description = doc.getString(DESCRIPTION) ?: EMPTY_FIELD,
-                        imagesUri = (doc.get(IMAGES) as? List<*>)?.mapNotNull { Uri.parse(it.toString()) } ?: emptyList(),
-                        category = Category.valueOf(doc.getString(CATEGORY) ?: Category.DEFAULT.name),
-                        state = ItemState.valueOf(doc.getString(STATE) ?: ItemState.AVAILABLE.name),
-                    )
+                    mapDocSnapshotToItem(doc)
+                }
+            }
+            DataResponse(true, ResponseFlag.SUCCESS, items)
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse(false, ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun getItemsById(ids: List<String>): DataResponse<ResponseFlag, List<Item>> {
+        return try {
+            val querySnapshot = db
+                .collection(ITEMS)
+                .whereIn(ID, ids)
+                .get()
+                .await()
+            val items = if (querySnapshot.isEmpty) {
+                emptyList()
+            } else {
+                querySnapshot.documents.map { doc ->
+                    mapDocSnapshotToItem(doc)
                 }
             }
             DataResponse(true, ResponseFlag.SUCCESS, items)
@@ -178,7 +183,7 @@ class FirebaseItemRepository : ItemRepository {
         }
     }
 
-    override suspend fun getItemsLikedByUser(userId: String): DataResponse<ResponseFlag, List<String>> {
+    override suspend fun getItemIdsLikedByUser(userId: String): DataResponse<ResponseFlag, List<String>> {
         return try {
             val docSnapshot = db.collection(USERS).document(userId).get().await()
             val likedItems = (docSnapshot.get(LIKED_ITEMS) as? List<*>)?.mapNotNull { it?.toString() } ?: emptyList()
@@ -187,4 +192,16 @@ class FirebaseItemRepository : ItemRepository {
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
+}
+
+private fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {
+    return Item(
+        id = doc.id,
+        ownerId = doc.getString(OWNER_ID) ?: EMPTY_FIELD,
+        name = doc.getString(NAME) ?: EMPTY_FIELD,
+        description = doc.getString(DESCRIPTION) ?: EMPTY_FIELD,
+        imagesUri = (doc.get(IMAGES) as? List<*>)?.mapNotNull { Uri.parse(it.toString()) } ?: emptyList(),
+        category = Category.valueOf(doc.getString(CATEGORY) ?: Category.DEFAULT.name),
+        state = ItemState.valueOf(doc.getString(STATE) ?: ItemState.AVAILABLE.name),
+    )
 }
