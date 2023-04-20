@@ -18,7 +18,8 @@ data class SwapAppDimensions(
     val image: Dp,
     val bar: Dp,
     val bottomScreenPadding: Dp,
-    val icon: Dp
+    val icon: Dp,
+    val imageView: Dp
 )
 
 val swapAppDimensions = SwapAppDimensions(
@@ -34,5 +35,6 @@ val swapAppDimensions = SwapAppDimensions(
     image = 180.dp,
     bar = 50.dp,
     bottomScreenPadding = 40.dp,
-    icon = 35.dp
+    icon = 35.dp,
+    imageView = 250.dp
 )

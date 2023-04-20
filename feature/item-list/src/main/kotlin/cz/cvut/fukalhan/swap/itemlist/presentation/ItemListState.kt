@@ -13,15 +13,19 @@ data class Success(
 ) : ItemListState()
 
 data class ItemState(
+    val id: String,
     val imageUri: Uri,
     val name: String,
+    val isLiked: Boolean
 )
 
 class Failure(val message: Int = R.string.cannotLoadItems) : ItemListState()
 
-internal fun Item.toItemState(): ItemState {
+internal fun Item.toItemState(isLiked: Boolean): ItemState {
     return ItemState(
+        this.id,
         this.imagesUri.first(),
-        this.name
+        this.name,
+        isLiked
     )
 }

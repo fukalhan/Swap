@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.profile.system.items
 
 import android.R.attr.maxLines
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,15 +11,9 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.presentation.items.ItemState
 
 const val MAX_LINES = 1
@@ -30,7 +23,7 @@ fun ItemCard(itemState: ItemState) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
+        shape = RoundedCornerShape(SwapAppTheme.dimensions.smallRoundCorners),
         modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
     ) {
         Column(
@@ -57,21 +50,4 @@ fun ItemCard(itemState: ItemState) {
             )
         }
     }
-}
-
-@Composable
-fun ItemPicture(
-    uri: Uri,
-    modifier: Modifier
-) {
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(uri)
-            .crossfade(true)
-            .build(),
-        placeholder = painterResource(R.drawable.camera),
-        contentDescription = null,
-        modifier = modifier,
-        contentScale = ContentScale.Crop
-    )
 }
