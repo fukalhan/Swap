@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.zIndex
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.itemlist.R
@@ -38,8 +40,15 @@ fun ItemDetailScreen(
     onNavigateBack: () -> Unit,
     onScreenInit: (ScreenState) -> Unit
 ) {
+    val user = Firebase.auth.currentUser
     val itemDetailState: ItemDetailState by viewModel.itemDetailState.collectAsState()
-    val effect = remember { { viewModel.getItemDetail(itemId) } }
+    val effect = remember {
+        {
+            user?.let {
+                viewModel.getItemDetail(it.uid, itemId)
+            }
+        }
+    }
     LaunchedEffect(Unit) {
         effect()
     }
@@ -50,7 +59,7 @@ fun ItemDetailScreen(
         contentAlignment = Alignment.Center
     ) {
         LoadingView(itemDetailState)
-        OnSuccessView(itemDetailState)
+        OnSuccessView(itemDetailState, viewModel)
         OnFailureView(itemDetailState)
     }
 }
@@ -89,9 +98,12 @@ fun TopBar(
 }
 
 @Composable
-fun OnSuccessView(itemDetailState: ItemDetailState) {
+fun OnSuccessView(
+    itemDetailState: ItemDetailState,
+    viewModel: ItemDetailViewModel
+) {
     if (itemDetailState is Success) {
-        ItemDetail(itemDetailState)
+        ItemDetail(itemDetailState, viewModel)
     }
 }
 

@@ -2,7 +2,7 @@ package cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail
 
 import android.net.Uri
 import cz.cvut.fukalhan.swap.itemdata.model.Category
-import cz.cvut.fukalhan.swap.itemdata.model.Item
+import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
 import cz.cvut.fukalhan.swap.itemdata.model.ItemState
 import cz.cvut.fukalhan.swap.itemlist.R
 
@@ -17,17 +17,19 @@ class Success(
     val description: String,
     val images: List<Uri>,
     val category: Category,
-    val state: ItemState
+    val state: ItemState,
+    val isLiked: Boolean
 ) : ItemDetailState()
 
-internal fun Item.toItemDetailState(): Success {
+internal fun ItemDetail.toItemDetailState(): Success {
     return Success(
         this.id,
         this.name,
         this.description,
         this.imagesUri,
         this.category,
-        this.state
+        this.state,
+        this.isLiked
     )
 }
 

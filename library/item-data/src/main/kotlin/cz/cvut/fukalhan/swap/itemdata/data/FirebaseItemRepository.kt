@@ -13,6 +13,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
+import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
 import cz.cvut.fukalhan.swap.itemdata.model.ItemState
 import cz.cvut.fukalhan.swap.itemdata.tools.UriAdapter
 import kotlinx.coroutines.tasks.await
@@ -113,12 +114,12 @@ class FirebaseItemRepository : ItemRepository {
         }
     }
 
-    override suspend fun getItemDetail(id: String): DataResponse<ResponseFlag, Item> {
+    override suspend fun getItemDetail(id: String): DataResponse<ResponseFlag, ItemDetail> {
         return try {
             val docSnapshot = db.collection(ITEMS).document(id).get().await()
             if (docSnapshot.exists()) {
                 val imagesList: List<*>? = docSnapshot.get(IMAGES) as? List<*>
-                val item = docSnapshot.toObject(Item::class.java)?.let { it ->
+                val item = docSnapshot.toObject(ItemDetail::class.java)?.let { it ->
                     it.copy(
                         imagesUri = imagesList?.map { Uri.parse(it as String?) } ?: emptyList()
                     )
@@ -130,6 +131,23 @@ class FirebaseItemRepository : ItemRepository {
                 )
             } else {
                 DataResponse(false, ResponseFlag.FAIL)
+            }
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse(false, ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun getItemLikeState(
+        userId: String,
+        itemId: String
+    ): DataResponse<ResponseFlag, Boolean> {
+        return try {
+            val docSnapshot = db.collection(USERS).document(userId).get().await()
+            val likedItems = docSnapshot.get(LIKED_ITEMS) as? List<*>
+            if (likedItems != null && likedItems.contains(itemId)) {
+                return DataResponse(true, ResponseFlag.SUCCESS, true)
+            } else {
+                DataResponse(true, ResponseFlag.SUCCESS, false)
             }
         } catch (e: FirebaseFirestoreException) {
             DataResponse(false, ResponseFlag.FAIL)

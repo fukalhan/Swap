@@ -13,8 +13,10 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +39,17 @@ fun ItemListScreen(
     navigateToItemDetail: (String) -> Unit
 ) {
     val itemListState: ItemListState by viewModel.itemListState.collectAsState()
+    val user = Firebase.auth.currentUser
+    val effect = remember {
+        {
+            user?.let {
+                viewModel.getItems(it.uid)
+            }
+        }
+    }
+    LaunchedEffect(Unit) {
+        effect()
+    }
 
     TopBar(onScreenInit)
 
