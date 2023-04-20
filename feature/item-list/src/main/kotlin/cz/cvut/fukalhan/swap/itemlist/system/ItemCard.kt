@@ -15,6 +15,10 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +38,8 @@ const val MAX_LINES = 1
 @Composable
 fun ItemCard(
     itemState: ItemState,
-    navigateToItemDetail: (String) -> Unit
+    navigateToItemDetail: (String) -> Unit,
+    onLikeButtonClick: (Boolean) -> Unit,
 ) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
@@ -62,6 +67,7 @@ fun ItemCard(
                         .padding(SwapAppTheme.dimensions.smallSidePadding)
                         .size(SwapAppTheme.dimensions.icon)
                 ) {
+                    onLikeButtonClick(it)
                 }
             }
 
@@ -97,14 +103,19 @@ fun ItemPicture(uri: Uri) {
 fun LikeButton(
     isLiked: Boolean,
     modifier: Modifier,
-    onClick: () -> Unit
+    onLikeButtonClick: (Boolean) -> Unit,
 ) {
+    var liked by remember { mutableStateOf(isLiked) }
+
     IconButton(
-        onClick = onClick,
+        onClick = {
+            liked = !liked
+            onLikeButtonClick(liked)
+        },
         modifier = modifier
     ) {
         Icon(
-            painter = painterResource(if (isLiked) R.drawable.colored_heart else R.drawable.heart),
+            painter = painterResource(if (liked) R.drawable.colored_heart else R.drawable.heart),
             contentDescription = null,
             tint = Color.Unspecified
         )
