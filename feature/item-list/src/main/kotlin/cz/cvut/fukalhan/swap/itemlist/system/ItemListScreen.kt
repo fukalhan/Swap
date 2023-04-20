@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.itemlist.R
@@ -43,7 +45,7 @@ fun ItemListScreen(
         contentAlignment = Alignment.Center
     ) {
         LoadingView(itemListState)
-        OnSuccess(itemListState, navigateToItemDetail)
+        OnSuccess(viewModel, itemListState, navigateToItemDetail)
         OnFailure(itemListState)
     }
 }
@@ -84,10 +86,13 @@ fun LoadingView(itemListState: ItemListState) {
 
 @Composable
 fun OnSuccess(
+    viewModel: ItemListViewModel,
     itemListState: ItemListState,
-    navigateToItemDetail: (String) -> Unit
+    navigateToItemDetail: (String) -> Unit,
 ) {
     if (itemListState is Success) {
+        val user = Firebase.auth.currentUser
+
         LazyVerticalGrid(
             modifier = Modifier
                 .background(SwapAppTheme.colors.backgroundSecondary)
@@ -102,8 +107,12 @@ fun OnSuccess(
             verticalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding),
             horizontalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding)
         ) {
-            items(itemListState.items) {
-                ItemCard(it, navigateToItemDetail)
+            items(itemListState.items) { itemState ->
+                ItemCard(itemState, navigateToItemDetail) { isLiked ->
+                    user?.let {
+                        viewModel.toggleItemLike(it.uid, itemState.id, isLiked)
+                    }
+                }
             }
         }
     }

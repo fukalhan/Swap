@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.itemdata.data
 
 import android.net.Uri
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.functions.FirebaseFunctionsException
@@ -132,6 +133,30 @@ class FirebaseItemRepository : ItemRepository {
             }
         } catch (e: FirebaseFirestoreException) {
             DataResponse(false, ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun likeItem(userId: String, itemId: String): Response<ResponseFlag> {
+        return try {
+            val userRef = db.collection("Users").document(userId)
+            userRef.update("likedItems", FieldValue.arrayUnion(itemId))
+            Response(true, ResponseFlag.SUCCESS)
+        } catch (e: FirebaseFirestoreException) {
+            Response(false, ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun dislikeItem(userId: String, itemId: String): Response<ResponseFlag> {
+        return try {
+            val userRef = db.collection("Users").document(userId)
+            val docSnapshot = userRef.get().await()
+            val likedItems = docSnapshot.get("likedItems") as? List<String>
+            if (likedItems != null && itemId in likedItems) {
+                userRef.update("likedItems", FieldValue.arrayRemove(itemId)).await()
+            }
+            Response(true, ResponseFlag.SUCCESS)
+        } catch (e: FirebaseFirestoreException) {
+            Response(false, ResponseFlag.FAIL)
         }
     }
 }
