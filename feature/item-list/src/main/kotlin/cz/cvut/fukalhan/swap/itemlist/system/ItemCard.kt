@@ -61,7 +61,7 @@ fun ItemCard(
             ) {
                 ItemPicture(itemState.imageUri)
                 LikeButton(
-                    false,
+                    itemState,
                     Modifier
                         .align(Alignment.BottomEnd)
                         .padding(SwapAppTheme.dimensions.smallSidePadding)
@@ -101,21 +101,21 @@ fun ItemPicture(uri: Uri) {
 
 @Composable
 fun LikeButton(
-    isLiked: Boolean,
+    itemState: ItemState,
     modifier: Modifier,
     onLikeButtonClick: (Boolean) -> Unit,
 ) {
-    var liked by remember { mutableStateOf(isLiked) }
+    var isLiked by remember { mutableStateOf(itemState.isLiked) }
 
     IconButton(
         onClick = {
-            liked = !liked
-            onLikeButtonClick(liked)
+            isLiked = !isLiked
+            onLikeButtonClick(isLiked)
         },
         modifier = modifier
     ) {
         Icon(
-            painter = painterResource(if (liked) R.drawable.colored_heart else R.drawable.heart),
+            painter = painterResource(if (isLiked) R.drawable.colored_heart else R.drawable.heart),
             contentDescription = null,
             tint = Color.Unspecified
         )

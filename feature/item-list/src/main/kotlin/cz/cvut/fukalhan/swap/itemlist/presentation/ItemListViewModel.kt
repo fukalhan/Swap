@@ -30,10 +30,12 @@ class ItemListViewModel(
         _itemListState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
             val response = getItemsUseCase.getItems(uid)
-            response.data?.let { items ->
+            response.data?.let { data ->
+                val items = data.first
+                val likedItemsId = data.second
                 _itemListState.value = Success(
-                    items.map {
-                        it.toItemState()
+                    items.map { item ->
+                        item.toItemState(likedItemsId.contains(item.id))
                     }
                 )
             } ?: run {
@@ -45,6 +47,9 @@ class ItemListViewModel(
     fun toggleItemLike(userId: String, itemId: String, isLiked: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = toggleItemLikeUseCase.toggleItemLike(userId, itemId, isLiked)
+            if (response.success) {
+                getItems(userId)
+            }
         }
     }
 }

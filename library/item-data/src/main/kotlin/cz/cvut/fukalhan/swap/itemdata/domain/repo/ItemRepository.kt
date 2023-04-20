@@ -14,4 +14,5 @@ interface ItemRepository {
     suspend fun getItemDetail(id: String): DataResponse<ResponseFlag, Item>
     suspend fun likeItem(userId: String, itemId: String): Response<ResponseFlag>
     suspend fun dislikeItem(userId: String, itemId: String): Response<ResponseFlag>
+    suspend fun getItemsLikedByUser(userId: String): DataResponse<ResponseFlag, List<String>>
 }
