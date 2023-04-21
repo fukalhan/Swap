@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.swap.auth.domain.SignUpUseCase
 import cz.cvut.fukalhan.swap.auth.model.signup.SignUpCredentials
 import cz.cvut.fukalhan.swap.login.presentation.common.Init
+import cz.cvut.fukalhan.swap.login.presentation.common.Loading
 import cz.cvut.fukalhan.swap.login.presentation.common.LoginState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ class SignUpViewModel(private val signUpUseCase: SignUpUseCase) : ViewModel() {
         get() = _signUpState
 
     fun signUpUser(email: String, username: String, password: String) {
+        _signUpState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
             val signUpResult = signUpUseCase.signUpUser(SignUpCredentials(email, username, password))
             _signUpState.value = signUpResult.toLoginState()
