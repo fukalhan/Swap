@@ -24,7 +24,8 @@ fun setupKoin(app: App) {
                 itemDataModule,
                 addItemModule,
                 itemListModule,
-                designModule
+                designModule,
+                chatClientModule
             )
         )
     }
