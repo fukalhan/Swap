@@ -124,8 +124,8 @@ class FirebaseItemRepository : ItemRepository {
             val docSnapshot = db.collection(ITEMS).document(id).get().await()
             if (docSnapshot.exists()) {
                 val imagesList: List<*>? = docSnapshot.get(IMAGES) as? List<*>
-                val item = docSnapshot.toObject(ItemDetail::class.java)?.let { it ->
-                    it.copy(
+                val item = docSnapshot.toObject(ItemDetail::class.java)?.let { itemDetail ->
+                    itemDetail.copy(
                         imagesUri = imagesList?.map { Uri.parse(it as String?) } ?: emptyList()
                     )
                 }

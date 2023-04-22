@@ -13,6 +13,7 @@ object Init : ProfileInfoState()
 object Loading : ProfileInfoState()
 
 class Success(
+    val id: String,
     val profilePicUri: Uri,
     val username: String,
     val joinDate: String
@@ -22,6 +23,7 @@ class Failure(val message: Int = R.string.cannotLoadData) : ProfileInfoState()
 
 fun UserProfile.toProfileInfoState(stringResources: StringResources): ProfileInfoState {
     return Success(
+        this.id,
         this.profilePicUri,
         this.username,
         stringResources.getString(R.string.memberSince, convertDateString(this.joinDate))

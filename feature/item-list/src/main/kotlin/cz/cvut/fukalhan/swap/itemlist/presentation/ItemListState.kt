@@ -4,7 +4,7 @@ import android.net.Uri
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemlist.R
 
-sealed class ItemListState()
+sealed class ItemListState
 
 object Init : ItemListState()
 object Loading : ItemListState()
