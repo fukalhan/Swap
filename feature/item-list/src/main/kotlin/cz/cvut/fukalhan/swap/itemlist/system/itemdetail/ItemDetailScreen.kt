@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
@@ -36,13 +37,14 @@ import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailState
 import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailViewModel
 import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Loading
 import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Success
+import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 
 @Composable
 fun ItemDetailScreen(
     itemId: String,
     viewModel: ItemDetailViewModel,
+    navController: NavHostController,
     onNavigateBack: () -> Unit,
-    navigateToMessageScreen: (String) -> Unit,
     onScreenInit: (ScreenState) -> Unit,
 ) {
     val user = Firebase.auth.currentUser
@@ -66,7 +68,7 @@ fun ItemDetailScreen(
         LoadingView(itemDetailState)
         OnSuccessView(itemDetailState, viewModel)
         OnFailureView(itemDetailState)
-        ResolveCreateChannelState(itemDetailState, navigateToMessageScreen)
+        ResolveCreateChannelState(itemDetailState, navController) { viewModel.setStateToInit() }
     }
 }
 
@@ -146,7 +148,8 @@ fun OnFailureView(itemDetailState: ItemDetailState) {
 @Composable
 fun ResolveCreateChannelState(
     itemDetailState: ItemDetailState,
-    navigateToMessageScreen: (String) -> Unit
+    navController: NavHostController,
+    setStateToInit: () -> Unit
 ) {
     if (itemDetailState is CreateChannelFailure) {
         val context = LocalContext.current
@@ -154,6 +157,7 @@ fun ResolveCreateChannelState(
     }
 
     if (itemDetailState is CreateChannelSuccess) {
-        navigateToMessageScreen(itemDetailState.channelId)
+        setStateToInit()
+        navController.navigate("${SecondaryScreen.Message.route}/${itemDetailState.channelId}")
     }
 }
