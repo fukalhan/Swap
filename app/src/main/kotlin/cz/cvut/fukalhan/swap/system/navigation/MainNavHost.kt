@@ -79,10 +79,8 @@ fun MainNavHost(
                     ItemDetailScreen(
                         itemId,
                         koinViewModel(),
+                        navController,
                         { navController.popBackStack() },
-                        { channelId ->
-                            navController.navigate("${SecondaryScreen.Message.route}/$channelId")
-                        }
                     ) {
                         screenState = it
                     }

@@ -80,4 +80,8 @@ class ItemDetailViewModel(
             }
         }
     }
+
+    fun setStateToInit() {
+        _itemDetailState.value = Init
+    }
 }
