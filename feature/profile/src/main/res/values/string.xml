@@ -8,4 +8,5 @@
     <string name="signOut">Odhlásit se</string>
     <string name="cannotLoadData">Data nelze načíst</string>
     <string name="cannotLoadItems">Předměty nelze načíst</string>
+    <string name="noItemsToDisplay">Žádné předměty k zobrazení</string>
 </resources>

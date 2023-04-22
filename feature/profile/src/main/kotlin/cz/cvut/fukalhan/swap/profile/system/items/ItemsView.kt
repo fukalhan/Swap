@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.profile.system.items
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
@@ -34,6 +35,7 @@ fun ItemsView(
     ) {
         Column(
             modifier = Modifier
+                .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
                 .fillMaxSize()
         ) {
             TabRow(

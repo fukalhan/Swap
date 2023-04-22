@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -115,7 +114,7 @@ fun OnSuccess(
                     end = SwapAppTheme.dimensions.smallSidePadding,
                     bottom = SwapAppTheme.dimensions.bottomScreenPadding
                 )
-                .fillMaxWidth(),
+                .fillMaxSize(),
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding),
             horizontalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding)
