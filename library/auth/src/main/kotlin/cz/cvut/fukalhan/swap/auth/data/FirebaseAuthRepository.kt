@@ -61,4 +61,10 @@ class FirebaseAuthRepository : AuthRepository {
             }
         }
     }
+
+    override suspend fun getStreamChatUserToken(): String? {
+        val httpsCallableResult = functions.getHttpsCallable(GET_STREAM_USER_TOKEN).call().await()
+        val result = httpsCallableResult.data
+        return result?.toString()
+    }
 }

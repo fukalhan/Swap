@@ -22,9 +22,11 @@ import cz.cvut.fukalhan.swap.profile.presentation.items.UserItemsViewModel
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoViewModel
 import cz.cvut.fukalhan.swap.profile.system.items.ItemsView
 import cz.cvut.fukalhan.swap.profile.system.profileinfo.ProfileInfo
+import io.getstream.chat.android.client.ChatClient
 
 @Composable
 fun ProfileScreen(
+    chatClient: ChatClient,
     profileInfoViewModel: ProfileInfoViewModel,
     userItemsViewModel: UserItemsViewModel,
     likedItemListViewModel: LikedItemListViewModel,
@@ -32,7 +34,7 @@ fun ProfileScreen(
     onSettingsClick: () -> Unit
 ) {
     TopBar(onScreenInit, onSettingsClick)
-    Profile(profileInfoViewModel, userItemsViewModel, likedItemListViewModel)
+    Profile(profileInfoViewModel, userItemsViewModel, likedItemListViewModel, chatClient)
 }
 
 @Composable
@@ -65,6 +67,7 @@ fun Profile(
     profileInfoViewModel: ProfileInfoViewModel,
     userItemsViewModel: UserItemsViewModel,
     likedItemListViewModel: LikedItemListViewModel,
+    chatClient: ChatClient
 ) {
     Column(
         modifier = Modifier
@@ -75,7 +78,7 @@ fun Profile(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        ProfileInfo(profileInfoViewModel)
+        ProfileInfo(profileInfoViewModel, chatClient)
         ItemsView(
             userItemsViewModel,
             likedItemListViewModel,

@@ -39,10 +39,16 @@ import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Loading
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoState
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoViewModel
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Success
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.models.User
 
 @Composable
-fun ProfileInfo(viewModel: ProfileInfoViewModel) {
+fun ProfileInfo(
+    viewModel: ProfileInfoViewModel,
+    chatClient: ChatClient
+) {
     val profileInfoState by viewModel.profileInfoState.collectAsState()
+    val chatToken by viewModel.chatToken.collectAsState()
 
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
@@ -53,9 +59,30 @@ fun ProfileInfo(viewModel: ProfileInfoViewModel) {
             .fillMaxWidth()
             .height(150.dp),
     ) {
+        InitChatClient(chatClient, chatToken, profileInfoState)
         LoadingView(profileInfoState)
         ProfileInfoContent(profileInfoState)
         FailView(profileInfoState)
+    }
+}
+
+@Composable
+fun InitChatClient(chatClient: ChatClient, chatToken: String, profileInfoState: ProfileInfoState) {
+    if (chatToken.isNotEmpty() && profileInfoState is Success) {
+        val user = User(
+            profileInfoState.id,
+            profileInfoState.username,
+            profileInfoState.profilePicUri.toString()
+        )
+
+        chatClient.connectUser(user = user, token = chatToken)
+            .enqueue { result ->
+                if (result.isSuccess) {
+                    // TODO on success
+                } else {
+                    // TODO on fail
+                }
+            }
     }
 }
 

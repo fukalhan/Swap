@@ -16,10 +16,12 @@ sealed class MainScreen(
     object Profile : MainScreen("profile", R.drawable.profile)
     object Settings : MainScreen("settings", R.drawable.settings)
     object AddItem : MainScreen("addItem", R.drawable.add)
+    object Messages : MainScreen("messages", R.drawable.message)
 }
 
 val items = listOf(
     MainScreen.Items,
     MainScreen.Profile,
-    MainScreen.AddItem
+    MainScreen.AddItem,
+    MainScreen.Messages
 )
