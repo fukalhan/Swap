@@ -16,17 +16,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.login.R
-import cz.cvut.fukalhan.swap.login.presentation.signin.SignInViewModel
-import cz.cvut.fukalhan.swap.login.presentation.signup.SignUpViewModel
 import cz.cvut.fukalhan.swap.login.system.signin.SignInScreen
 import cz.cvut.fukalhan.swap.login.system.signup.SignUpScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginScreen(
-    signInViewModel: SignInViewModel,
-    signUpViewModel: SignUpViewModel,
-    navController: NavHostController,
-) {
+fun LoginScreen(navController: NavHostController) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(R.string.signIn), stringResource(R.string.signUp))
 
@@ -47,8 +42,8 @@ fun LoginScreen(
         }
 
         when (tabIndex) {
-            0 -> SignInScreen(signInViewModel, navController)
-            1 -> SignUpScreen(signUpViewModel, navController)
+            0 -> SignInScreen(koinViewModel(), navController)
+            1 -> SignUpScreen(koinViewModel(), navController)
         }
     }
 }
