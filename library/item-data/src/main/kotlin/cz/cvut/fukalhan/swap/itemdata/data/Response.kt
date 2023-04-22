@@ -8,6 +8,10 @@ enum class ResponseFlag {
     SUCCESS, FAIL
 }
 
+enum class CreateChannelResponseFlag {
+    SUCCESS, CHANNEL_ALREADY_EXIST, FAIL
+}
+
 internal fun mapResponseFlag(flag: Int): ResponseFlag {
     return when (flag) {
         0 -> ResponseFlag.SUCCESS

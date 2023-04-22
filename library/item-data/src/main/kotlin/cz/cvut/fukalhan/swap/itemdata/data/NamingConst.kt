@@ -18,3 +18,5 @@ const val FLAG = "flag"
 const val DATA = "data"
 
 const val CHANNELS = "channels"
+const val USER_ID = "userId"
+const val ITEM_ID = "itemId"

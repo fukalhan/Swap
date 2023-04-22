@@ -46,6 +46,7 @@ fun MainNavHost(
     bottomBarVisible = when (navBackStackEntry?.destination?.route) {
         MainScreen.AddItem.route -> false
         "${SecondaryScreen.ItemDetail.route}/{$ITEM_ID}" -> false
+        "${SecondaryScreen.Message.route}/{$CHANNEL_ID}" -> false
         else -> true
     }
 
