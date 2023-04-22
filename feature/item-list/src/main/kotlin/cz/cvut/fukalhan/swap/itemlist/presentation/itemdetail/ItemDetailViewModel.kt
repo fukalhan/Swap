@@ -3,7 +3,6 @@ package cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.cvut.fukalhan.swap.itemdata.data.CreateChannelResponseFlag
 import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
@@ -59,31 +58,25 @@ class ItemDetailViewModel(
         val channel = Channel(userId, itemId, itemOwnerId)
         viewModelScope.launch(Dispatchers.IO) {
             val response = createChannelUseCase.createChannel(channel)
-            if (response.flag == CreateChannelResponseFlag.CHANNEL_ALREADY_EXIST) {
-                response.data?.let {
-                    _itemDetailState.value = CreateChannelSuccess(it)
-                }
-            } else {
-                response.data?.let { channelId ->
-                    chatClient.createChannel(
-                        channelId = channelId,
-                        channelType = channelType,
-                        memberIds = listOf(userId, itemOwnerId),
-                        extraData = mapOf(
-                            "name" to channelName,
-                            "image" to itemImage.toString()
-                        )
-                    ).enqueue { result ->
-                        if (result.isSuccess) {
-                            _itemDetailState.value = CreateChannelSuccess(channelId)
-                        } else {
-                            _itemDetailState.value = CreateChannelFailure()
-                            // TODO delete channel record from the db
-                        }
+            response.data?.let { channelId ->
+                chatClient.createChannel(
+                    channelId = channelId,
+                    channelType = channelType,
+                    memberIds = listOf(userId, itemOwnerId),
+                    extraData = mapOf(
+                        "name" to channelName,
+                        "image" to itemImage.toString()
+                    )
+                ).enqueue { result ->
+                    if (result.isSuccess) {
+                        _itemDetailState.value = CreateChannelSuccess(channelId)
+                    } else {
+                        _itemDetailState.value = CreateChannelFailure()
+                        // TODO delete channel record from the db
                     }
-                } ?: run {
-                    _itemDetailState.value = CreateChannelFailure()
                 }
+            } ?: run {
+                _itemDetailState.value = CreateChannelFailure()
             }
         }
     }
