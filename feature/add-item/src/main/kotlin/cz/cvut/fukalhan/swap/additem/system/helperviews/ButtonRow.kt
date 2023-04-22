@@ -1,11 +1,11 @@
 package cz.cvut.fukalhan.swap.additem.system.helperviews
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
@@ -21,11 +21,12 @@ fun ButtonRow(
     onCancelClick: () -> Unit,
     onSaveClick: () -> Unit
 ) {
-    Spacer(modifier = Modifier.size(SwapAppTheme.dimensions.largeSpacer))
     Row(
         modifier = Modifier
+            .background(SwapAppTheme.colors.backgroundSecondary)
             .padding(SwapAppTheme.dimensions.sidePadding)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .wrapContentHeight(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         ButtonView(

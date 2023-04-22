@@ -10,10 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -139,27 +140,34 @@ fun ItemData(
     var category by remember { mutableStateOf(Category.DEFAULT) }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize()
     ) {
-        PictureSelectionView(selectedImagesUri) {
-            selectedImagesUri = it
-        }
-
-        Surface(
-            elevation = SwapAppTheme.dimensions.elevation,
+        Column(
             modifier = Modifier
                 .background(SwapAppTheme.colors.backgroundSecondary)
                 .weight(1f)
                 .fillMaxWidth()
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            PictureSelectionView(selectedImagesUri) {
+                selectedImagesUri = it
+            }
+            Divider(
+                color = SwapAppTheme.colors.component,
+                thickness = SwapAppTheme.dimensions.borderWidth,
+                modifier = Modifier.padding(
+                    start = SwapAppTheme.dimensions.sidePadding,
+                    end = SwapAppTheme.dimensions.sidePadding,
+                )
+            )
+
             Column(
                 modifier = Modifier
                     .padding(SwapAppTheme.dimensions.smallSidePadding)
-                    .fillMaxSize()
+                    .wrapContentHeight()
+                    .fillMaxWidth()
             ) {
                 InputFieldView(R.string.name) {
                     RegularTextFieldView(name) {
@@ -176,19 +184,19 @@ fun ItemData(
                 CategoryList(category) {
                     category = it
                 }
+            }
+        }
 
-                ButtonRow(navigateBack) {
-                    val user = Firebase.auth.currentUser
-                    user?.let {
-                        viewModel.saveItem(
-                            it.uid,
-                            name,
-                            description,
-                            selectedImagesUri,
-                            category
-                        )
-                    }
-                }
+        ButtonRow(navigateBack) {
+            val user = Firebase.auth.currentUser
+            user?.let {
+                viewModel.saveItem(
+                    it.uid,
+                    name,
+                    description,
+                    selectedImagesUri,
+                    category
+                )
             }
         }
     }
