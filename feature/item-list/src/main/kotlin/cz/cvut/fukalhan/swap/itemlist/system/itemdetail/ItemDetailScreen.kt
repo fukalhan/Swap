@@ -1,5 +1,6 @@
 package cz.cvut.fukalhan.swap.itemlist.system.itemdetail
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.zIndex
@@ -27,6 +29,8 @@ import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.itemlist.R
+import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.CreateChannelFailure
+import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.CreateChannelSuccess
 import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Failure
 import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailState
 import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailViewModel
@@ -38,7 +42,8 @@ fun ItemDetailScreen(
     itemId: String,
     viewModel: ItemDetailViewModel,
     onNavigateBack: () -> Unit,
-    onScreenInit: (ScreenState) -> Unit
+    navigateToMessageScreen: (String) -> Unit,
+    onScreenInit: (ScreenState) -> Unit,
 ) {
     val user = Firebase.auth.currentUser
     val itemDetailState: ItemDetailState by viewModel.itemDetailState.collectAsState()
@@ -61,6 +66,7 @@ fun ItemDetailScreen(
         LoadingView(itemDetailState)
         OnSuccessView(itemDetailState, viewModel)
         OnFailureView(itemDetailState)
+        ResolveCreateChannelState(itemDetailState, navigateToMessageScreen)
     }
 }
 
@@ -134,5 +140,20 @@ fun OnFailureView(itemDetailState: ItemDetailState) {
             style = SwapAppTheme.typography.titleSecondary,
             color = SwapAppTheme.colors.textPrimary
         )
+    }
+}
+
+@Composable
+fun ResolveCreateChannelState(
+    itemDetailState: ItemDetailState,
+    navigateToMessageScreen: (String) -> Unit
+) {
+    if (itemDetailState is CreateChannelFailure) {
+        val context = LocalContext.current
+        Toast.makeText(context, stringResource(itemDetailState.message), Toast.LENGTH_SHORT).show()
+    }
+
+    if (itemDetailState is CreateChannelSuccess) {
+        navigateToMessageScreen(itemDetailState.channelId)
     }
 }

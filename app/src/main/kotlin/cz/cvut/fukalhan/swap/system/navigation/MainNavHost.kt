@@ -22,13 +22,16 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
 import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
 import cz.cvut.fukalhan.swap.itemlist.system.itemdetail.ItemDetailScreen
+import cz.cvut.fukalhan.swap.itemlist.system.message.ChatScreen
 import cz.cvut.fukalhan.swap.messages.system.MessageScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
+import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profile.system.settings.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
 
 const val ITEM_ID = "itemId"
+const val CHANNEL_ID = "channelId"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -42,7 +45,7 @@ fun MainNavHost(
 
     bottomBarVisible = when (navBackStackEntry?.destination?.route) {
         MainScreen.AddItem.route -> false
-        "${MainScreen.ItemDetail.route}/{$ITEM_ID}" -> false
+        "${SecondaryScreen.ItemDetail.route}/{$ITEM_ID}" -> false
         else -> true
     }
 
@@ -63,22 +66,34 @@ fun MainNavHost(
                     koinViewModel(),
                     { screenState = it }
                 ) { itemId ->
-                    navController.navigate("${MainScreen.ItemDetail.route}/$itemId")
+                    navController.navigate("${SecondaryScreen.ItemDetail.route}/$itemId")
                 }
             }
 
             composable(
-                "${MainScreen.ItemDetail.route}/{$ITEM_ID}",
+                "${SecondaryScreen.ItemDetail.route}/{$ITEM_ID}",
                 arguments = listOf(navArgument(ITEM_ID) { type = NavType.StringType })
             ) { backStackEntry ->
                 backStackEntry.arguments?.getString(ITEM_ID)?.let { itemId ->
                     ItemDetailScreen(
                         itemId,
                         koinViewModel(),
-                        { navController.popBackStack() }
+                        { navController.popBackStack() },
+                        { channelId ->
+                            navController.navigate("${SecondaryScreen.Message.route}/$channelId")
+                        }
                     ) {
                         screenState = it
                     }
+                }
+            }
+
+            composable(
+                "${SecondaryScreen.Message.route}/{$CHANNEL_ID}",
+                arguments = listOf(navArgument(CHANNEL_ID) { type = NavType.StringType })
+            ) { backStackEntry ->
+                backStackEntry.arguments?.getString(CHANNEL_ID)?.let { channelId ->
+                    ChatScreen(channelId)
                 }
             }
 
@@ -86,11 +101,11 @@ fun MainNavHost(
                 ProfileScreen(
                     { screenState = it }
                 ) {
-                    navController.navigate(MainScreen.Settings.route)
+                    navController.navigate(SecondaryScreen.Settings.route)
                 }
             }
 
-            composable(MainScreen.Settings.route) {
+            composable(SecondaryScreen.Settings.route) {
                 SettingsScreen(
                     onScreenInit = { screenState = it },
                     onNavigateBack = { navController.popBackStack() },
