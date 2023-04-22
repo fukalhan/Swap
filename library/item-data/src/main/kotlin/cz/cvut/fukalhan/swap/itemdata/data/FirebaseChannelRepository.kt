@@ -9,16 +9,16 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseChannelRepository : ChannelRepository {
     private val db = Firebase.firestore
-    override suspend fun createChannel(channel: Channel): DataResponse<CreateChannelResponseFlag, String> {
+    override suspend fun createChannel(channel: Channel): DataResponse<ResponseFlag, String> {
         return try {
             val docRef = db.collection(CHANNELS).add(channel).await()
-            DataResponse(true, CreateChannelResponseFlag.SUCCESS, docRef.id)
+            DataResponse(true, ResponseFlag.SUCCESS, docRef.id)
         } catch (e: FirebaseFirestoreException) {
-            DataResponse(false, CreateChannelResponseFlag.FAIL)
+            DataResponse(false, ResponseFlag.FAIL)
         }
     }
 
-    override suspend fun channelExist(channel: Channel): DataResponse<CreateChannelResponseFlag, String> {
+    override suspend fun channelExist(channel: Channel): DataResponse<ResponseFlag, String> {
         return try {
             val querySnapshot = db
                 .collection(CHANNELS)
@@ -29,12 +29,12 @@ class FirebaseChannelRepository : ChannelRepository {
                 .await()
 
             if (!querySnapshot.isEmpty) {
-                DataResponse(true, CreateChannelResponseFlag.CHANNEL_ALREADY_EXIST, querySnapshot.documents[0].id)
+                DataResponse(true, ResponseFlag.SUCCESS, querySnapshot.documents[0].id)
             } else {
-                DataResponse(true, CreateChannelResponseFlag.SUCCESS)
+                DataResponse(true, ResponseFlag.SUCCESS)
             }
         } catch (e: FirebaseFirestoreException) {
-            DataResponse(false, CreateChannelResponseFlag.FAIL)
+            DataResponse(false, ResponseFlag.FAIL)
         }
     }
 
