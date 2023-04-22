@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.R
@@ -43,51 +41,42 @@ fun PictureSelectionView(
     selectedImagesUri: List<Uri>,
     setSelectedImagesUri: (List<Uri>) -> Unit
 ) {
-    Surface(
-        elevation = SwapAppTheme.dimensions.elevation,
-        color = SwapAppTheme.colors.backgroundSecondary,
+    Column(
         modifier = Modifier
-            .padding(bottom = SwapAppTheme.dimensions.sidePadding)
             .fillMaxWidth()
             .height(SwapAppTheme.dimensions.imageView)
-            .zIndex(0f)
+            .padding(SwapAppTheme.dimensions.smallSidePadding),
+        horizontalAlignment = Alignment.Start,
     ) {
-        Column(
-            modifier = Modifier
-                .padding(bottom = SwapAppTheme.dimensions.sidePadding)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.Start,
-        ) {
-            val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.PickMultipleVisualMedia(),
-                onResult = { uris ->
-                    val prevImagesSize = selectedImagesUri.size
-                    setSelectedImagesUri(
-                        selectedImagesUri.take(PICTURES_LIMIT) + uris.take(PICTURES_LIMIT - prevImagesSize)
-                    )
-                }
-            )
-
-            LazyRow {
-                items(selectedImagesUri) { uri ->
-                    ImageItem(uri) {
-                        setSelectedImagesUri(
-                            selectedImagesUri.filter {
-                                it != uri
-                            }
-                        )
-                    }
-                }
-            }
-
-            InstructionRow(
-                selectedImagesUri,
-                Modifier.weight(1f)
-            ) {
-                multiplePhotoPickerLauncher.launch(
-                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickMultipleVisualMedia(),
+            onResult = { uris ->
+                val prevImagesSize = selectedImagesUri.size
+                setSelectedImagesUri(
+                    selectedImagesUri.take(PICTURES_LIMIT) + uris.take(PICTURES_LIMIT - prevImagesSize)
                 )
             }
+        )
+
+        LazyRow {
+            items(selectedImagesUri) { uri ->
+                ImageItem(uri) {
+                    setSelectedImagesUri(
+                        selectedImagesUri.filter {
+                            it != uri
+                        }
+                    )
+                }
+            }
+        }
+
+        InstructionRow(
+            selectedImagesUri,
+            Modifier.weight(1f)
+        ) {
+            multiplePhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
         }
     }
 }
