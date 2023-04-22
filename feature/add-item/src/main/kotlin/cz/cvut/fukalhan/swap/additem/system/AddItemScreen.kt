@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
@@ -143,8 +141,7 @@ fun ItemData(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(SwapAppTheme.dimensions.smallSidePadding),
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -154,18 +151,15 @@ fun ItemData(
 
         Surface(
             elevation = SwapAppTheme.dimensions.elevation,
-            shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
-            color = SwapAppTheme.colors.backgroundSecondary,
             modifier = Modifier
-                .padding(bottom = SwapAppTheme.dimensions.sidePadding)
+                .background(SwapAppTheme.colors.backgroundSecondary)
+                .weight(1f)
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .zIndex(0f)
         ) {
             Column(
                 modifier = Modifier
+                    .padding(SwapAppTheme.dimensions.smallSidePadding)
                     .fillMaxSize()
-                    .padding(SwapAppTheme.dimensions.sidePadding)
             ) {
                 InputFieldView(R.string.name) {
                     RegularTextFieldView(name) {
