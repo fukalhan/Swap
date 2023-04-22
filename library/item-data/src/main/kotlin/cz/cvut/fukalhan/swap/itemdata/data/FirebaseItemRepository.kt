@@ -101,6 +101,9 @@ class FirebaseItemRepository : ItemRepository {
 
     override suspend fun getItemsById(ids: List<String>): DataResponse<ResponseFlag, List<Item>> {
         return try {
+            if (ids.isEmpty()) {
+                return DataResponse(true, ResponseFlag.SUCCESS, emptyList())
+            }
             val querySnapshot = db
                 .collection(ITEMS)
                 .whereIn(ID, ids)
