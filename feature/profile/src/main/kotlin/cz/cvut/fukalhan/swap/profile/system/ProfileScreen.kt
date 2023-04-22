@@ -17,24 +17,17 @@ import androidx.compose.ui.res.stringResource
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
-import cz.cvut.fukalhan.swap.profile.presentation.items.LikedItemListViewModel
-import cz.cvut.fukalhan.swap.profile.presentation.items.UserItemsViewModel
-import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoViewModel
 import cz.cvut.fukalhan.swap.profile.system.items.ItemsView
 import cz.cvut.fukalhan.swap.profile.system.profileinfo.ProfileInfo
-import io.getstream.chat.android.client.ChatClient
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(
-    chatClient: ChatClient,
-    profileInfoViewModel: ProfileInfoViewModel,
-    userItemsViewModel: UserItemsViewModel,
-    likedItemListViewModel: LikedItemListViewModel,
     onScreenInit: (ScreenState) -> Unit,
     onSettingsClick: () -> Unit
 ) {
     TopBar(onScreenInit, onSettingsClick)
-    Profile(profileInfoViewModel, userItemsViewModel, likedItemListViewModel, chatClient)
+    Profile()
 }
 
 @Composable
@@ -63,28 +56,15 @@ fun TopBar(
 }
 
 @Composable
-fun Profile(
-    profileInfoViewModel: ProfileInfoViewModel,
-    userItemsViewModel: UserItemsViewModel,
-    likedItemListViewModel: LikedItemListViewModel,
-    chatClient: ChatClient
-) {
+fun Profile() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(
-                bottom = SwapAppTheme.dimensions.bottomScreenPadding
-            ),
+            .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        ProfileInfo(profileInfoViewModel, chatClient)
-        ItemsView(
-            userItemsViewModel,
-            likedItemListViewModel,
-            Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        )
+        ProfileInfo(koinViewModel())
+        ItemsView(Modifier.weight(1f).fillMaxWidth())
     }
 }

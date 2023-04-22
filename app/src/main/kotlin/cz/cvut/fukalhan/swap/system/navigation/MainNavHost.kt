@@ -26,7 +26,6 @@ import cz.cvut.fukalhan.swap.messages.system.MessageScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profile.system.settings.SettingsScreen
-import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
 
 const val ITEM_ID = "itemId"
@@ -85,10 +84,6 @@ fun MainNavHost(
 
             composable(MainScreen.Profile.route) {
                 ProfileScreen(
-                    getKoin().get(),
-                    koinViewModel(),
-                    koinViewModel(),
-                    koinViewModel(),
                     { screenState = it }
                 ) {
                     navController.navigate(MainScreen.Settings.route)
