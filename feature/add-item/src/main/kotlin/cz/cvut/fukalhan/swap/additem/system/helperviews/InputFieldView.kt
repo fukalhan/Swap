@@ -55,10 +55,7 @@ fun RegularTextFieldView(
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
         colors = getTextFieldColors(),
         modifier = inputFieldModifier,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            capitalization = KeyboardCapitalization.Words
-        )
+        keyboardOptions = keyBoardOptions
     )
 }
 
@@ -78,10 +75,7 @@ fun DescriptionView(
             modifier = inputFieldModifier.height(120.dp),
             maxLines = Int.MAX_VALUE,
             colors = getTextFieldColors(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                capitalization = KeyboardCapitalization.Words
-            )
+            keyboardOptions = keyBoardOptions
         )
 
         Text(
@@ -104,6 +98,12 @@ val inputFieldModifier = Modifier
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners)
     )
     .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners))
+
+val keyBoardOptions = KeyboardOptions(
+    keyboardType = KeyboardType.Text,
+    capitalization = KeyboardCapitalization.Sentences,
+    autoCorrect = true
+)
 
 @Composable
 fun getTextFieldColors(): TextFieldColors {

@@ -32,7 +32,10 @@ import cz.cvut.fukalhan.swap.itemlist.R
 import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.OwnerInfo
 
 @Composable
-fun ItemOwnerInfo(ownerInfo: OwnerInfo) {
+fun ItemOwnerInfo(
+    ownerInfo: OwnerInfo,
+    onSendMessageButtonClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,7 +49,7 @@ fun ItemOwnerInfo(ownerInfo: OwnerInfo) {
             text = ownerInfo.username,
             style = SwapAppTheme.typography.titleSecondary
         )
-        SendMessageButton(Modifier.weight(1f))
+        SendMessageButton(Modifier.weight(1f), onSendMessageButtonClick)
     }
 }
 
@@ -69,7 +72,8 @@ fun ProfilePicture(pictureUri: Uri) {
 
 @Composable
 fun SendMessageButton(
-    modifier: Modifier
+    modifier: Modifier,
+    onSendMessageButtonClick: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -82,7 +86,7 @@ fun SendMessageButton(
             colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary),
             modifier = Modifier
                 .wrapContentSize(),
-            onClick = { /*TODO*/ }
+            onClick = onSendMessageButtonClick
         ) {
             Text(
                 text = stringResource(R.string.sendMessage),

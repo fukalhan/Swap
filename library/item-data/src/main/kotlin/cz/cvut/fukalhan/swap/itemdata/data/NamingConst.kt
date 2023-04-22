@@ -16,3 +16,5 @@ const val UPDATE_ITEM = "updateItem"
 const val SUCCESS = "success"
 const val FLAG = "flag"
 const val DATA = "data"
+
+const val CHANNELS = "channels"

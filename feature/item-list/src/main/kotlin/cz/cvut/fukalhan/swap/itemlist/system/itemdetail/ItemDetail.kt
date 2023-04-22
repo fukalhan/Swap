@@ -56,7 +56,17 @@ fun ItemDetail(
             thickness = 1.dp,
             color = SwapAppTheme.colors.component
         )
-        ItemOwnerInfo(itemDetailState.ownerInfo)
+        ItemOwnerInfo(itemDetailState.ownerInfo) {
+            user?.let { user ->
+                viewModel.createChannel(
+                    user.uid,
+                    itemDetailState.ownerInfo.id,
+                    itemDetailState.id,
+                    itemDetailState.images.first(),
+                    itemDetailState.name
+                )
+            }
+        }
     }
 }
 

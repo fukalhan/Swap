@@ -45,3 +45,7 @@ internal fun ItemDetail.toItemDetailState(ownerId: String, ownerUsername: String
 }
 
 class Failure(val message: Int = R.string.cannotLoadItemDetail) : ItemDetailState()
+
+class CreateChannelSuccess(val channelId: String) : ItemDetailState()
+
+class CreateChannelFailure(val message: Int = R.string.createChannelFailure) : ItemDetailState()
