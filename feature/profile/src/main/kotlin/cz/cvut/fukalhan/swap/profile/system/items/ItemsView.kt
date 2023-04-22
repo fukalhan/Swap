@@ -17,13 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
-import cz.cvut.fukalhan.swap.profile.presentation.items.LikedItemListViewModel
-import cz.cvut.fukalhan.swap.profile.presentation.items.UserItemsViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ItemsView(
-    userItemsViewModel: UserItemsViewModel,
-    likedItemListViewModel: LikedItemListViewModel,
     modifier: Modifier
 ) {
     var tabIndex by remember { mutableStateOf(0) }
@@ -66,8 +63,8 @@ fun ItemsView(
             }
 
             when (tabIndex) {
-                0 -> UsersItemList(userItemsViewModel)
-                1 -> LikedItemList(likedItemListViewModel)
+                0 -> UsersItemList(koinViewModel())
+                1 -> LikedItemList(koinViewModel())
             }
         }
     }

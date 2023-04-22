@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.profile.system.profileinfo
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,12 +42,10 @@ import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoViewMod
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Success
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.User
+import org.koin.androidx.compose.getKoin
 
 @Composable
-fun ProfileInfo(
-    viewModel: ProfileInfoViewModel,
-    chatClient: ChatClient
-) {
+fun ProfileInfo(viewModel: ProfileInfoViewModel) {
     val profileInfoState by viewModel.profileInfoState.collectAsState()
     val chatToken by viewModel.chatToken.collectAsState()
 
@@ -59,7 +58,7 @@ fun ProfileInfo(
             .fillMaxWidth()
             .height(150.dp),
     ) {
-        InitChatClient(chatClient, chatToken, profileInfoState)
+        InitChatClient(getKoin().get(), chatToken, profileInfoState)
         LoadingView(profileInfoState)
         ProfileInfoContent(profileInfoState)
         FailView(profileInfoState)
@@ -78,9 +77,9 @@ fun InitChatClient(chatClient: ChatClient, chatToken: String, profileInfoState: 
         chatClient.connectUser(user = user, token = chatToken)
             .enqueue { result ->
                 if (result.isSuccess) {
-                    // TODO on success
+                    Log.e("ChatClient", "success")
                 } else {
-                    // TODO on fail
+                    Log.e("ChatClient", "fail")
                 }
             }
     }
