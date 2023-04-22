@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.swap.additem.R
 import cz.cvut.fukalhan.swap.additem.system.DESCRIPTION_CHAR_LIMIT
 
 @Composable
@@ -51,6 +52,13 @@ fun RegularTextFieldView(
     TextField(
         value = value,
         onValueChange = onValueChange,
+        placeholder = {
+            Text(
+                text = stringResource(R.string.namePlaceholder),
+                style = SwapAppTheme.typography.body,
+                color = SwapAppTheme.colors.textSecondary
+            )
+        },
         singleLine = true,
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
         colors = getTextFieldColors(),
@@ -71,6 +79,13 @@ fun DescriptionView(
                 if (newValue.length <= DESCRIPTION_CHAR_LIMIT) {
                     onDescriptionChange(newValue)
                 }
+            },
+            placeholder = {
+                Text(
+                    text = stringResource(R.string.descriptionPlaceholder),
+                    style = SwapAppTheme.typography.body,
+                    color = SwapAppTheme.colors.textSecondary
+                )
             },
             modifier = inputFieldModifier.height(120.dp),
             maxLines = Int.MAX_VALUE,
