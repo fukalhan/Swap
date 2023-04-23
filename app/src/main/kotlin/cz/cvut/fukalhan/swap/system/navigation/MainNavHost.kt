@@ -23,7 +23,7 @@ import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
 import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
 import cz.cvut.fukalhan.swap.itemlist.system.itemdetail.ItemDetailScreen
 import cz.cvut.fukalhan.swap.itemlist.system.message.ChatScreen
-import cz.cvut.fukalhan.swap.messages.system.MessageScreen
+import cz.cvut.fukalhan.swap.messages.system.ChannelsScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
@@ -129,7 +129,9 @@ fun MainNavHost(
             }
 
             composable(MainScreen.Messages.route) {
-                MessageScreen()
+                ChannelsScreen(getKoin().get(), navController) {
+                    screenState = it
+                }
             }
         }
     }
