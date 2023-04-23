@@ -192,7 +192,7 @@ fun MessageComposerBar(
                 style = ChatTheme.typography.body,
                 color = lightGrey
             )
-        }
+        },
     )
 }
 

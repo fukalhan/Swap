@@ -2,4 +2,5 @@
 <resources>
     <string name="messages">Zprávy</string>
     <string name="sendMessage">Poslat zprávu</string>
+    <string name="emptyChannels">Žadné zprávy k zobrazení</string>
 </resources>
