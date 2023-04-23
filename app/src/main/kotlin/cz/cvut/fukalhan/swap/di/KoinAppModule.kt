@@ -6,6 +6,7 @@ import cz.cvut.fukalhan.swap.auth.di.authModule
 import cz.cvut.fukalhan.swap.itemdata.di.itemDataModule
 import cz.cvut.fukalhan.swap.itemlist.di.itemListModule
 import cz.cvut.fukalhan.swap.login.di.loginModule
+import cz.cvut.fukalhan.swap.messages.di.messagesModule
 import cz.cvut.fukalhan.swap.profile.di.profileModule
 import cz.cvut.fukalhan.swap.system.App
 import cz.cvut.fukalhan.swap.userdata.di.userDataModule
@@ -25,7 +26,8 @@ fun setupKoin(app: App) {
                 addItemModule,
                 itemListModule,
                 designModule,
-                chatClientModule
+                chatClientModule,
+                messagesModule
             )
         )
     }
