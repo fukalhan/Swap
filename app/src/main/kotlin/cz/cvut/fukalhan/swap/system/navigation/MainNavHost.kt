@@ -95,8 +95,11 @@ fun MainNavHost(
                 backStackEntry.arguments?.getString(CHANNEL_ID)?.let { channelId ->
                     ChatScreen(
                         channelId,
-                        getKoin().get()
-                    )
+                        getKoin().get(),
+                        { screenState = it }
+                    ) {
+                        navController.popBackStack()
+                    }
                 }
             }
 
