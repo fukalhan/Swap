@@ -30,3 +30,9 @@ fun Item.toItemState(): ItemState {
 }
 
 data class Failure(val message: Int = R.string.cannotLoadItemData) : ItemState()
+
+sealed class ItemStateChangeState
+
+object ChangeItemStateInit : ItemStateChangeState()
+object ChangeItemStateSuccess : ItemStateChangeState()
+data class ChangeItemStateFail(val message: Int = R.string.cannotChangeItemState) : ItemStateChangeState()

@@ -7,4 +7,5 @@
     <string name="reserve">Rezervovat</string>
     <string name="markAsSwapped">Označit jako vyměněný</string>
     <string name="giveReview">Udělit hodnocení</string>
+    <string name="cannotChangeItemState">Změna stavu předmětu se nezdařila</string>
 </resources>

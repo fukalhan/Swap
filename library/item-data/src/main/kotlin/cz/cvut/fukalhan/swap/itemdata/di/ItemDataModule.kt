@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.itemdata.di
 import cz.cvut.fukalhan.swap.itemdata.data.FirebaseChannelRepository
 import cz.cvut.fukalhan.swap.itemdata.data.FirebaseImageRepository
 import cz.cvut.fukalhan.swap.itemdata.data.FirebaseItemRepository
+import cz.cvut.fukalhan.swap.itemdata.domain.ChangeItemStateUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemFromChannelUseCase
@@ -31,4 +32,5 @@ val itemDataModule = module {
     factoryOf(::GetUserLikedItemsUseCase)
     factoryOf(::CreateChannelUseCase)
     factoryOf(::GetItemFromChannelUseCase)
+    factoryOf(::ChangeItemStateUseCase)
 }
