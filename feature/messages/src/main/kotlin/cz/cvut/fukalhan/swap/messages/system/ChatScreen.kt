@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.itemlist.system.message
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +21,7 @@ import cz.cvut.fukalhan.design.presentation.CHANNEL_TYPE
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.messages.R
 import cz.cvut.fukalhan.swap.messages.presentation.ChatViewModelFactory
+import io.getstream.chat.android.client.models.User
 import io.getstream.chat.android.compose.state.messages.SelectedMessageOptionsState
 import io.getstream.chat.android.compose.ui.components.messageoptions.defaultMessageOptionsState
 import io.getstream.chat.android.compose.ui.components.selectedmessage.SelectedMessageMenu
@@ -73,54 +75,24 @@ fun Chat(
             modifier = Modifier.fillMaxSize(),
             bottomBar = { MessageComposerBar(composerViewModel, attachmentsPickerViewModel) }
         ) {
-            MessageList(
-                modifier = Modifier
-                    .background(SwapAppTheme.colors.backgroundSecondary)
-                    .padding(it)
-                    .fillMaxSize(),
-                viewModel = listViewModel,
-                onThreadClick = { message ->
-                    // composerViewModel.setMessageMode(Thread(message))
-                    listViewModel.openMessageThread(message)
-                }
-            )
+            MessageList(listViewModel, it)
         }
 
         if (isShowingAttachments) {
             AttachmentsPicker(
-                attachmentsPickerViewModel = attachmentsPickerViewModel,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .height(350.dp),
-                onAttachmentsSelected = { attachments ->
-                    attachmentsPickerViewModel.changeAttachmentState(false)
-                    composerViewModel.addSelectedAttachments(attachments)
-                },
-                onDismiss = {
-                    attachmentsPickerViewModel.changeAttachmentState(false)
-                    attachmentsPickerViewModel.dismissAttachments()
-                }
+                attachmentsPickerViewModel,
+                composerViewModel,
+                Modifier.align(Alignment.BottomCenter)
             )
         }
 
         if (selectedMessageState is SelectedMessageOptionsState) {
-            val selectedMessage = selectedMessageState.message
             SelectedMessageMenu(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                message = selectedMessage,
-                messageOptions = defaultMessageOptionsState(
-                    selectedMessage,
-                    user,
-                    listViewModel.isInThread,
-                    selectedMessageState.ownCapabilities
-                ),
-                ownCapabilities = selectedMessageState.ownCapabilities,
-                onMessageAction = { action ->
-                    composerViewModel.performMessageAction(action)
-                    listViewModel.performMessageAction(action)
-                },
-                onShowMoreReactionsSelected = { listViewModel.selectExtendedReactions(selectedMessage) },
-                onDismiss = { listViewModel.removeOverlay() }
+                selectedMessageState,
+                listViewModel,
+                composerViewModel,
+                user,
+                Modifier.align(Alignment.BottomCenter)
             )
         }
     }
@@ -137,5 +109,71 @@ fun MessageComposerBar(
             attachmentsPickerViewModel.changeAttachmentState(true)
         },
         label = { Text(text = stringResource(R.string.sendMessage)) }
+    )
+}
+
+@Composable
+fun MessageList(
+    listViewModel: MessageListViewModel,
+    padding: PaddingValues,
+) {
+    MessageList(
+        modifier = Modifier
+            .background(SwapAppTheme.colors.backgroundSecondary)
+            .padding(padding)
+            .fillMaxSize(),
+        viewModel = listViewModel,
+        onThreadClick = { message ->
+            // composerViewModel.setMessageMode(Thread(message))
+            listViewModel.openMessageThread(message)
+        }
+    )
+}
+
+@Composable
+fun AttachmentsPicker(
+    attachmentsPickerViewModel: AttachmentsPickerViewModel,
+    composerViewModel: MessageComposerViewModel,
+    modifier: Modifier
+) {
+    AttachmentsPicker(
+        attachmentsPickerViewModel = attachmentsPickerViewModel,
+        modifier = modifier.height(350.dp),
+        onAttachmentsSelected = { attachments ->
+            attachmentsPickerViewModel.changeAttachmentState(false)
+            composerViewModel.addSelectedAttachments(attachments)
+        },
+        onDismiss = {
+            attachmentsPickerViewModel.changeAttachmentState(false)
+            attachmentsPickerViewModel.dismissAttachments()
+        }
+    )
+}
+
+@Composable
+fun SelectedMessageMenu(
+    selectedMessageState: SelectedMessageOptionsState,
+    listViewModel: MessageListViewModel,
+    composerViewModel: MessageComposerViewModel,
+    user: User?,
+    modifier: Modifier
+) {
+    val selectedMessage = selectedMessageState.message
+    SelectedMessageMenu(
+        modifier = modifier,
+        message = selectedMessage,
+        messageOptions = defaultMessageOptionsState(
+            selectedMessage,
+            user,
+            listViewModel.isInThread,
+            selectedMessageState.ownCapabilities
+        ),
+        ownCapabilities = selectedMessageState.ownCapabilities,
+        onMessageAction = { action ->
+            composerViewModel.performMessageAction(action)
+            listViewModel.performMessageAction(action)
+        },
+        onShowMoreReactionsSelected = { listViewModel.selectExtendedReactions(selectedMessage) },
+        onDismiss = { listViewModel.removeOverlay() }
     )
 }
