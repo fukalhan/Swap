@@ -69,9 +69,9 @@ fun ProfileInfo(viewModel: ProfileInfoViewModel) {
 fun InitChatClient(chatClient: ChatClient, chatToken: String, profileInfoState: ProfileInfoState) {
     if (chatToken.isNotEmpty() && profileInfoState is Success) {
         val user = User(
-            profileInfoState.id,
-            profileInfoState.username,
-            profileInfoState.profilePicUri.toString()
+            id = profileInfoState.id,
+            name = profileInfoState.username,
+            image = profileInfoState.profilePicUri.toString()
         )
 
         chatClient.connectUser(user = user, token = chatToken)
