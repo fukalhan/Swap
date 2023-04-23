@@ -3,4 +3,8 @@
     <string name="messages">Zprávy</string>
     <string name="sendMessage">Poslat zprávu</string>
     <string name="emptyChannels">Žadné zprávy k zobrazení</string>
+    <string name="cannotLoadItemData">Nelze načíst údaje o předmětu</string>
+    <string name="reserve">Rezervovat</string>
+    <string name="markAsSwapped">Označit jako vyměněný</string>
+    <string name="giveReview">Udělit hodnocení</string>
 </resources>

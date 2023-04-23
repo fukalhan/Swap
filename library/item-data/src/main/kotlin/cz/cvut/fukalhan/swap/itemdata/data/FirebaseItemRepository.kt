@@ -15,7 +15,7 @@ import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
-import cz.cvut.fukalhan.swap.itemdata.model.ItemState
+import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemdata.tools.UriAdapter
 import kotlinx.coroutines.tasks.await
 
@@ -197,7 +197,7 @@ class FirebaseItemRepository : ItemRepository {
     }
 }
 
-private fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {
+fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {
     return Item(
         id = doc.id,
         ownerId = doc.getString(OWNER_ID) ?: EMPTY_FIELD,
@@ -205,6 +205,6 @@ private fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {
         description = doc.getString(DESCRIPTION) ?: EMPTY_FIELD,
         imagesUri = (doc.get(IMAGES) as? List<*>)?.mapNotNull { Uri.parse(it.toString()) } ?: emptyList(),
         category = Category.valueOf(doc.getString(CATEGORY) ?: Category.DEFAULT.name),
-        state = ItemState.valueOf(doc.getString(STATE) ?: ItemState.AVAILABLE.name),
+        state = State.valueOf(doc.getString(STATE) ?: State.AVAILABLE.name),
     )
 }

@@ -11,4 +11,8 @@
     <string name="electronics">Elektronika</string>
     <string name="toys">Hračky</string>
     <string name="booksMoviesMusic">Knihy, filmy a hudba</string>
+
+    <string name="available">Volný</string>
+    <string name="reserved">Rezervovaný</string>
+    <string name="swapped">Vyměněný</string>
 </resources>

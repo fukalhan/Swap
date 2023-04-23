@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.itemlist.system.message
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -29,6 +30,7 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.lightGrey
 import cz.cvut.fukalhan.swap.messages.R
 import cz.cvut.fukalhan.swap.messages.presentation.ChatViewModelFactory
+import cz.cvut.fukalhan.swap.messages.system.ItemView
 import io.getstream.chat.android.client.models.Channel
 import io.getstream.chat.android.client.models.ConnectionState
 import io.getstream.chat.android.client.models.User
@@ -44,6 +46,7 @@ import io.getstream.chat.android.compose.ui.theme.ChatTheme
 import io.getstream.chat.android.compose.viewmodel.messages.AttachmentsPickerViewModel
 import io.getstream.chat.android.compose.viewmodel.messages.MessageComposerViewModel
 import io.getstream.chat.android.compose.viewmodel.messages.MessageListViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ChatScreen(
@@ -71,12 +74,13 @@ fun ChatScreen(
     onScreenInit(ScreenState())
 
     CustomChatTheme {
-        Chat(listViewModel, attachmentsPickerViewModel, composerViewModel, navigateBack)
+        Chat(arg, listViewModel, attachmentsPickerViewModel, composerViewModel, navigateBack)
     }
 }
 
 @Composable
 fun Chat(
+    channelId: String,
     listViewModel: MessageListViewModel,
     attachmentsPickerViewModel: AttachmentsPickerViewModel,
     composerViewModel: MessageComposerViewModel,
@@ -103,7 +107,10 @@ fun Chat(
             },
             bottomBar = { MessageComposerBar(composerViewModel, attachmentsPickerViewModel) }
         ) {
-            MessageList(listViewModel, it)
+            Column {
+                ItemView(channelId, koinViewModel())
+                MessageList(listViewModel, it)
+            }
         }
 
         if (isShowingAttachments) {
@@ -154,7 +161,8 @@ fun MessageScreenHeader(
                     modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                 )
             }
-        }
+        },
+        trailingContent = {}
     )
 }
 

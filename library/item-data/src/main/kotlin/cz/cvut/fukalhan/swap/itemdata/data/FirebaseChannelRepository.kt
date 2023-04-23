@@ -5,6 +5,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.itemdata.domain.repo.ChannelRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Channel
+import cz.cvut.fukalhan.swap.itemdata.model.Item
 import kotlinx.coroutines.tasks.await
 
 class FirebaseChannelRepository : ChannelRepository {
@@ -38,7 +39,18 @@ class FirebaseChannelRepository : ChannelRepository {
         }
     }
 
-    override suspend fun getChannelId(channel: Channel): DataResponse<ResponseFlag, String> {
-        TODO("Not yet implemented")
+    override suspend fun getItemFromChannel(channelId: String): DataResponse<ResponseFlag, Item> {
+        return try {
+            val docSnapshot = db.collection(CHANNELS).document(channelId).get().await()
+            if (docSnapshot.exists()) {
+                val itemId = (docSnapshot.get(ITEM_ID) ?: EMPTY_FIELD).toString()
+                val itemSnapshot = db.collection(ITEMS).document(itemId).get().await()
+                DataResponse(true, ResponseFlag.SUCCESS, mapDocSnapshotToItem(itemSnapshot))
+            } else {
+                DataResponse(false, ResponseFlag.FAIL)
+            }
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse(false, ResponseFlag.FAIL)
+        }
     }
 }
