@@ -170,7 +170,6 @@ fun MessageList(
             .fillMaxSize(),
         viewModel = listViewModel,
         onThreadClick = { message ->
-            // composerViewModel.setMessageMode(Thread(message))
             listViewModel.openMessageThread(message)
         }
     )
