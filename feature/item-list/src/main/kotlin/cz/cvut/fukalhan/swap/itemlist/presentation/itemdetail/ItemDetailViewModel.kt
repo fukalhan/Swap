@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.cvut.fukalhan.design.presentation.CHANNEL_TYPE
 import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
@@ -52,7 +53,6 @@ class ItemDetailViewModel(
         itemId: String,
         itemImage: Uri,
         channelName: String,
-        channelType: String = "messaging"
     ) {
         _itemDetailState.value = Loading
         val channel = Channel(userId, itemId, itemOwnerId)
@@ -61,7 +61,7 @@ class ItemDetailViewModel(
             response.data?.let { channelId ->
                 chatClient.createChannel(
                     channelId = channelId,
-                    channelType = channelType,
+                    channelType = CHANNEL_TYPE,
                     memberIds = listOf(userId, itemOwnerId),
                     extraData = mapOf(
                         "name" to channelName,
