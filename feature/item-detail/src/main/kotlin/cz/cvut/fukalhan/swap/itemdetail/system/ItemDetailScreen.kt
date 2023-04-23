@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.itemlist.system.itemdetail
+package cz.cvut.fukalhan.swap.itemdetail.system
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -29,14 +29,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.itemlist.R
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.CreateChannelFailure
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.CreateChannelSuccess
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Failure
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailState
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailViewModel
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Loading
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Success
+import cz.cvut.fukalhan.swap.itemdetail.R
+import cz.cvut.fukalhan.swap.itemdetail.presentation.CreateChannelFailure
+import cz.cvut.fukalhan.swap.itemdetail.presentation.CreateChannelSuccess
+import cz.cvut.fukalhan.swap.itemdetail.presentation.Failure
+import cz.cvut.fukalhan.swap.itemdetail.presentation.ItemDetailState
+import cz.cvut.fukalhan.swap.itemdetail.presentation.ItemDetailViewModel
+import cz.cvut.fukalhan.swap.itemdetail.presentation.Loading
+import cz.cvut.fukalhan.swap.itemdetail.presentation.Success
 import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 
 @Composable

@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.itemlist.system.message
+package cz.cvut.fukalhan.swap.messages.system
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,7 +30,6 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.lightGrey
 import cz.cvut.fukalhan.swap.messages.R
 import cz.cvut.fukalhan.swap.messages.presentation.ChatViewModelFactory
-import cz.cvut.fukalhan.swap.messages.system.ItemView
 import io.getstream.chat.android.client.models.Channel
 import io.getstream.chat.android.client.models.ConnectionState
 import io.getstream.chat.android.client.models.User
