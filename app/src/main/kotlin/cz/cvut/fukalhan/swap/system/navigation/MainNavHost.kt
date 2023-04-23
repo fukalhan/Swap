@@ -28,6 +28,7 @@ import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profile.system.settings.SettingsScreen
+import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
 
 const val ITEM_ID = "itemId"
@@ -92,7 +93,10 @@ fun MainNavHost(
                 arguments = listOf(navArgument(CHANNEL_ID) { type = NavType.StringType })
             ) { backStackEntry ->
                 backStackEntry.arguments?.getString(CHANNEL_ID)?.let { channelId ->
-                    ChatScreen(channelId)
+                    ChatScreen(
+                        channelId,
+                        getKoin().get()
+                    )
                 }
             }
 
