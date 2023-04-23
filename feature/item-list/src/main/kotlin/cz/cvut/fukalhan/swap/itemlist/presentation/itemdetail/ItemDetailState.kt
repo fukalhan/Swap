@@ -3,7 +3,7 @@ package cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail
 import android.net.Uri
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
-import cz.cvut.fukalhan.swap.itemdata.model.ItemState
+import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemlist.R
 
 sealed class ItemDetailState
@@ -17,7 +17,7 @@ class Success(
     val description: String,
     val images: List<Uri>,
     val category: Category,
-    val state: ItemState,
+    val state: State,
     val isLiked: Boolean,
     val ownerInfo: OwnerInfo
 ) : ItemDetailState()
