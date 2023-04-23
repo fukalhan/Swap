@@ -81,6 +81,7 @@ dependencies {
     // Stream Chat
     implementation "io.getstream:stream-chat-android-client:$stream_version"
     implementation "io.getstream:stream-chat-android-offline:$stream_version"
+    implementation "io.getstream:stream-chat-android-pushprovider-firebase:$stream_version"
 
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
 }
