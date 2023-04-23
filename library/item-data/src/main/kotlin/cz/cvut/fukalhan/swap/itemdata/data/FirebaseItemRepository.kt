@@ -195,6 +195,16 @@ class FirebaseItemRepository : ItemRepository {
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
+
+    override suspend fun changeItemState(itemId: String, state: State): Response<ResponseFlag> {
+        return try {
+            val itemRef = db.collection(ITEMS).document(itemId)
+            itemRef.update(STATE, state).await()
+            Response(true, ResponseFlag.SUCCESS)
+        } catch (e: FirebaseFirestoreException) {
+            Response(false, ResponseFlag.FAIL)
+        }
+    }
 }
 
 fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {

@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.messages.system
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,8 +40,11 @@ import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.messages.R
+import cz.cvut.fukalhan.swap.messages.presentation.ChangeItemStateFail
+import cz.cvut.fukalhan.swap.messages.presentation.ChangeItemStateSuccess
 import cz.cvut.fukalhan.swap.messages.presentation.Failure
 import cz.cvut.fukalhan.swap.messages.presentation.ItemState
+import cz.cvut.fukalhan.swap.messages.presentation.ItemStateChangeState
 import cz.cvut.fukalhan.swap.messages.presentation.ItemViewModel
 import cz.cvut.fukalhan.swap.messages.presentation.Loading
 import cz.cvut.fukalhan.swap.messages.presentation.Success
@@ -50,10 +54,12 @@ fun ItemView(
     channelId: String,
     viewModel: ItemViewModel
 ) {
-    val itemState by viewModel.itemState.collectAsState()
+    val itemState by viewModel.itemViewState.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.getItemData(channelId)
     }
+
+    val changeItemState by viewModel.itemStateChangeState.collectAsState()
 
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
@@ -72,6 +78,12 @@ fun ItemView(
         }
         LoadingView(itemState)
         FailView(itemState)
+        ResolveItemStateChange(
+            changeItemState,
+            setChangeStateToInit = { viewModel.setChangeStateToInit() }
+        ) {
+            viewModel.getItemData(channelId)
+        }
     }
 }
 
@@ -140,7 +152,7 @@ fun ItemViewButton(
 ) {
     val user = Firebase.auth.currentUser
     user?.let {
-        if (itemState.ownerId == it.uid) {
+        if (itemState.ownerId == it.uid || itemState.state == State.SWAPPED) {
             Button(
                 onClick = {
                     when (itemState.state) {
@@ -164,6 +176,26 @@ fun ItemViewButton(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ResolveItemStateChange(
+    itemStateChangeState: ItemStateChangeState,
+    setChangeStateToInit: () -> Unit,
+    updateItemView: () -> Unit
+) {
+    when (itemStateChangeState) {
+        is ChangeItemStateFail -> {
+            setChangeStateToInit()
+            val context = LocalContext.current
+            Toast.makeText(context, itemStateChangeState.message, Toast.LENGTH_SHORT).show()
+        }
+        is ChangeItemStateSuccess -> {
+            setChangeStateToInit()
+            updateItemView()
+        }
+        else -> {}
     }
 }
 
