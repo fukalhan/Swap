@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail
+package cz.cvut.fukalhan.swap.itemdetail.presentation
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel

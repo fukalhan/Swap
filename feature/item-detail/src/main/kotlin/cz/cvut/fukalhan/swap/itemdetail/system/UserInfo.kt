@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.itemlist.system.itemdetail
+package cz.cvut.fukalhan.swap.itemdetail.system
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.itemlist.R
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.OwnerInfo
+import cz.cvut.fukalhan.swap.itemdetail.R
+import cz.cvut.fukalhan.swap.itemdetail.presentation.OwnerInfo
 
 @Composable
 fun ItemOwnerInfo(

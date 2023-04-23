@@ -1,10 +1,10 @@
-package cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail
+package cz.cvut.fukalhan.swap.itemdetail.presentation
 
 import android.net.Uri
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
 import cz.cvut.fukalhan.swap.itemdata.model.State
-import cz.cvut.fukalhan.swap.itemlist.R
+import cz.cvut.fukalhan.swap.itemdetail.R
 
 sealed class ItemDetailState
 
