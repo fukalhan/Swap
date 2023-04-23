@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cz.cvut.fukalhan.design.presentation.CHANNEL_TYPE
+import cz.cvut.fukalhan.design.system.CustomChatTheme
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.lightGrey
 import cz.cvut.fukalhan.swap.messages.R
 import cz.cvut.fukalhan.swap.messages.presentation.ChatViewModelFactory
 import io.getstream.chat.android.client.models.User
@@ -55,7 +57,7 @@ fun ChatScreen(
         viewModelFactory.createFactory(channelId)
     )
 
-    ChatTheme {
+    CustomChatTheme {
         Chat(listViewModel, attachmentsPickerViewModel, composerViewModel)
     }
 }
@@ -108,7 +110,13 @@ fun MessageComposerBar(
         onAttachmentsClick = {
             attachmentsPickerViewModel.changeAttachmentState(true)
         },
-        label = { Text(text = stringResource(R.string.sendMessage)) }
+        label = {
+            Text(
+                text = stringResource(R.string.sendMessage),
+                style = ChatTheme.typography.body,
+                color = lightGrey
+            )
+        }
     )
 }
 

@@ -44,6 +44,9 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "io.insert-koin:koin-android:3.3.3"
 
+    // Stream Chat
+    implementation "io.getstream:stream-chat-android-compose:$stream_version"
+
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
 }
 
