@@ -1,9 +1,8 @@
-package cz.cvut.fukalhan.swap.itemdetail.system
+package cz.cvut.fukalhan.design.system.components.screenstate
 
 import android.net.Uri
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,10 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,18 +20,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.itemdetail.R
-import cz.cvut.fukalhan.swap.itemdetail.presentation.OwnerInfo
 
 @Composable
-fun ItemOwnerInfo(
-    ownerInfo: OwnerInfo,
-    onSendMessageButtonClick: () -> Unit
+fun UserInfoView(
+    uri: Uri,
+    username: String,
+    additionalContent: (@Composable RowScope.() -> Unit)? = null
 ) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
@@ -49,13 +44,16 @@ fun ItemOwnerInfo(
                 .padding(SwapAppTheme.dimensions.smallSidePadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProfilePicture(ownerInfo.profilePic)
+            ProfilePicture(uri)
             Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
-            TextView(
-                text = ownerInfo.username,
-                style = SwapAppTheme.typography.titleSecondary
+            Text(
+                text = username,
+                style = SwapAppTheme.typography.titleSecondary,
+                color = SwapAppTheme.colors.textPrimary
             )
-            SendMessageButton(Modifier.weight(1f), onSendMessageButtonClick)
+
+            // Display additional content like buttons etc
+            additionalContent?.invoke(this)
         }
     }
 }
@@ -75,31 +73,4 @@ fun ProfilePicture(pictureUri: Uri) {
             .size(100.dp),
         contentScale = ContentScale.Fit
     )
-}
-
-@Composable
-fun SendMessageButton(
-    modifier: Modifier,
-    onSendMessageButtonClick: () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
-            .padding(SwapAppTheme.dimensions.smallSidePadding)
-            .fillMaxSize(),
-        contentAlignment = Alignment.BottomEnd
-    ) {
-        Button(
-            colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary),
-            modifier = Modifier
-                .wrapContentSize(),
-            onClick = onSendMessageButtonClick
-        ) {
-            Text(
-                text = stringResource(R.string.sendMessage),
-                style = SwapAppTheme.typography.button,
-                color = SwapAppTheme.colors.buttonText
-            )
-        }
-    }
 }
