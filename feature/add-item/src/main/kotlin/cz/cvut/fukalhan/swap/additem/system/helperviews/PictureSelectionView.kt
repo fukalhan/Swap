@@ -16,12 +16,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,8 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.R
@@ -43,49 +41,42 @@ fun PictureSelectionView(
     selectedImagesUri: List<Uri>,
     setSelectedImagesUri: (List<Uri>) -> Unit
 ) {
-    Surface(
-        elevation = SwapAppTheme.dimensions.elevation,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
-        color = SwapAppTheme.colors.backgroundSecondary,
+    Column(
         modifier = Modifier
-            .padding(bottom = SwapAppTheme.dimensions.sidePadding)
             .fillMaxWidth()
             .height(SwapAppTheme.dimensions.imageView)
-            .zIndex(0f)
+            .padding(SwapAppTheme.dimensions.smallSidePadding),
+        horizontalAlignment = Alignment.Start,
     ) {
-        Column(
-            modifier = Modifier
-                .padding(SwapAppTheme.dimensions.sidePadding)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.Start,
-        ) {
-            val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.PickMultipleVisualMedia(),
-                onResult = { uris ->
-                    val prevImagesSize = selectedImagesUri.size
-                    setSelectedImagesUri(
-                        selectedImagesUri.take(PICTURES_LIMIT) + uris.take(PICTURES_LIMIT - prevImagesSize)
-                    )
-                }
-            )
-
-            LazyRow {
-                items(selectedImagesUri) { uri ->
-                    ImageItem(uri) {
-                        setSelectedImagesUri(
-                            selectedImagesUri.filter {
-                                it != uri
-                            }
-                        )
-                    }
-                }
-            }
-
-            InstructionRow(selectedImagesUri, Modifier.weight(1f)) {
-                multiplePhotoPickerLauncher.launch(
-                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickMultipleVisualMedia(),
+            onResult = { uris ->
+                val prevImagesSize = selectedImagesUri.size
+                setSelectedImagesUri(
+                    selectedImagesUri.take(PICTURES_LIMIT) + uris.take(PICTURES_LIMIT - prevImagesSize)
                 )
             }
+        )
+
+        LazyRow {
+            items(selectedImagesUri) { uri ->
+                ImageItem(uri) {
+                    setSelectedImagesUri(
+                        selectedImagesUri.filter {
+                            it != uri
+                        }
+                    )
+                }
+            }
+        }
+
+        InstructionRow(
+            selectedImagesUri,
+            Modifier.weight(1f)
+        ) {
+            multiplePhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
         }
     }
 }
@@ -149,6 +140,7 @@ fun InstructionRow(
 ) {
     Row(
         modifier = modifier
+            .fillMaxWidth()
             .padding(SwapAppTheme.dimensions.smallSidePadding)
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
@@ -157,7 +149,7 @@ fun InstructionRow(
             painter = painterResource(id = R.drawable.add),
             contentDescription = null,
             tint = SwapAppTheme.colors.textSecondary,
-            modifier = Modifier.size(40.dp)
+            modifier = Modifier.size(SwapAppTheme.dimensions.icon)
         )
         Spacer(modifier = Modifier.size(SwapAppTheme.dimensions.smallSpacer))
         Text(
@@ -165,8 +157,7 @@ fun InstructionRow(
             style = SwapAppTheme.typography.titlePrimary,
             color = SwapAppTheme.colors.textSecondary
         )
-
-        Spacer(modifier = Modifier.size(SwapAppTheme.dimensions.largeSpacer))
+        Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.largeSpacer))
         Text(
             text = "${selectedImagesUri.size}/$PICTURES_LIMIT",
             style = SwapAppTheme.typography.titleSecondary,

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.StringResources
+import cz.cvut.fukalhan.swap.auth.domain.GetStreamChatUserTokenUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,11 +14,16 @@ import kotlinx.coroutines.launch
 
 class ProfileInfoViewModel(
     private val getUserProfileDataUseCase: GetUserProfileDataUseCase,
+    private val getStreamChatUserTokenUseCase: GetStreamChatUserTokenUseCase,
     private val stringResources: StringResources
 ) : ViewModel() {
     private val _profileInfoState: MutableStateFlow<ProfileInfoState> = MutableStateFlow(Init)
     val profileInfoState: StateFlow<ProfileInfoState>
         get() = _profileInfoState
+
+    private val _chatToken = MutableStateFlow("")
+    val chatToken: StateFlow<String>
+        get() = _chatToken
 
     init {
         val user = Firebase.auth.currentUser
@@ -32,8 +38,18 @@ class ProfileInfoViewModel(
             val userProfileResponse = getUserProfileDataUseCase.getUserProfileData(uid)
             userProfileResponse.data?.let {
                 _profileInfoState.value = it.toProfileInfoState(stringResources)
+                getChatToken()
             } ?: run {
                 _profileInfoState.value = Failure()
+            }
+        }
+    }
+
+    private fun getChatToken() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val token = getStreamChatUserTokenUseCase.getChatToken()
+            token?.let {
+                _chatToken.value = it
             }
         }
     }

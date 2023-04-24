@@ -3,10 +3,10 @@ package cz.cvut.fukalhan.swap.profile.system.items
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,10 +14,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.presentation.items.ItemListState
 import cz.cvut.fukalhan.swap.profile.presentation.items.LikedItemListViewModel
 import cz.cvut.fukalhan.swap.profile.presentation.items.Success
@@ -58,16 +60,24 @@ fun LikedItemListContent(
     user: FirebaseUser?
 ) {
     if (itemListState is Success) {
-        LazyVerticalGrid(
-            modifier = Modifier
-                .background(SwapAppTheme.colors.backgroundSecondary)
-                .fillMaxWidth(),
-            columns = GridCells.Fixed(2),
-        ) {
-            items(itemListState.items) { itemState ->
-                user?.let { user ->
-                    LikeItemCard(itemState) { isLiked ->
-                        viewModel.toggleItemLike(user.uid, itemState.id, isLiked)
+        if (itemListState.items.isEmpty()) {
+            Text(
+                text = stringResource(R.string.noItemsToDisplay),
+                style = SwapAppTheme.typography.titleSecondary,
+                color = SwapAppTheme.colors.textPrimary
+            )
+        } else {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .background(SwapAppTheme.colors.backgroundSecondary)
+                    .fillMaxSize(),
+                columns = GridCells.Fixed(2),
+            ) {
+                items(itemListState.items) { itemState ->
+                    user?.let { user ->
+                        LikeItemCard(itemState) { isLiked ->
+                            viewModel.toggleItemLike(user.uid, itemState.id, isLiked)
+                        }
                     }
                 }
             }

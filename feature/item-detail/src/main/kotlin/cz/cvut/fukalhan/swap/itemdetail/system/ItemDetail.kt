@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.itemlist.system.itemdetail
+package cz.cvut.fukalhan.swap.itemdetail.system
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.itemlist.R
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.ItemDetailViewModel
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.Success
+import cz.cvut.fukalhan.swap.itemdetail.R
+import cz.cvut.fukalhan.swap.itemdetail.presentation.ItemDetailViewModel
+import cz.cvut.fukalhan.swap.itemdetail.presentation.Success
 
 @Composable
 fun ItemDetail(
@@ -56,7 +56,17 @@ fun ItemDetail(
             thickness = 1.dp,
             color = SwapAppTheme.colors.component
         )
-        ItemOwnerInfo(itemDetailState.ownerInfo)
+        ItemOwnerInfo(itemDetailState.ownerInfo) {
+            user?.let { user ->
+                viewModel.createChannel(
+                    user.uid,
+                    itemDetailState.ownerInfo.id,
+                    itemDetailState.id,
+                    itemDetailState.images.first(),
+                    itemDetailState.name
+                )
+            }
+        }
     }
 }
 

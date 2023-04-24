@@ -1,10 +1,10 @@
-package cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail
+package cz.cvut.fukalhan.swap.itemdetail.presentation
 
 import android.net.Uri
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
-import cz.cvut.fukalhan.swap.itemdata.model.ItemState
-import cz.cvut.fukalhan.swap.itemlist.R
+import cz.cvut.fukalhan.swap.itemdata.model.State
+import cz.cvut.fukalhan.swap.itemdetail.R
 
 sealed class ItemDetailState
 
@@ -17,7 +17,7 @@ class Success(
     val description: String,
     val images: List<Uri>,
     val category: Category,
-    val state: ItemState,
+    val state: State,
     val isLiked: Boolean,
     val ownerInfo: OwnerInfo
 ) : ItemDetailState()
@@ -45,3 +45,7 @@ internal fun ItemDetail.toItemDetailState(ownerId: String, ownerUsername: String
 }
 
 class Failure(val message: Int = R.string.cannotLoadItemDetail) : ItemDetailState()
+
+class CreateChannelSuccess(val channelId: String) : ItemDetailState()
+
+class CreateChannelFailure(val message: Int = R.string.createChannelFailure) : ItemDetailState()
