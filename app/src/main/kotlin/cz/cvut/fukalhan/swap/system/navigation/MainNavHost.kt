@@ -128,6 +128,7 @@ fun MainNavHost(
                     ChatScreen(
                         channelId,
                         getKoin().get(),
+                        navController,
                         { screenState = it }
                     ) {
                         navController.popBackStack()
