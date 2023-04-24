@@ -43,7 +43,7 @@ fun ItemDetail(
             .background(SwapAppTheme.colors.backgroundSecondary)
             .fillMaxSize()
     ) {
-        ImageRow(images = itemDetailState.images)
+        ImageRow(images = itemDetailState.images, itemDetailState.state)
         ItemInfo(itemDetailState, Modifier.weight(1f)) { isLiked ->
             user?.let { user ->
                 viewModel.toggleItemLike(user.uid, itemDetailState.id, isLiked)
