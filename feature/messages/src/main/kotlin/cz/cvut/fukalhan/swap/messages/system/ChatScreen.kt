@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.presentation.CHANNEL_TYPE
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.CustomChatTheme
@@ -51,6 +52,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ChatScreen(
     arg: String,
     viewModelFactory: ChatViewModelFactory,
+    navController: NavHostController,
     onScreenInit: (ScreenState) -> Unit,
     navigateBack: () -> Unit
 ) {
@@ -73,7 +75,7 @@ fun ChatScreen(
     onScreenInit(ScreenState())
 
     CustomChatTheme {
-        Chat(arg, listViewModel, attachmentsPickerViewModel, composerViewModel, navigateBack)
+        Chat(arg, listViewModel, attachmentsPickerViewModel, composerViewModel, navController, navigateBack)
     }
 }
 
@@ -83,6 +85,7 @@ fun Chat(
     listViewModel: MessageListViewModel,
     attachmentsPickerViewModel: AttachmentsPickerViewModel,
     composerViewModel: MessageComposerViewModel,
+    navController: NavHostController,
     navigateBack: () -> Unit
 ) {
     val isShowingAttachments = attachmentsPickerViewModel.isShowingAttachments
@@ -107,7 +110,7 @@ fun Chat(
             bottomBar = { MessageComposerBar(composerViewModel, attachmentsPickerViewModel) }
         ) {
             Column {
-                ItemView(channelId, koinViewModel())
+                ItemView(channelId, koinViewModel(), navController)
                 MessageList(listViewModel, it)
             }
         }

@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.messages.system
 
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.firebase.auth.ktx.auth
@@ -45,11 +47,13 @@ import cz.cvut.fukalhan.swap.messages.presentation.ItemViewModel
 import cz.cvut.fukalhan.swap.messages.presentation.ItemViewState
 import cz.cvut.fukalhan.swap.messages.presentation.Loading
 import cz.cvut.fukalhan.swap.messages.presentation.Success
+import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 
 @Composable
 fun ItemView(
     channelId: String,
-    viewModel: ItemViewModel
+    viewModel: ItemViewModel,
+    navController: NavHostController
 ) {
     val itemState by viewModel.itemViewState.collectAsState()
     LaunchedEffect(Unit) {
@@ -68,7 +72,8 @@ fun ItemView(
         ResolveState(
             itemState,
             channelId,
-            viewModel
+            viewModel,
+            navController
         ) {
             // TODO add review screen
         }
@@ -80,11 +85,12 @@ fun ResolveState(
     state: ItemViewState,
     channelId: String,
     viewModel: ItemViewModel,
+    navController: NavHostController,
     navigateToReviewScreen: () -> Unit
 ) {
     when (state) {
         is Loading -> LoadingView()
-        is Success -> Item(state, channelId, viewModel, navigateToReviewScreen)
+        is Success -> Item(state, channelId, viewModel, navController, navigateToReviewScreen)
         is Failure -> FailureView(state.message)
         is ChangeStateFailure -> {
             val context = LocalContext.current
@@ -99,6 +105,7 @@ fun Item(
     itemState: Success,
     channelId: String,
     viewModel: ItemViewModel,
+    navController: NavHostController,
     navigateToReviewScreen: () -> Unit
 ) {
     Row(
@@ -109,7 +116,9 @@ fun Item(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
-        ItemPicture(itemState.image)
+        ItemPicture(itemState.image) {
+            navController.navigate("${SecondaryScreen.ItemDetail.route}/${itemState.id}")
+        }
         Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
         Column(
             modifier = Modifier
@@ -135,7 +144,10 @@ fun Item(
 }
 
 @Composable
-fun ItemPicture(uri: Uri) {
+fun ItemPicture(
+    uri: Uri,
+    onClick: () -> Unit
+) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(uri)
@@ -145,7 +157,8 @@ fun ItemPicture(uri: Uri) {
         contentDescription = null,
         modifier = Modifier
             .clip(RoundedCornerShape(SwapAppTheme.dimensions.smallRoundCorners))
-            .size(100.dp),
+            .size(100.dp)
+            .clickable { onClick() },
         contentScale = ContentScale.Crop
     )
 }
