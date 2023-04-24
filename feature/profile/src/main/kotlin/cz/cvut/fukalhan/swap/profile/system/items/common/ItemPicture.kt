@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.system.items
+package cz.cvut.fukalhan.swap.profile.system.items.common
 
 import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,10 +12,7 @@ import coil.request.ImageRequest
 import cz.cvut.fukalhan.swap.profile.R
 
 @Composable
-fun ItemPicture(
-    uri: Uri,
-    modifier: Modifier = Modifier.fillMaxSize()
-) {
+fun ItemPicture(uri: Uri) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(uri)
@@ -23,7 +20,7 @@ fun ItemPicture(
             .build(),
         placeholder = painterResource(R.drawable.camera),
         contentDescription = null,
-        modifier = modifier,
+        modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
     )
 }
