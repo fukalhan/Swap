@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,17 +16,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
+import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
+import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.swap.itemlist.R
 import cz.cvut.fukalhan.swap.itemlist.presentation.Empty
 import cz.cvut.fukalhan.swap.itemlist.presentation.Failure
 import cz.cvut.fukalhan.swap.itemlist.presentation.ItemListState
 import cz.cvut.fukalhan.swap.itemlist.presentation.ItemListViewModel
+import cz.cvut.fukalhan.swap.itemlist.presentation.ItemState
 import cz.cvut.fukalhan.swap.itemlist.presentation.Loading
 import cz.cvut.fukalhan.swap.itemlist.presentation.Success
 
@@ -57,10 +58,7 @@ fun ItemListScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        LoadingView(itemListState)
-        OnSuccess(viewModel, itemListState, navigateToItemDetail)
-        OnFailure(itemListState)
-        EmptyView(itemListState)
+        ResolveState(itemListState, viewModel, navigateToItemDetail)
     }
 }
 
@@ -81,75 +79,48 @@ fun TopBar(
 }
 
 @Composable
-fun LoadingView(itemListState: ItemListState) {
-    if (itemListState is Loading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f)),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(SwapAppTheme.dimensions.icon),
-                color = SwapAppTheme.colors.primary
-            )
-        }
+fun ResolveState(
+    state: ItemListState,
+    viewModel: ItemListViewModel,
+    navigateToItemDetail: (String) -> Unit
+) {
+    when (state) {
+        is Loading -> LoadingView()
+        is Success -> ItemList(state.items, viewModel, navigateToItemDetail)
+        is Failure -> FailureView(state.message)
+        is Empty -> EmptyView(state.message)
+        else -> {}
     }
 }
 
 @Composable
-fun OnSuccess(
+fun ItemList(
+    items: List<ItemState>,
     viewModel: ItemListViewModel,
-    itemListState: ItemListState,
     navigateToItemDetail: (String) -> Unit,
 ) {
-    if (itemListState is Success) {
-        val user = Firebase.auth.currentUser
+    val user = Firebase.auth.currentUser
 
-        LazyVerticalGrid(
-            modifier = Modifier
-                .background(SwapAppTheme.colors.backgroundSecondary)
-                .padding(
-                    start = SwapAppTheme.dimensions.smallSidePadding,
-                    top = SwapAppTheme.dimensions.smallSidePadding,
-                    end = SwapAppTheme.dimensions.smallSidePadding,
-                    bottom = SwapAppTheme.dimensions.bottomScreenPadding
-                )
-                .fillMaxSize(),
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding),
-            horizontalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding)
-        ) {
-            items(itemListState.items) { itemState ->
-                ItemCard(itemState, navigateToItemDetail) { isLiked ->
-                    user?.let {
-                        viewModel.toggleItemLike(it.uid, itemState.id, isLiked)
-                    }
+    LazyVerticalGrid(
+        modifier = Modifier
+            .background(SwapAppTheme.colors.backgroundSecondary)
+            .padding(
+                start = SwapAppTheme.dimensions.smallSidePadding,
+                top = SwapAppTheme.dimensions.smallSidePadding,
+                end = SwapAppTheme.dimensions.smallSidePadding,
+                bottom = SwapAppTheme.dimensions.bottomScreenPadding
+            )
+            .fillMaxSize(),
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding),
+        horizontalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding)
+    ) {
+        items(items) { itemState ->
+            ItemCard(itemState, navigateToItemDetail) { isLiked ->
+                user?.let {
+                    viewModel.toggleItemLike(it.uid, itemState.id, isLiked)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun EmptyView(itemListState: ItemListState) {
-    if (itemListState is Empty) {
-        Text(
-            text = stringResource(itemListState.message),
-            style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary
-        )
-    }
-}
-
-@Composable
-fun OnFailure(itemListState: ItemListState) {
-    if (itemListState is Failure) {
-        Text(
-            text = stringResource(itemListState.message),
-            style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary
-        )
     }
 }

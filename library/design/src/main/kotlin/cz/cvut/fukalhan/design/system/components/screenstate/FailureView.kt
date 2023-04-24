@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.design.system.components
+package cz.cvut.fukalhan.design.system.components.screenstate
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -7,6 +7,15 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 
 @Composable
 fun FailureView(message: Int) {
+    Text(
+        text = stringResource(message),
+        style = SwapAppTheme.typography.titleSecondary,
+        color = SwapAppTheme.colors.textPrimary
+    )
+}
+
+@Composable
+fun EmptyView(message: Int) {
     Text(
         text = stringResource(message),
         style = SwapAppTheme.typography.titleSecondary,
