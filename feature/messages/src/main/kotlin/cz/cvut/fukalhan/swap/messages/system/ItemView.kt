@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -65,7 +63,7 @@ fun ItemView(
         color = SwapAppTheme.colors.backgroundSecondary,
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp)
+            .wrapContentHeight()
             .padding(bottom = SwapAppTheme.dimensions.sidePadding)
 
     ) {
@@ -122,7 +120,7 @@ fun Item(
         Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
         Column(
             modifier = Modifier
-                .fillMaxHeight()
+                .weight(1f)
                 .wrapContentHeight()
         ) {
             Text(
@@ -172,28 +170,47 @@ fun ItemViewButton(
 ) {
     val user = Firebase.auth.currentUser
     user?.let {
-        if (itemState.ownerId == it.uid || itemState.state == State.SWAPPED) {
-            Button(
-                onClick = {
-                    when (itemState.state) {
-                        State.AVAILABLE -> viewModel.changeItemState(itemState.id, State.RESERVED, channelId)
-                        State.RESERVED -> viewModel.changeItemState(itemState.id, State.SWAPPED, channelId)
-                        else -> navigateToReviewScreen()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            if (itemState.ownerId == it.uid || itemState.state == State.SWAPPED) {
+                if (itemState.state == State.RESERVED) {
+                    Button(
+                        onClick = { viewModel.changeItemState(itemState.id, State.AVAILABLE, channelId) },
+                        colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.cancelReservation),
+                            style = SwapAppTheme.typography.button,
+                            color = SwapAppTheme.colors.buttonText
+                        )
                     }
-                },
-                colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary)
-            ) {
-                val label = when (itemState.state) {
-                    State.AVAILABLE -> R.string.reserve
-                    State.RESERVED -> R.string.markAsSwapped
-                    else -> R.string.giveReview
                 }
 
-                Text(
-                    text = stringResource(label),
-                    style = SwapAppTheme.typography.button,
-                    color = SwapAppTheme.colors.buttonText
-                )
+                Button(
+                    onClick = {
+                        when (itemState.state) {
+                            State.AVAILABLE -> viewModel.changeItemState(itemState.id, State.RESERVED, channelId)
+                            State.RESERVED -> viewModel.changeItemState(itemState.id, State.SWAPPED, channelId)
+                            else -> navigateToReviewScreen()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary)
+                ) {
+                    val label = when (itemState.state) {
+                        State.AVAILABLE -> R.string.reserve
+                        State.RESERVED -> R.string.markAsSwapped
+                        else -> R.string.giveReview
+                    }
+
+                    Text(
+                        text = stringResource(label),
+                        style = SwapAppTheme.typography.button,
+                        color = SwapAppTheme.colors.buttonText
+                    )
+                }
             }
         }
     }
