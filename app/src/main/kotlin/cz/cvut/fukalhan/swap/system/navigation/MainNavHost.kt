@@ -88,24 +88,10 @@ fun MainNavHost(
                 }
             }
 
-            composable(
-                "${SecondaryScreen.Message.route}/{$CHANNEL_ID}",
-                arguments = listOf(navArgument(CHANNEL_ID) { type = NavType.StringType })
-            ) { backStackEntry ->
-                backStackEntry.arguments?.getString(CHANNEL_ID)?.let { channelId ->
-                    ChatScreen(
-                        channelId,
-                        getKoin().get(),
-                        { screenState = it }
-                    ) {
-                        navController.popBackStack()
-                    }
-                }
-            }
-
             composable(MainScreen.Profile.route) {
                 ProfileScreen(
-                    { screenState = it }
+                    navController,
+                    { screenState = it },
                 ) {
                     navController.navigate(SecondaryScreen.Settings.route)
                 }
@@ -131,6 +117,21 @@ fun MainNavHost(
             composable(MainScreen.Messages.route) {
                 ChannelsScreen(getKoin().get(), navController) {
                     screenState = it
+                }
+            }
+
+            composable(
+                "${SecondaryScreen.Message.route}/{$CHANNEL_ID}",
+                arguments = listOf(navArgument(CHANNEL_ID) { type = NavType.StringType })
+            ) { backStackEntry ->
+                backStackEntry.arguments?.getString(CHANNEL_ID)?.let { channelId ->
+                    ChatScreen(
+                        channelId,
+                        getKoin().get(),
+                        { screenState = it }
+                    ) {
+                        navController.popBackStack()
+                    }
                 }
             }
         }
