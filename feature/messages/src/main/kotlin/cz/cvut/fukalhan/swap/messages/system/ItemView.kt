@@ -3,7 +3,6 @@ package cz.cvut.fukalhan.swap.messages.system
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,11 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -38,14 +35,14 @@ import coil.request.ImageRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
+import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.messages.R
-import cz.cvut.fukalhan.swap.messages.presentation.ChangeItemStateFail
-import cz.cvut.fukalhan.swap.messages.presentation.ChangeItemStateSuccess
+import cz.cvut.fukalhan.swap.messages.presentation.ChangeStateFailure
 import cz.cvut.fukalhan.swap.messages.presentation.Failure
-import cz.cvut.fukalhan.swap.messages.presentation.ItemState
-import cz.cvut.fukalhan.swap.messages.presentation.ItemStateChangeState
 import cz.cvut.fukalhan.swap.messages.presentation.ItemViewModel
+import cz.cvut.fukalhan.swap.messages.presentation.ItemViewState
 import cz.cvut.fukalhan.swap.messages.presentation.Loading
 import cz.cvut.fukalhan.swap.messages.presentation.Success
 
@@ -59,8 +56,6 @@ fun ItemView(
         viewModel.getItemData(channelId)
     }
 
-    val changeItemState by viewModel.itemStateChangeState.collectAsState()
-
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
@@ -70,60 +65,71 @@ fun ItemView(
             .padding(bottom = SwapAppTheme.dimensions.sidePadding)
 
     ) {
-        Item(
+        ResolveState(
             itemState,
+            channelId,
             viewModel
         ) {
             // TODO add review screen
-        }
-        LoadingView(itemState)
-        FailView(itemState)
-        ResolveItemStateChange(
-            changeItemState,
-            setChangeStateToInit = { viewModel.setChangeStateToInit() }
-        ) {
-            viewModel.getItemData(channelId)
         }
     }
 }
 
 @Composable
-fun Item(
-    itemState: ItemState,
+fun ResolveState(
+    state: ItemViewState,
+    channelId: String,
     viewModel: ItemViewModel,
     navigateToReviewScreen: () -> Unit
 ) {
-    if (itemState is Success) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(SwapAppTheme.dimensions.smallSidePadding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            ItemPicture(itemState.image)
-            Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .wrapContentHeight()
-            ) {
-                Text(
-                    text = itemState.name,
-                    style = SwapAppTheme.typography.titleSecondary,
-                    color = SwapAppTheme.colors.textPrimary
-                )
-                if (itemState.state == State.RESERVED || itemState.state == State.SWAPPED) {
-                    Text(
-                        text = stringResource(itemState.state.label),
-                        style = SwapAppTheme.typography.titleSecondary,
-                        color = SwapAppTheme.colors.textSecondary
-                    )
-                }
+    when (state) {
+        is Loading -> LoadingView()
+        is Success -> Item(state, channelId, viewModel, navigateToReviewScreen)
+        is Failure -> FailureView(state.message)
+        is ChangeStateFailure -> {
+            val context = LocalContext.current
+            Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+        }
+        else -> {}
+    }
+}
 
-                ItemViewButton(itemState, viewModel, navigateToReviewScreen)
+@Composable
+fun Item(
+    itemState: Success,
+    channelId: String,
+    viewModel: ItemViewModel,
+    navigateToReviewScreen: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(SwapAppTheme.dimensions.smallSidePadding),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        ItemPicture(itemState.image)
+        Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .wrapContentHeight()
+        ) {
+            Text(
+                text = itemState.name,
+                style = SwapAppTheme.typography.titleSecondary,
+                color = SwapAppTheme.colors.textPrimary
+            )
+            if (itemState.state == State.RESERVED || itemState.state == State.SWAPPED) {
+                Text(
+                    text = stringResource(itemState.state.label),
+                    style = SwapAppTheme.typography.titleSecondary,
+                    color = SwapAppTheme.colors.textSecondary
+                )
             }
+
+            ItemViewButton(itemState, channelId, viewModel, navigateToReviewScreen)
         }
     }
 }
@@ -147,6 +153,7 @@ fun ItemPicture(uri: Uri) {
 @Composable
 fun ItemViewButton(
     itemState: Success,
+    channelId: String,
     viewModel: ItemViewModel,
     navigateToReviewScreen: () -> Unit
 ) {
@@ -156,8 +163,8 @@ fun ItemViewButton(
             Button(
                 onClick = {
                     when (itemState.state) {
-                        State.AVAILABLE -> viewModel.changeItemState(itemState.id, State.RESERVED)
-                        State.RESERVED -> viewModel.changeItemState(itemState.id, State.SWAPPED)
+                        State.AVAILABLE -> viewModel.changeItemState(itemState.id, State.RESERVED, channelId)
+                        State.RESERVED -> viewModel.changeItemState(itemState.id, State.SWAPPED, channelId)
                         else -> navigateToReviewScreen()
                     }
                 },
@@ -176,49 +183,5 @@ fun ItemViewButton(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun ResolveItemStateChange(
-    itemStateChangeState: ItemStateChangeState,
-    setChangeStateToInit: () -> Unit,
-    updateItemView: () -> Unit
-) {
-    when (itemStateChangeState) {
-        is ChangeItemStateFail -> {
-            setChangeStateToInit()
-            val context = LocalContext.current
-            Toast.makeText(context, itemStateChangeState.message, Toast.LENGTH_SHORT).show()
-        }
-        is ChangeItemStateSuccess -> {
-            setChangeStateToInit()
-            updateItemView()
-        }
-        else -> {}
-    }
-}
-
-@Composable
-fun LoadingView(itemState: ItemState) {
-    if (itemState is Loading) {
-        Box(modifier = Modifier.wrapContentSize()) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(SwapAppTheme.dimensions.icon),
-                color = SwapAppTheme.colors.primary
-            )
-        }
-    }
-}
-
-@Composable
-fun FailView(itemState: ItemState) {
-    if (itemState is Failure) {
-        Text(
-            text = stringResource(itemState.message),
-            style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary
-        )
     }
 }
