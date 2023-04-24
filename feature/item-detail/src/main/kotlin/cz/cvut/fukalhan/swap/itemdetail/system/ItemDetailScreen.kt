@@ -27,6 +27,7 @@ import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
+import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.itemdetail.R
 import cz.cvut.fukalhan.swap.itemdetail.presentation.CreateChannelFailure
 import cz.cvut.fukalhan.swap.itemdetail.presentation.CreateChannelSuccess
@@ -115,7 +116,7 @@ fun ResolveState(
     setStateToInit: () -> Unit
 ) {
     when (state) {
-        is Loading -> LoadingView()
+        is Loading -> LoadingView(semiTransparentBlack)
         is Success -> ItemDetail(state, viewModel)
         is Failure -> FailureView(state.message)
         is CreateChannelSuccess -> {

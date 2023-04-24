@@ -24,6 +24,7 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
+import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.itemlist.R
 import cz.cvut.fukalhan.swap.itemlist.presentation.Empty
 import cz.cvut.fukalhan.swap.itemlist.presentation.Failure
@@ -85,7 +86,7 @@ fun ResolveState(
     navigateToItemDetail: (String) -> Unit
 ) {
     when (state) {
-        is Loading -> LoadingView()
+        is Loading -> LoadingView(semiTransparentBlack)
         is Success -> ItemList(state.items, viewModel, navigateToItemDetail)
         is Failure -> FailureView(state.message)
         is Empty -> EmptyView(state.message)
