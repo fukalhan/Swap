@@ -16,7 +16,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,13 +24,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.system.components.ItemStateView
 import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemdetail.R
 
@@ -47,7 +44,11 @@ fun ImageRow(
             .fillMaxWidth()
             .height(350.dp)
     ) {
-        StateView(itemState, Modifier.align(Alignment.BottomCenter))
+        ItemStateView(
+            itemState == State.RESERVED || itemState == State.SWAPPED,
+            itemState.label,
+            Modifier.align(Alignment.BottomCenter)
+        )
         HorizontalPager(
             pageCount = images.size,
             beyondBoundsPageCount = images.size,
@@ -66,26 +67,6 @@ fun ImageRow(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
         )
-    }
-}
-
-@Composable
-fun StateView(state: State, modifier: Modifier) {
-    if (state == State.RESERVED || state == State.SWAPPED) {
-        Row(
-            modifier = modifier
-                .background(semiTransparentBlack)
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(SwapAppTheme.dimensions.smallSidePadding)
-                .zIndex(1f)
-        ) {
-            Text(
-                text = stringResource(state.label),
-                style = SwapAppTheme.typography.button,
-                color = SwapAppTheme.colors.buttonText
-            )
-        }
     }
 }
 
