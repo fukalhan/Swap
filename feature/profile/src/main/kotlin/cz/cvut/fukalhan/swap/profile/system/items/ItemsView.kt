@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
+import cz.cvut.fukalhan.swap.profile.system.items.liked.LikedItemList
+import cz.cvut.fukalhan.swap.profile.system.items.users.UsersItemList
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

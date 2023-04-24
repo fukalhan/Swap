@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.system.items
+package cz.cvut.fukalhan.swap.profile.system.items.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
