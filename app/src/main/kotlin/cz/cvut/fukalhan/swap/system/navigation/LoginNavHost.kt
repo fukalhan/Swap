@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import cz.cvut.fukalhan.swap.login.system.LoginScreen
+import cz.cvut.fukalhan.swap.login.system.LoginTabScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.InitNavScreen
 
 @Composable
@@ -19,7 +19,7 @@ fun LoginNavHost() {
     ) {
         NavHost(navController, InitNavScreen.Main.route) {
             composable(InitNavScreen.Login.route) {
-                LoginScreen(navController)
+                LoginTabScreen(navController)
             }
 
             composable(InitNavScreen.Main.route) {

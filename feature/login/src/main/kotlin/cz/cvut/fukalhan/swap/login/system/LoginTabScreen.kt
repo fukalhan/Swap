@@ -21,7 +21,7 @@ import cz.cvut.fukalhan.swap.login.system.signup.SignUpScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginTabScreen(navController: NavHostController) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(R.string.signIn), stringResource(R.string.signUp))
 
