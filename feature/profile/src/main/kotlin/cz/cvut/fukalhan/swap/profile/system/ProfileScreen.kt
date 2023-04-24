@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
@@ -23,11 +24,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(
+    navController: NavHostController,
     onScreenInit: (ScreenState) -> Unit,
     onSettingsClick: () -> Unit
 ) {
     TopBar(onScreenInit, onSettingsClick)
-    Profile()
+    Profile(navController)
 }
 
 @Composable
@@ -56,7 +58,7 @@ fun TopBar(
 }
 
 @Composable
-fun Profile() {
+fun Profile(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,6 +67,6 @@ fun Profile() {
         verticalArrangement = Arrangement.Top,
     ) {
         ProfileInfo(koinViewModel())
-        ItemsView(Modifier.weight(1f).fillMaxWidth())
+        ItemsView(Modifier.weight(1f).fillMaxWidth(), navController)
     }
 }

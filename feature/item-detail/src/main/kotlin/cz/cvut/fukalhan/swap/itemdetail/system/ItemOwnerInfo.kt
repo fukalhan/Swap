@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,20 +37,26 @@ fun ItemOwnerInfo(
     ownerInfo: OwnerInfo,
     onSendMessageButtonClick: () -> Unit
 ) {
-    Row(
+    Surface(
+        elevation = SwapAppTheme.dimensions.elevation,
         modifier = Modifier
             .fillMaxWidth()
             .height(110.dp)
-            .padding(SwapAppTheme.dimensions.smallSidePadding),
-        verticalAlignment = Alignment.CenterVertically
     ) {
-        ProfilePicture(ownerInfo.profilePic)
-        Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
-        TextView(
-            text = ownerInfo.username,
-            style = SwapAppTheme.typography.titleSecondary
-        )
-        SendMessageButton(Modifier.weight(1f), onSendMessageButtonClick)
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(SwapAppTheme.dimensions.smallSidePadding),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProfilePicture(ownerInfo.profilePic)
+            Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
+            TextView(
+                text = ownerInfo.username,
+                style = SwapAppTheme.typography.titleSecondary
+            )
+            SendMessageButton(Modifier.weight(1f), onSendMessageButtonClick)
+        }
     }
 }
 

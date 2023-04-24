@@ -15,10 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.presentation.items.ItemListState
 import cz.cvut.fukalhan.swap.profile.presentation.items.LikedItemListViewModel
@@ -28,7 +30,8 @@ import cz.cvut.fukalhan.swap.profile.system.items.common.LoadingView
 
 @Composable
 fun LikedItemList(
-    viewModel: LikedItemListViewModel
+    viewModel: LikedItemListViewModel,
+    navController: NavHostController
 ) {
     val itemListState: ItemListState by viewModel.itemListState.collectAsState()
     val user = Firebase.auth.currentUser
@@ -50,7 +53,7 @@ fun LikedItemList(
         contentAlignment = Alignment.Center
     ) {
         LoadingView(itemListState)
-        LikedItemListContent(itemListState, viewModel, user)
+        LikedItemListContent(itemListState, viewModel, navController, user)
         FailView(itemListState)
     }
 }
@@ -59,6 +62,7 @@ fun LikedItemList(
 fun LikedItemListContent(
     itemListState: ItemListState,
     viewModel: LikedItemListViewModel,
+    navController: NavHostController,
     user: FirebaseUser?
 ) {
     if (itemListState is Success) {
@@ -77,7 +81,12 @@ fun LikedItemListContent(
             ) {
                 items(itemListState.items) { itemState ->
                     user?.let { user ->
-                        LikedItemCard(itemState, {}) { isLiked ->
+                        LikedItemCard(
+                            itemState,
+                            {
+                                navController.navigate("${SecondaryScreen.ItemDetail.route}/${itemState.id}")
+                            }
+                        ) { isLiked ->
                             viewModel.toggleItemLike(user.uid, itemState.id, isLiked)
                         }
                     }

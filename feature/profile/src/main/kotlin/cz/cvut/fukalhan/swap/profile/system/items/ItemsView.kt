@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.system.items.liked.LikedItemList
@@ -24,7 +25,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ItemsView(
-    modifier: Modifier
+    modifier: Modifier,
+    navController: NavHostController
 ) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(R.string.myItems), stringResource(R.string.likedItems))
@@ -67,8 +69,8 @@ fun ItemsView(
             }
 
             when (tabIndex) {
-                0 -> UsersItemList(koinViewModel())
-                1 -> LikedItemList(koinViewModel())
+                0 -> UsersItemList(koinViewModel(), navController)
+                1 -> LikedItemList(koinViewModel(), navController)
             }
         }
     }

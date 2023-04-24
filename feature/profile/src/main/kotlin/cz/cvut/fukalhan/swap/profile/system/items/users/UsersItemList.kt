@@ -13,7 +13,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.presentation.items.ItemListState
 import cz.cvut.fukalhan.swap.profile.presentation.items.Success
@@ -22,7 +24,10 @@ import cz.cvut.fukalhan.swap.profile.system.items.common.FailView
 import cz.cvut.fukalhan.swap.profile.system.items.common.LoadingView
 
 @Composable
-fun UsersItemList(viewModel: UserItemsViewModel) {
+fun UsersItemList(
+    viewModel: UserItemsViewModel,
+    navController: NavHostController
+) {
     val itemListState: ItemListState by viewModel.itemListState.collectAsState()
 
     Box(
@@ -32,13 +37,16 @@ fun UsersItemList(viewModel: UserItemsViewModel) {
         contentAlignment = Alignment.Center
     ) {
         LoadingView(itemListState)
-        UserItemListContent(itemListState)
+        UserItemListContent(itemListState, navController)
         FailView(itemListState)
     }
 }
 
 @Composable
-fun UserItemListContent(itemListState: ItemListState) {
+fun UserItemListContent(
+    itemListState: ItemListState,
+    navController: NavHostController
+) {
     if (itemListState is Success) {
         if (itemListState.items.isEmpty()) {
             Text(
@@ -53,8 +61,10 @@ fun UserItemListContent(itemListState: ItemListState) {
                     .fillMaxSize(),
                 columns = GridCells.Fixed(2),
             ) {
-                items(itemListState.items) {
-                    UsersItemCard(it, {})
+                items(itemListState.items) { itemState ->
+                    UsersItemCard(itemState) {
+                        navController.navigate("${SecondaryScreen.ItemDetail.route}/${itemState.id}")
+                    }
                 }
             }
         }

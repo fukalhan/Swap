@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -38,33 +37,33 @@ fun ItemDetail(
     viewModel: ItemDetailViewModel
 ) {
     val user = Firebase.auth.currentUser
+    val isUserTheOwner = user?.uid != itemDetailState.ownerInfo.id
     Column(
         modifier = Modifier
             .background(SwapAppTheme.colors.backgroundSecondary)
             .fillMaxSize()
     ) {
-        ImageRow(images = itemDetailState.images, itemDetailState.state)
-        ItemInfo(itemDetailState, Modifier.weight(1f)) { isLiked ->
+        ImageRow(itemDetailState.images, itemDetailState.state)
+        ItemInfo(
+            itemDetailState,
+            Modifier.weight(1f),
+            !isUserTheOwner
+        ) { isLiked ->
             user?.let { user ->
                 viewModel.toggleItemLike(user.uid, itemDetailState.id, isLiked)
             }
         }
-        Divider(
-            modifier = Modifier
-                .padding(SwapAppTheme.dimensions.smallSidePadding)
-                .fillMaxWidth(),
-            thickness = 1.dp,
-            color = SwapAppTheme.colors.component
-        )
-        ItemOwnerInfo(itemDetailState.ownerInfo) {
-            user?.let { user ->
-                viewModel.createChannel(
-                    user.uid,
-                    itemDetailState.ownerInfo.id,
-                    itemDetailState.id,
-                    itemDetailState.images.first(),
-                    itemDetailState.name
-                )
+        if (!isUserTheOwner) {
+            ItemOwnerInfo(itemDetailState.ownerInfo) {
+                user?.let { user ->
+                    viewModel.createChannel(
+                        user.uid,
+                        itemDetailState.ownerInfo.id,
+                        itemDetailState.id,
+                        itemDetailState.images.first(),
+                        itemDetailState.name
+                    )
+                }
             }
         }
     }
@@ -74,6 +73,7 @@ fun ItemDetail(
 fun ItemInfo(
     itemDetailState: Success,
     modifier: Modifier,
+    displayLikeButton: Boolean,
     onLikeButtonClick: (Boolean) -> Unit
 ) {
     Column(
@@ -98,8 +98,9 @@ fun ItemInfo(
                 )
                 TextView(stringResource(itemDetailState.category.labelId), SwapAppTheme.typography.titleSecondary)
             }
-
-            LikeButton(itemDetailState, onLikeButtonClick)
+            if (displayLikeButton) {
+                LikeButton(itemDetailState, onLikeButtonClick)
+            }
         }
         Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
         TextView(itemDetailState.description, SwapAppTheme.typography.body)
