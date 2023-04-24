@@ -25,8 +25,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.design.system.components.FailureView
-import cz.cvut.fukalhan.design.system.components.LoadingView
+import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
+import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.swap.itemdetail.R
 import cz.cvut.fukalhan.swap.itemdetail.presentation.CreateChannelFailure
 import cz.cvut.fukalhan.swap.itemdetail.presentation.CreateChannelSuccess
@@ -64,7 +64,7 @@ fun ItemDetailScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        ResolveItemDetailState(
+        ResolveState(
             itemDetailState,
             viewModel,
             navController
@@ -108,7 +108,7 @@ fun TopBar(
 }
 
 @Composable
-fun ResolveItemDetailState(
+fun ResolveState(
     state: ItemDetailState,
     viewModel: ItemDetailViewModel,
     navController: NavHostController,
