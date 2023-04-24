@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.itemdata.data
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -85,16 +86,23 @@ class FirebaseItemRepository : ItemRepository {
 
     override suspend fun getItems(uid: String): DataResponse<ResponseFlag, List<Item>> {
         return try {
-            val querySnapshot = db.collection(ITEMS).whereNotEqualTo(OWNER_ID, uid).get().await()
+            val querySnapshot = db
+                .collection(ITEMS)
+                .whereNotEqualTo(OWNER_ID, uid)
+                .get()
+                .await()
             val items = if (querySnapshot.isEmpty) {
                 emptyList()
             } else {
                 querySnapshot.documents.map { doc ->
                     mapDocSnapshotToItem(doc)
+                }.filter { item ->
+                    item.state != State.SWAPPED
                 }
             }
             DataResponse(true, ResponseFlag.SUCCESS, items)
-        } catch (e: FirebaseFirestoreException) {
+        } catch (e: Exception) {
+            Log.e("getItems", e.message.toString())
             DataResponse(false, ResponseFlag.FAIL)
         }
     }

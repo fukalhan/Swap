@@ -25,6 +25,7 @@ import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.itemlist.R
+import cz.cvut.fukalhan.swap.itemlist.presentation.Empty
 import cz.cvut.fukalhan.swap.itemlist.presentation.Failure
 import cz.cvut.fukalhan.swap.itemlist.presentation.ItemListState
 import cz.cvut.fukalhan.swap.itemlist.presentation.ItemListViewModel
@@ -59,6 +60,7 @@ fun ItemListScreen(
         LoadingView(itemListState)
         OnSuccess(viewModel, itemListState, navigateToItemDetail)
         OnFailure(itemListState)
+        EmptyView(itemListState)
     }
 }
 
@@ -127,6 +129,17 @@ fun OnSuccess(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun EmptyView(itemListState: ItemListState) {
+    if (itemListState is Empty) {
+        Text(
+            text = stringResource(itemListState.message),
+            style = SwapAppTheme.typography.titleSecondary,
+            color = SwapAppTheme.colors.textPrimary
+        )
     }
 }
 
