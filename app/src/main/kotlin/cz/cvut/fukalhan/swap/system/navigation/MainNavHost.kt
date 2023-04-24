@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.system.navigation
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -62,7 +63,10 @@ fun MainNavHost(
         topBar = { TopBar(screenState) },
         bottomBar = { AnimatedBottomBar(navController, bottomBarVisible) }
     ) {
-        NavHost(navController, MainScreen.Profile.route) {
+        NavHost(
+            navController,
+            MainScreen.Profile.route,
+        ) {
             composable(MainScreen.Items.route) {
                 ItemListScreen(
                     koinViewModel(),
@@ -89,6 +93,9 @@ fun MainNavHost(
             }
 
             composable(MainScreen.Profile.route) {
+                BackHandler(true) {
+                    // Do nothing on back pressed when on Profile screen (graph root)
+                }
                 ProfileScreen(
                     navController,
                     { screenState = it },

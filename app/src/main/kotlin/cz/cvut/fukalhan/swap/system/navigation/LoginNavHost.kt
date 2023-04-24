@@ -1,5 +1,6 @@
 package cz.cvut.fukalhan.swap.system.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -19,6 +20,9 @@ fun LoginNavHost() {
     ) {
         NavHost(navController, InitNavScreen.Main.route) {
             composable(InitNavScreen.Login.route) {
+                BackHandler(true) {
+                    // Do nothing on back pressed
+                }
                 LoginTabScreen(navController)
             }
 
