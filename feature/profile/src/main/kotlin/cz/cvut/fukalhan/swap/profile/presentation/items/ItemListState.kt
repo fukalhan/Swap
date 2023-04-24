@@ -30,4 +30,5 @@ internal fun Item.toItemState(): ItemState {
     )
 }
 
+class Empty(val message: Int = R.string.noItemsToDisplay) : ItemListState()
 class Failure(val message: Int = R.string.cannotLoadItems) : ItemListState()

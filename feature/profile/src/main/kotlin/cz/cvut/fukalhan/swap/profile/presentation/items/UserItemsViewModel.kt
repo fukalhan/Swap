@@ -27,11 +27,15 @@ class UserItemsViewModel(private val getUserItemsUseCase: GetUserItemsUseCase) :
         viewModelScope.launch(Dispatchers.IO) {
             val response = getUserItemsUseCase.getUserItems(uid)
             response.data?.let { items ->
-                _itemListState.value = Success(
-                    items.map {
-                        it.toItemState()
-                    }
-                )
+                if (items.isNotEmpty()) {
+                    _itemListState.value = Success(
+                        items.map {
+                            it.toItemState()
+                        }
+                    )
+                } else {
+                    _itemListState.value = Empty()
+                }
             } ?: run {
                 _itemListState.value = Failure()
             }

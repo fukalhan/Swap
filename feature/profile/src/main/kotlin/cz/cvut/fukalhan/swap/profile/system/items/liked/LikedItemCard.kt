@@ -30,8 +30,8 @@ import cz.cvut.fukalhan.swap.profile.system.items.users.MAX_LINES
 @Composable
 fun LikedItemCard(
     itemState: ItemState,
+    onLikeButtonClick: (String, Boolean) -> Unit,
     onItemClick: () -> Unit,
-    onLikeButtonClick: (Boolean) -> Unit
 ) {
     ItemCard(onItemClick) {
         Box(
@@ -51,7 +51,7 @@ fun LikedItemCard(
                     .padding(SwapAppTheme.dimensions.smallSidePadding)
                     .size(SwapAppTheme.dimensions.icon)
             ) {
-                onLikeButtonClick(it)
+                onLikeButtonClick(itemState.id, it)
             }
         }
 
