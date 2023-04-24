@@ -19,6 +19,7 @@ data class ItemState(
     val isLiked: Boolean
 )
 
+class Empty(val message: Int = R.string.noItemsToDisplay) : ItemListState()
 class Failure(val message: Int = R.string.cannotLoadItems) : ItemListState()
 
 internal fun Item.toItemState(isLiked: Boolean): ItemState {
