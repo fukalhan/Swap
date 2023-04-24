@@ -77,7 +77,7 @@ fun LikedItemListContent(
             ) {
                 items(itemListState.items) { itemState ->
                     user?.let { user ->
-                        LikedItemCard(itemState) { isLiked ->
+                        LikedItemCard(itemState, {}) { isLiked ->
                             viewModel.toggleItemLike(user.uid, itemState.id, isLiked)
                         }
                     }

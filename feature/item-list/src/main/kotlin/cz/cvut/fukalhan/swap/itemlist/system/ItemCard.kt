@@ -2,19 +2,15 @@ package cz.cvut.fukalhan.swap.itemlist.system
 
 import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,11 +25,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.ItemCard
 import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemlist.R
@@ -47,48 +43,35 @@ fun ItemCard(
     navigateToItemDetail: (String) -> Unit,
     onLikeButtonClick: (Boolean) -> Unit,
 ) {
-    Surface(
-        elevation = SwapAppTheme.dimensions.elevation,
-        color = SwapAppTheme.colors.backgroundSecondary,
-        modifier = Modifier
-            .clickable {
-                navigateToItemDetail(itemState.id)
-            }
-    ) {
-        Column(
+    ItemCard(onClick = { navigateToItemDetail(itemState.id) }) {
+        Box(
             modifier = Modifier
-                .height(300.dp)
+                .weight(1f)
                 .fillMaxWidth()
         ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
+            ItemPicture(itemState.imageUri)
+            StateView(itemState.state, Modifier.align(Alignment.TopCenter))
+            LikeButton(
+                itemState,
+                Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(SwapAppTheme.dimensions.smallSidePadding)
+                    .size(SwapAppTheme.dimensions.icon)
             ) {
-                ItemPicture(itemState.imageUri)
-                StateView(itemState.state, Modifier.align(Alignment.TopCenter))
-                LikeButton(
-                    itemState,
-                    Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(SwapAppTheme.dimensions.smallSidePadding)
-                        .size(SwapAppTheme.dimensions.icon)
-                ) {
-                    onLikeButtonClick(it)
-                }
+                onLikeButtonClick(it)
             }
-
-            Text(
-                modifier = Modifier
-                    .padding(SwapAppTheme.dimensions.sidePadding)
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
-                text = itemState.name,
-                style = SwapAppTheme.typography.titleSecondary,
-                maxLines = MAX_LINES,
-                overflow = TextOverflow.Ellipsis
-            )
         }
+
+        Text(
+            modifier = Modifier
+                .padding(SwapAppTheme.dimensions.sidePadding)
+                .wrapContentHeight()
+                .fillMaxWidth(),
+            text = itemState.name,
+            style = SwapAppTheme.typography.titleSecondary,
+            maxLines = MAX_LINES,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
