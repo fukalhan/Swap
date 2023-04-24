@@ -9,6 +9,6 @@ data class ItemDetail(
     var description: String = "",
     var imagesUri: List<Uri> = emptyList(),
     var category: Category = Category.DEFAULT,
-    var state: ItemState = ItemState.AVAILABLE,
+    var state: State = State.AVAILABLE,
     var isLiked: Boolean = false
 )

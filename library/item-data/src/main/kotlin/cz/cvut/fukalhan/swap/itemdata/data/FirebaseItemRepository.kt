@@ -15,7 +15,7 @@ import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
-import cz.cvut.fukalhan.swap.itemdata.model.ItemState
+import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemdata.tools.UriAdapter
 import kotlinx.coroutines.tasks.await
 
@@ -101,6 +101,9 @@ class FirebaseItemRepository : ItemRepository {
 
     override suspend fun getItemsById(ids: List<String>): DataResponse<ResponseFlag, List<Item>> {
         return try {
+            if (ids.isEmpty()) {
+                return DataResponse(true, ResponseFlag.SUCCESS, emptyList())
+            }
             val querySnapshot = db
                 .collection(ITEMS)
                 .whereIn(ID, ids)
@@ -124,8 +127,8 @@ class FirebaseItemRepository : ItemRepository {
             val docSnapshot = db.collection(ITEMS).document(id).get().await()
             if (docSnapshot.exists()) {
                 val imagesList: List<*>? = docSnapshot.get(IMAGES) as? List<*>
-                val item = docSnapshot.toObject(ItemDetail::class.java)?.let { it ->
-                    it.copy(
+                val item = docSnapshot.toObject(ItemDetail::class.java)?.let { itemDetail ->
+                    itemDetail.copy(
                         imagesUri = imagesList?.map { Uri.parse(it as String?) } ?: emptyList()
                     )
                 }
@@ -192,9 +195,19 @@ class FirebaseItemRepository : ItemRepository {
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
+
+    override suspend fun changeItemState(itemId: String, state: State): Response<ResponseFlag> {
+        return try {
+            val itemRef = db.collection(ITEMS).document(itemId)
+            itemRef.update(STATE, state).await()
+            Response(true, ResponseFlag.SUCCESS)
+        } catch (e: FirebaseFirestoreException) {
+            Response(false, ResponseFlag.FAIL)
+        }
+    }
 }
 
-private fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {
+fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {
     return Item(
         id = doc.id,
         ownerId = doc.getString(OWNER_ID) ?: EMPTY_FIELD,
@@ -202,6 +215,6 @@ private fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {
         description = doc.getString(DESCRIPTION) ?: EMPTY_FIELD,
         imagesUri = (doc.get(IMAGES) as? List<*>)?.mapNotNull { Uri.parse(it.toString()) } ?: emptyList(),
         category = Category.valueOf(doc.getString(CATEGORY) ?: Category.DEFAULT.name),
-        state = ItemState.valueOf(doc.getString(STATE) ?: ItemState.AVAILABLE.name),
+        state = State.valueOf(doc.getString(STATE) ?: State.AVAILABLE.name),
     )
 }

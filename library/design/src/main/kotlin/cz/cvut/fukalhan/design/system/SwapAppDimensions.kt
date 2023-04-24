@@ -32,9 +32,9 @@ val swapAppDimensions = SwapAppDimensions(
     roundCorners = 20.dp,
     borderWidth = 1.dp,
     elevation = 5.dp,
-    image = 180.dp,
+    image = 170.dp,
     bar = 50.dp,
     bottomScreenPadding = 40.dp,
     icon = 35.dp,
-    imageView = 250.dp
+    imageView = 230.dp
 )

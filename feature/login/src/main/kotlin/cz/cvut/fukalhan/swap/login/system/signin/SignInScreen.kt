@@ -23,7 +23,7 @@ import cz.cvut.fukalhan.swap.login.system.common.LoginView
 import cz.cvut.fukalhan.swap.login.system.common.OnFailState
 import cz.cvut.fukalhan.swap.login.system.common.OnSuccessState
 import cz.cvut.fukalhan.swap.login.system.common.PasswordView
-import cz.cvut.fukalhan.swap.navigation.presentation.Screen
+import cz.cvut.fukalhan.swap.navigation.presentation.InitNavScreen
 
 @Composable
 fun SignInScreen(
@@ -44,7 +44,7 @@ fun SignInScreen(
         LoadingView(signInState)
         OnSuccessState(signInState) {
             viewModel.setStateToInit()
-            navController.navigate(Screen.Main.route)
+            navController.navigate(InitNavScreen.Main.route)
         }
         OnFailState(signInState)
 

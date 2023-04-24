@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="addItem">Přidat předmět</string>
-    <string name="empty"></string>
     <string name="addImage">Přidat obrázky</string>
     <string name="name">Název</string>
     <string name="description">Popis</string>
@@ -10,4 +9,6 @@
     <string name="save">Uložit</string>
     <string name="itemSaveSuccess">Předmět úspěšně uložen</string>
     <string name="itemSaveFail">Uložení předmětu se nezdařilo</string>
+    <string name="namePlaceholder">Zvolte výstižný název předmětu</string>
+    <string name="descriptionPlaceholder">Popište předmět, uveďte v jakém je stavu, kde vyměnit …</string>
 </resources>

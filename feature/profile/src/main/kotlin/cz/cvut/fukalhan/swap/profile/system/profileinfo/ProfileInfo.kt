@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.profile.system.profileinfo
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,10 +40,14 @@ import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Loading
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoState
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoViewModel
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Success
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.models.User
+import org.koin.androidx.compose.getKoin
 
 @Composable
 fun ProfileInfo(viewModel: ProfileInfoViewModel) {
     val profileInfoState by viewModel.profileInfoState.collectAsState()
+    val chatToken by viewModel.chatToken.collectAsState()
 
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
@@ -53,9 +58,30 @@ fun ProfileInfo(viewModel: ProfileInfoViewModel) {
             .fillMaxWidth()
             .height(150.dp),
     ) {
+        InitChatClient(getKoin().get(), chatToken, profileInfoState)
         LoadingView(profileInfoState)
         ProfileInfoContent(profileInfoState)
         FailView(profileInfoState)
+    }
+}
+
+@Composable
+fun InitChatClient(chatClient: ChatClient, chatToken: String, profileInfoState: ProfileInfoState) {
+    if (chatToken.isNotEmpty() && profileInfoState is Success) {
+        val user = User(
+            id = profileInfoState.id,
+            name = profileInfoState.username,
+            image = profileInfoState.profilePicUri.toString()
+        )
+
+        chatClient.connectUser(user = user, token = chatToken)
+            .enqueue { result ->
+                if (result.isSuccess) {
+                    Log.e("ChatClient", "success")
+                } else {
+                    Log.e("ChatClient", "fail")
+                }
+            }
     }
 }
 

@@ -1,5 +1,6 @@
 package cz.cvut.fukalhan.swap.profile.system.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,12 +8,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -69,40 +68,35 @@ fun TopBar(
 fun Settings(
     signOut: () -> Unit
 ) {
-    Surface(
-        elevation = SwapAppTheme.dimensions.elevation,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
-        color = SwapAppTheme.colors.backgroundSecondary,
+    Column(
         modifier = Modifier
-            .padding(
-                top = SwapAppTheme.dimensions.smallSidePadding,
-                bottom = SwapAppTheme.dimensions.bottomScreenPadding,
-                start = SwapAppTheme.dimensions.smallSidePadding,
-                end = SwapAppTheme.dimensions.smallSidePadding,
-            )
+            .background(SwapAppTheme.colors.backgroundSecondary)
+            .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
             .fillMaxSize()
+            .padding(SwapAppTheme.dimensions.sidePadding),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(SwapAppTheme.dimensions.sidePadding),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Button(
-                onClick = {
-                    val auth = Firebase.auth
-                    auth.signOut()
-                    signOut()
-                },
-                colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary)
-            ) {
-                Text(
-                    text = stringResource(R.string.signOut),
-                    style = SwapAppTheme.typography.button,
-                    color = SwapAppTheme.colors.buttonText
-                )
-            }
-        }
+        SignOutButton(signOut)
+    }
+}
+
+@Composable
+fun SignOutButton(
+    signOut: () -> Unit
+) {
+    Button(
+        onClick = {
+            val auth = Firebase.auth
+            auth.signOut()
+            signOut()
+        },
+        colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary)
+    ) {
+        Text(
+            text = stringResource(R.string.signOut),
+            style = SwapAppTheme.typography.button,
+            color = SwapAppTheme.colors.buttonText
+        )
     }
 }

@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 rootProject.name = "Swap"
@@ -23,3 +24,5 @@ include ':feature:add-item'
 include ':library:item-data'
 include ':feature:item-list'
 include ':library:navigation'
+include ':feature:messages'
+include ':feature:item-detail'

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="messages">Zprávy</string>
+    <string name="sendMessage">Poslat zprávu</string>
+    <string name="emptyChannels">Žadné zprávy k zobrazení</string>
+    <string name="cannotLoadItemData">Nelze načíst údaje o předmětu</string>
+    <string name="reserve">Rezervovat</string>
+    <string name="markAsSwapped">Označit jako vyměněný</string>
+    <string name="giveReview">Udělit hodnocení</string>
+    <string name="cannotChangeItemState">Změna stavu předmětu se nezdařila</string>
+</resources>

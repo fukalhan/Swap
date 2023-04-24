@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.itemlist.system.itemdetail
+package cz.cvut.fukalhan.swap.itemdetail.system
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -28,11 +28,14 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.itemlist.R
-import cz.cvut.fukalhan.swap.itemlist.presentation.itemdetail.OwnerInfo
+import cz.cvut.fukalhan.swap.itemdetail.R
+import cz.cvut.fukalhan.swap.itemdetail.presentation.OwnerInfo
 
 @Composable
-fun ItemOwnerInfo(ownerInfo: OwnerInfo) {
+fun ItemOwnerInfo(
+    ownerInfo: OwnerInfo,
+    onSendMessageButtonClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,7 +49,7 @@ fun ItemOwnerInfo(ownerInfo: OwnerInfo) {
             text = ownerInfo.username,
             style = SwapAppTheme.typography.titleSecondary
         )
-        SendMessageButton(Modifier.weight(1f))
+        SendMessageButton(Modifier.weight(1f), onSendMessageButtonClick)
     }
 }
 
@@ -69,7 +72,8 @@ fun ProfilePicture(pictureUri: Uri) {
 
 @Composable
 fun SendMessageButton(
-    modifier: Modifier
+    modifier: Modifier,
+    onSendMessageButtonClick: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -82,7 +86,7 @@ fun SendMessageButton(
             colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary),
             modifier = Modifier
                 .wrapContentSize(),
-            onClick = { /*TODO*/ }
+            onClick = onSendMessageButtonClick
         ) {
             Text(
                 text = stringResource(R.string.sendMessage),

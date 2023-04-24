@@ -9,5 +9,5 @@ data class Item(
     var description: String = "",
     var imagesUri: List<Uri> = emptyList(),
     var category: Category = Category.DEFAULT,
-    var state: ItemState = ItemState.AVAILABLE,
+    var state: State = State.AVAILABLE,
 )
