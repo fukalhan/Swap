@@ -37,7 +37,7 @@ fun ItemDetail(
     viewModel: ItemDetailViewModel
 ) {
     val user = Firebase.auth.currentUser
-    val isUserTheOwner = user?.uid != itemDetailState.ownerInfo.id
+    val isUserTheOwner = user?.uid == itemDetailState.ownerInfo.id
     Column(
         modifier = Modifier
             .background(SwapAppTheme.colors.backgroundSecondary)

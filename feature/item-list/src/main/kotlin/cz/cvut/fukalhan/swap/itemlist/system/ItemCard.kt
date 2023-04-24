@@ -1,9 +1,7 @@
 package cz.cvut.fukalhan.swap.itemlist.system
 
 import android.net.Uri
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,14 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.ItemCard
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.system.components.ItemStateView
 import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemlist.R
 import cz.cvut.fukalhan.swap.itemlist.presentation.ItemState
@@ -49,8 +45,12 @@ fun ItemCard(
                 .weight(1f)
                 .fillMaxWidth()
         ) {
+            ItemStateView(
+                itemState.state == State.RESERVED || itemState.state == State.SWAPPED,
+                itemState.state.label,
+                Modifier.align(Alignment.TopCenter)
+            )
             ItemPicture(itemState.imageUri)
-            StateView(itemState.state, Modifier.align(Alignment.TopCenter))
             LikeButton(
                 itemState,
                 Modifier
@@ -87,26 +87,6 @@ fun ItemPicture(uri: Uri) {
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
     )
-}
-
-@Composable
-fun StateView(state: State, modifier: Modifier) {
-    if (state == State.RESERVED || state == State.SWAPPED) {
-        Row(
-            modifier = modifier
-                .background(semiTransparentBlack)
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(SwapAppTheme.dimensions.smallSidePadding)
-                .zIndex(1f)
-        ) {
-            Text(
-                text = stringResource(state.label),
-                style = SwapAppTheme.typography.button,
-                color = SwapAppTheme.colors.buttonText
-            )
-        }
-    }
 }
 
 @Composable

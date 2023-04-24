@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profile.system.items.common
+package cz.cvut.fukalhan.design.system.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -12,11 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.zIndex
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.semiTransparentBlack
-import cz.cvut.fukalhan.swap.itemdata.model.State
 
 @Composable
-fun StateView(state: State, modifier: Modifier) {
-    if (state == State.RESERVED || state == State.SWAPPED) {
+fun ItemStateView(isVisible: Boolean, label: Int, modifier: Modifier) {
+    if (isVisible) {
         Row(
             modifier = modifier
                 .background(semiTransparentBlack)
@@ -26,7 +25,7 @@ fun StateView(state: State, modifier: Modifier) {
                 .zIndex(1f)
         ) {
             Text(
-                text = stringResource(state.label),
+                text = stringResource(label),
                 style = SwapAppTheme.typography.button,
                 color = SwapAppTheme.colors.buttonText
             )

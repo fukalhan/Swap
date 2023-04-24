@@ -11,9 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.ItemCard
+import cz.cvut.fukalhan.design.system.components.ItemStateView
+import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.profile.presentation.items.ItemState
 import cz.cvut.fukalhan.swap.profile.system.items.common.ItemPicture
-import cz.cvut.fukalhan.swap.profile.system.items.common.StateView
 
 const val MAX_LINES = 1
 
@@ -28,7 +29,11 @@ fun UsersItemCard(
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            StateView(itemState.state, Modifier.align(Alignment.TopCenter))
+            ItemStateView(
+                itemState.state == State.RESERVED || itemState.state == State.SWAPPED,
+                itemState.state.label,
+                Modifier.align(Alignment.TopCenter)
+            )
             ItemPicture(itemState.imageUri)
         }
 
