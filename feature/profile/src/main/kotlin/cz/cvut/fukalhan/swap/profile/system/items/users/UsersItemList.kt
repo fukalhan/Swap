@@ -6,22 +6,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
+import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
+import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
-import cz.cvut.fukalhan.swap.profile.R
+import cz.cvut.fukalhan.swap.profile.presentation.items.Empty
+import cz.cvut.fukalhan.swap.profile.presentation.items.Failure
 import cz.cvut.fukalhan.swap.profile.presentation.items.ItemListState
+import cz.cvut.fukalhan.swap.profile.presentation.items.ItemState
+import cz.cvut.fukalhan.swap.profile.presentation.items.Loading
 import cz.cvut.fukalhan.swap.profile.presentation.items.Success
 import cz.cvut.fukalhan.swap.profile.presentation.items.UserItemsViewModel
-import cz.cvut.fukalhan.swap.profile.system.items.common.FailView
-import cz.cvut.fukalhan.swap.profile.system.items.common.LoadingView
 
 @Composable
 fun UsersItemList(
@@ -36,36 +38,38 @@ fun UsersItemList(
             .background(SwapAppTheme.colors.backgroundSecondary),
         contentAlignment = Alignment.Center
     ) {
-        LoadingView(itemListState)
-        UserItemListContent(itemListState, navController)
-        FailView(itemListState)
+        ResolveState(itemListState, navController)
+    }
+}
+
+@Composable
+fun ResolveState(
+    state: ItemListState,
+    navController: NavHostController
+) {
+    when (state) {
+        is Loading -> LoadingView()
+        is Success -> UserItemListContent(state.items, navController)
+        is Failure -> FailureView(state.message)
+        is Empty -> EmptyView(state.message)
+        else -> {}
     }
 }
 
 @Composable
 fun UserItemListContent(
-    itemListState: ItemListState,
+    items: List<ItemState>,
     navController: NavHostController
 ) {
-    if (itemListState is Success) {
-        if (itemListState.items.isEmpty()) {
-            Text(
-                text = stringResource(R.string.noItemsToDisplay),
-                style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary
-            )
-        } else {
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .background(SwapAppTheme.colors.backgroundSecondary)
-                    .fillMaxSize(),
-                columns = GridCells.Fixed(2),
-            ) {
-                items(itemListState.items) { itemState ->
-                    UsersItemCard(itemState) {
-                        navController.navigate("${SecondaryScreen.ItemDetail.route}/${itemState.id}")
-                    }
-                }
+    LazyVerticalGrid(
+        modifier = Modifier
+            .background(SwapAppTheme.colors.backgroundSecondary)
+            .fillMaxSize(),
+        columns = GridCells.Fixed(2),
+    ) {
+        items(items) { itemState ->
+            UsersItemCard(itemState) {
+                navController.navigate("${SecondaryScreen.ItemDetail.route}/${itemState.id}")
             }
         }
     }
