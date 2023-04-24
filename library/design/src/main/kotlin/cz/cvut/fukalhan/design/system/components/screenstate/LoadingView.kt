@@ -8,16 +8,16 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.zIndex
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
 
 @Composable
-fun LoadingView() {
+fun LoadingView(backgroundColor: Color = Color.Transparent) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(semiTransparentBlack)
+            .background(backgroundColor)
             .zIndex(1f),
         contentAlignment = Alignment.Center
     ) {
