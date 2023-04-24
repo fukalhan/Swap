@@ -54,7 +54,7 @@ fun UserItemListContent(itemListState: ItemListState) {
                 columns = GridCells.Fixed(2),
             ) {
                 items(itemListState.items) {
-                    UsersItemCard(it)
+                    UsersItemCard(it, {})
                 }
             }
         }
