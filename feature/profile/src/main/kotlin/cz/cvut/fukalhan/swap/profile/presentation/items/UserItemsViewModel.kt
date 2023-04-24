@@ -2,8 +2,6 @@ package cz.cvut.fukalhan.swap.profile.presentation.items
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetUserItemsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,14 +13,7 @@ class UserItemsViewModel(private val getUserItemsUseCase: GetUserItemsUseCase) :
     val itemListState: StateFlow<ItemListState>
         get() = _itemListState
 
-    init {
-        val user = Firebase.auth.currentUser
-        user?.let {
-            getUserItems(it.uid)
-        }
-    }
-
-    private fun getUserItems(uid: String) {
+    fun getUserItems(uid: String) {
         _itemListState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
             val response = getUserItemsUseCase.getUserItems(uid)

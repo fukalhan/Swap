@@ -7,11 +7,15 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
@@ -31,6 +35,17 @@ fun UsersItemList(
     navController: NavHostController
 ) {
     val itemListState: ItemListState by viewModel.itemListState.collectAsState()
+    val user = Firebase.auth.currentUser
+    val effect = remember {
+        {
+            user?.let {
+                viewModel.getUserItems(it.uid)
+            }
+        }
+    }
+    LaunchedEffect(Unit) {
+        effect()
+    }
 
     Box(
         modifier = Modifier
