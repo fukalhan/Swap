@@ -5,11 +5,11 @@ import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.messages.R
 
-sealed class ItemState
+sealed class ItemViewState
 
-object Init : ItemState()
+object Init : ItemViewState()
 
-object Loading : ItemState()
+object Loading : ItemViewState()
 
 data class Success(
     val id: String,
@@ -17,9 +17,9 @@ data class Success(
     val image: Uri,
     val state: State,
     val ownerId: String
-) : ItemState()
+) : ItemViewState()
 
-fun Item.toItemState(): ItemState {
+fun Item.toItemState(): ItemViewState {
     return Success(
         this.id,
         this.name,
@@ -29,10 +29,7 @@ fun Item.toItemState(): ItemState {
     )
 }
 
-data class Failure(val message: Int = R.string.cannotLoadItemData) : ItemState()
+data class Failure(val message: Int = R.string.cannotLoadItemData) : ItemViewState()
 
-sealed class ItemStateChangeState
-
-object ChangeItemStateInit : ItemStateChangeState()
-object ChangeItemStateSuccess : ItemStateChangeState()
-data class ChangeItemStateFail(val message: Int = R.string.cannotChangeItemState) : ItemStateChangeState()
+object ChangeStateSuccess : ItemViewState()
+data class ChangeStateFailure(val message: Int = R.string.cannotChangeItemState) : ItemViewState()

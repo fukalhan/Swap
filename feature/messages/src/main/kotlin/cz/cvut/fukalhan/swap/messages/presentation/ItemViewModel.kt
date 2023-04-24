@@ -15,13 +15,9 @@ class ItemViewModel(
     private val getItemFromChannelUseCase: GetItemFromChannelUseCase,
     private val changeItemStateUseCase: ChangeItemStateUseCase
 ) : ViewModel() {
-    private val _itemViewState: MutableStateFlow<ItemState> = MutableStateFlow(Init)
-    val itemViewState: StateFlow<ItemState>
+    private val _itemViewState: MutableStateFlow<ItemViewState> = MutableStateFlow(Init)
+    val itemViewState: StateFlow<ItemViewState>
         get() = _itemViewState
-
-    private val _itemStateChangeState: MutableStateFlow<ItemStateChangeState> = MutableStateFlow(ChangeItemStateInit)
-    val itemStateChangeState: StateFlow<ItemStateChangeState>
-        get() = _itemStateChangeState
 
     fun getItemData(channelId: String) {
         _itemViewState.value = Loading
@@ -35,18 +31,15 @@ class ItemViewModel(
         }
     }
 
-    fun changeItemState(itemId: String, state: State) {
+    fun changeItemState(itemId: String, state: State, channelId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = changeItemStateUseCase.changeItemState(itemId, state)
             if (response.flag == ResponseFlag.SUCCESS) {
-                _itemStateChangeState.value = ChangeItemStateSuccess
+                _itemViewState.value = ChangeStateSuccess
             } else {
-                _itemStateChangeState.value = ChangeItemStateFail()
+                _itemViewState.value = ChangeStateFailure()
             }
+            getItemData(channelId)
         }
-    }
-
-    fun setChangeStateToInit() {
-        _itemStateChangeState.value = ChangeItemStateInit
     }
 }
