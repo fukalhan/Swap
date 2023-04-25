@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.additem.system.helperviews
+package cz.cvut.fukalhan.design.system.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,8 +13,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.additem.R
 
 @Composable
 fun ButtonRow(

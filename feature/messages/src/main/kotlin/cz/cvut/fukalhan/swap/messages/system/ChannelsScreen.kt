@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.CustomChatTheme
 import cz.cvut.fukalhan.design.system.SwapAppTheme
@@ -21,7 +20,6 @@ import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.messages.R
 import cz.cvut.fukalhan.swap.messages.presentation.ChatViewModelFactory
-import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import io.getstream.chat.android.client.models.User
 import io.getstream.chat.android.compose.state.channels.list.ChannelsState
 import io.getstream.chat.android.compose.ui.channels.list.ChannelList
@@ -30,8 +28,8 @@ import io.getstream.chat.android.compose.viewmodel.channels.ChannelListViewModel
 @Composable
 fun ChannelsScreen(
     viewModelFactory: ChatViewModelFactory,
-    navController: NavHostController,
-    onScreenInit: (ScreenState) -> Unit
+    onScreenInit: (ScreenState) -> Unit,
+    onNavigateToChannel: (String) -> Unit,
 ) {
     val listViewModel: ChannelListViewModel = viewModel(
         checkNotNull(LocalViewModelStoreOwner.current),
@@ -41,7 +39,7 @@ fun ChannelsScreen(
 
     TopBar(onScreenInit)
     CustomChatTheme {
-        Channels(listViewModel, navController)
+        Channels(listViewModel, onNavigateToChannel)
     }
 }
 
@@ -64,7 +62,7 @@ fun TopBar(
 @Composable
 fun Channels(
     listViewModel: ChannelListViewModel,
-    navController: NavHostController
+    onNavigateToChannel: (String) -> Unit
 ) {
     val user by listViewModel.user.collectAsState()
     val channelsState = listViewModel.channelsState
@@ -74,7 +72,7 @@ fun Channels(
             .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
             .fillMaxSize(),
     ) {
-        ChannelsList(channelsState, user, navController)
+        ChannelsList(channelsState, user, onNavigateToChannel)
     }
 }
 
@@ -82,7 +80,7 @@ fun Channels(
 fun ChannelsList(
     channelsState: ChannelsState,
     user: User?,
-    navController: NavHostController
+    onNavigateToChannel: (String) -> Unit
 ) {
     ChannelList(
         channelsState = channelsState,
@@ -90,7 +88,7 @@ fun ChannelsList(
         loadingContent = { LoadingView(semiTransparentBlack) },
         emptyContent = { EmptyView(R.string.emptyChannels) },
         onChannelClick = { channel ->
-            navController.navigate("${SecondaryScreen.Message.route}/${channel.id}")
+            onNavigateToChannel(channel.id)
         }
     )
 }
