@@ -12,21 +12,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
+import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
+import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.login.R
+import cz.cvut.fukalhan.swap.login.presentation.common.Failure
+import cz.cvut.fukalhan.swap.login.presentation.common.Loading
 import cz.cvut.fukalhan.swap.login.presentation.common.LoginState
+import cz.cvut.fukalhan.swap.login.presentation.common.Success
 import cz.cvut.fukalhan.swap.login.presentation.signin.SignInViewModel
-import cz.cvut.fukalhan.swap.login.system.common.LoadingView
 import cz.cvut.fukalhan.swap.login.system.common.LoginButton
+import cz.cvut.fukalhan.swap.login.system.common.LoginInputView
 import cz.cvut.fukalhan.swap.login.system.common.LoginValidityCheckMessage
-import cz.cvut.fukalhan.swap.login.system.common.LoginView
-import cz.cvut.fukalhan.swap.login.system.common.OnFailState
-import cz.cvut.fukalhan.swap.login.system.common.OnSuccessState
 import cz.cvut.fukalhan.swap.login.system.common.PasswordView
+import cz.cvut.fukalhan.swap.navigation.presentation.InitNavScreen
 
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel,
-    navigateToMainScreen: () -> Unit
+    navController: NavHostController
 ) {
     val signInState: LoginState by viewModel.signInState.collectAsState()
 
@@ -39,19 +44,17 @@ fun SignInScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        LoadingView(signInState)
-        OnSuccessState(signInState) {
+        ResolveState(signInState) {
             viewModel.setStateToInit()
-            navigateToMainScreen()
+            navController.navigate(InitNavScreen.Main.route)
         }
-        OnFailState(signInState)
 
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LoginView(email, R.string.email) {
+            LoginInputView(email, R.string.email) {
                 email = it
             }
 
@@ -69,5 +72,18 @@ fun SignInScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ResolveState(
+    state: LoginState,
+    onSuccessState: () -> Unit
+) {
+    when (state) {
+        is Loading -> LoadingView(semiTransparentBlack)
+        is Success -> onSuccessState()
+        is Failure -> FailSnackMessage(state.message)
+        else -> {}
     }
 }

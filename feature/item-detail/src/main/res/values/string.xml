@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cannotLoadItemDetail">Předmět nelze načíst</string>
+    <string name="createChannelFailure">Zprávu nelze aktuálně poslat</string>
+    <string name="itemDetail">Detail předmětu</string>
+    <string name="sendMessage">Poslat zprávu</string>
+</resources>

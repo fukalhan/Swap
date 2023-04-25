@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.additem.system
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,13 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,27 +21,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.zIndex
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.ButtonRow
+import cz.cvut.fukalhan.design.system.components.CategoryListHeader
+import cz.cvut.fukalhan.design.system.components.CollapsingList
+import cz.cvut.fukalhan.design.system.components.DescriptionView
+import cz.cvut.fukalhan.design.system.components.InputFieldView
+import cz.cvut.fukalhan.design.system.components.RegularTextFieldView
+import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
+import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
+import cz.cvut.fukalhan.design.system.components.screenstate.SuccessSnackMessage
+import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.additem.R
 import cz.cvut.fukalhan.swap.additem.presentation.AddItemState
 import cz.cvut.fukalhan.swap.additem.presentation.AddItemViewModel
 import cz.cvut.fukalhan.swap.additem.presentation.Failure
 import cz.cvut.fukalhan.swap.additem.presentation.Loading
 import cz.cvut.fukalhan.swap.additem.presentation.Success
-import cz.cvut.fukalhan.swap.additem.system.helperviews.ButtonRow
-import cz.cvut.fukalhan.swap.additem.system.helperviews.CategoryList
-import cz.cvut.fukalhan.swap.additem.system.helperviews.DescriptionView
-import cz.cvut.fukalhan.swap.additem.system.helperviews.InputFieldView
-import cz.cvut.fukalhan.swap.additem.system.helperviews.PictureSelectionView
-import cz.cvut.fukalhan.swap.additem.system.helperviews.RegularTextFieldView
 import cz.cvut.fukalhan.swap.itemdata.model.Category
+import cz.cvut.fukalhan.swap.itemdata.model.categories
 
 const val DESCRIPTION_CHAR_LIMIT = 150
 
@@ -63,12 +61,7 @@ fun AddItemScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        LoadingView(addItemState)
-        OnSuccessState(addItemState) {
-            viewModel.setStateToInit()
-            navigateBack()
-        }
-        OnFailState(addItemState)
+        ResolveState(addItemState, navigateBack, viewModel)
         ItemData(viewModel, navigateBack)
     }
 }
@@ -88,41 +81,20 @@ fun TopBar(onScreenInit: (ScreenState) -> Unit) {
 }
 
 @Composable
-fun LoadingView(saveItemState: AddItemState) {
-    if (saveItemState is Loading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f))
-                .zIndex(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(SwapAppTheme.dimensions.icon),
-                color = SwapAppTheme.colors.primary
-            )
-        }
-    }
-}
-
-@Composable
-fun OnSuccessState(
-    addItemState: AddItemState,
-    navigateBack: () -> Unit
+fun ResolveState(
+    state: AddItemState,
+    navigateBack: () -> Unit,
+    viewModel: AddItemViewModel,
 ) {
-    if (addItemState is Success) {
-        val context = LocalContext.current
-        Toast.makeText(context, stringResource(addItemState.message), Toast.LENGTH_SHORT).show()
-        navigateBack()
-    }
-}
-
-@Composable
-fun OnFailState(addItemState: AddItemState) {
-    if (addItemState is Failure) {
-        val context = LocalContext.current
-        Toast.makeText(context, stringResource(addItemState.message), Toast.LENGTH_SHORT).show()
+    when (state) {
+        is Loading -> LoadingView(semiTransparentBlack)
+        is Success -> {
+            viewModel.setStateToInit()
+            SuccessSnackMessage(state.message)
+            navigateBack()
+        }
+        is Failure -> FailSnackMessage(state.message)
+        else -> {}
     }
 }
 
@@ -139,62 +111,93 @@ fun ItemData(
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var category by remember { mutableStateOf(Category.DEFAULT) }
+    var expanded by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(SwapAppTheme.dimensions.smallSidePadding),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize()
     ) {
-        PictureSelectionView(selectedImagesUri) {
-            selectedImagesUri = it
-        }
-
-        Surface(
-            elevation = SwapAppTheme.dimensions.elevation,
-            shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
-            color = SwapAppTheme.colors.backgroundSecondary,
+        Column(
             modifier = Modifier
-                .padding(bottom = SwapAppTheme.dimensions.sidePadding)
+                .background(SwapAppTheme.colors.backgroundSecondary)
+                .weight(1f)
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .zIndex(0f)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            PictureSelectionView(selectedImagesUri) {
+                selectedImagesUri = it
+            }
+            Divider(
+                color = SwapAppTheme.colors.component,
+                thickness = SwapAppTheme.dimensions.borderWidth,
+                modifier = Modifier.padding(
+                    start = SwapAppTheme.dimensions.sidePadding,
+                    end = SwapAppTheme.dimensions.sidePadding,
+                )
+            )
+
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(SwapAppTheme.dimensions.sidePadding)
+                    .padding(SwapAppTheme.dimensions.smallSidePadding)
+                    .wrapContentHeight()
+                    .fillMaxWidth()
             ) {
                 InputFieldView(R.string.name) {
-                    RegularTextFieldView(name) {
+                    RegularTextFieldView(
+                        R.string.namePlaceholder,
+                        name
+                    ) {
                         name = it
                     }
                 }
 
                 InputFieldView(R.string.description) {
-                    DescriptionView(description) {
+                    DescriptionView(
+                        R.string.descriptionPlaceholder,
+                        DESCRIPTION_CHAR_LIMIT,
+                        description
+                    ) {
                         description = it
                     }
                 }
 
-                CategoryList(category) {
-                    category = it
-                }
+                CategoryListHeader(
+                    label = stringResource(category.labelId),
+                    expanded = expanded,
+                    onClick = { expanded = !expanded }
+                )
 
-                ButtonRow(navigateBack) {
-                    val user = Firebase.auth.currentUser
-                    user?.let {
-                        viewModel.saveItem(
-                            it.uid,
-                            name,
-                            description,
-                            selectedImagesUri,
-                            category
-                        )
-                    }
+                if (expanded) {
+                    CollapsingList(
+                        items = categories,
+                        selectedCategory = category,
+                        onItemClick = {
+                            category = it
+                            expanded = false
+                        },
+                        itemLabel = {
+                            Text(
+                                text = stringResource(it.labelId),
+                                style = SwapAppTheme.typography.titleSecondary,
+                                color = SwapAppTheme.colors.textPrimary,
+                            )
+                        }
+                    )
                 }
+            }
+        }
+
+        ButtonRow(navigateBack) {
+            val user = Firebase.auth.currentUser
+            user?.let {
+                viewModel.saveItem(
+                    it.uid,
+                    name,
+                    description,
+                    selectedImagesUri,
+                    category
+                )
             }
         }
     }

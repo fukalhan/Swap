@@ -3,7 +3,7 @@ package cz.cvut.fukalhan.swap.profile.presentation.profileinfo
 import android.net.Uri
 import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.profile.R
-import cz.cvut.fukalhan.swap.userdata.model.UserProfile
+import cz.cvut.fukalhan.swap.userdata.model.User
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -13,6 +13,7 @@ object Init : ProfileInfoState()
 object Loading : ProfileInfoState()
 
 class Success(
+    val id: String,
     val profilePicUri: Uri,
     val username: String,
     val joinDate: String
@@ -20,8 +21,9 @@ class Success(
 
 class Failure(val message: Int = R.string.cannotLoadData) : ProfileInfoState()
 
-fun UserProfile.toProfileInfoState(stringResources: StringResources): ProfileInfoState {
+fun User.toProfileInfoState(stringResources: StringResources): ProfileInfoState {
     return Success(
+        this.id,
         this.profilePicUri,
         this.username,
         stringResources.getString(R.string.memberSince, convertDateString(this.joinDate))

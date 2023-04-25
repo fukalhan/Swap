@@ -1,10 +1,50 @@
 package cz.cvut.fukalhan.swap.login.system.common
 
-import android.content.Context
-import android.widget.Toast
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.swap.login.R
+
+@Composable
+fun LoginInputView(loginField: String, loginFieldLabel: Int, onValueChange: (String) -> Unit) {
+    Column {
+        Text(
+            text = stringResource(loginFieldLabel),
+        )
+
+        TextField(
+            value = loginField,
+            singleLine = true,
+            onValueChange = onValueChange,
+            colors = TextFieldDefaults
+                .textFieldColors(
+                    cursorColor = SwapAppTheme.colors.primary,
+                    focusedIndicatorColor = SwapAppTheme.colors.primary
+                )
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+    }
+}
 
 @Composable
 fun LoginValidityCheckMessage(conditionMet: Boolean, mesResId: Int) {
@@ -16,9 +56,52 @@ fun LoginValidityCheckMessage(conditionMet: Boolean, mesResId: Int) {
 }
 
 @Composable
-fun ShowLoginStateMessage(context: Context, messageId: Int, showMessage: Boolean, afterShowMessage: () -> Unit) {
-    if (showMessage) {
-        Toast.makeText(context, stringResource(messageId), Toast.LENGTH_SHORT).show()
-        afterShowMessage()
+fun LoginButton(label: Int, onClick: () -> Unit) {
+    Spacer(modifier = Modifier.height(40.dp))
+
+    Button(
+        colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary),
+        onClick = onClick
+    ) {
+        Text(
+            text = stringResource(label),
+            color = SwapAppTheme.colors.buttonText
+        )
+    }
+}
+
+@Composable
+fun PasswordView(password: String, onValueChange: (String) -> Unit) {
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    Column {
+        Text(
+            text = stringResource(id = R.string.password)
+        )
+
+        TextField(
+            value = password,
+            singleLine = true,
+            colors = TextFieldDefaults
+                .textFieldColors(
+                    cursorColor = SwapAppTheme.colors.primary,
+                    focusedIndicatorColor = SwapAppTheme.colors.primary
+                ),
+            onValueChange = onValueChange,
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (passwordVisible) {
+                    painterResource(id = R.drawable.visibility_on)
+                } else {
+                    painterResource(id = R.drawable.visibility_off)
+                }
+                val description = if (passwordVisible) "Hide password" else "Show password"
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(painter = image, contentDescription = description)
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
