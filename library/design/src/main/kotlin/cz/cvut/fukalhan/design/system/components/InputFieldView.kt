@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.additem.system.helperviews
+package cz.cvut.fukalhan.design.system.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -24,17 +24,15 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.additem.R
-import cz.cvut.fukalhan.swap.additem.system.DESCRIPTION_CHAR_LIMIT
 
 @Composable
 fun InputFieldView(
-    labelRes: Int,
+    label: Int,
     textField: @Composable () -> Unit
 ) {
     Column {
         Text(
-            text = stringResource(labelRes),
+            text = stringResource(label),
             style = SwapAppTheme.typography.titleSecondary,
             color = SwapAppTheme.colors.textPrimary,
             modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
@@ -46,6 +44,7 @@ fun InputFieldView(
 
 @Composable
 fun RegularTextFieldView(
+    label: Int,
     value: String,
     onValueChange: (String) -> Unit
 ) {
@@ -54,7 +53,7 @@ fun RegularTextFieldView(
         onValueChange = onValueChange,
         placeholder = {
             Text(
-                text = stringResource(R.string.namePlaceholder),
+                text = stringResource(label),
                 style = SwapAppTheme.typography.body,
                 color = SwapAppTheme.colors.textSecondary
             )
@@ -69,6 +68,8 @@ fun RegularTextFieldView(
 
 @Composable
 fun DescriptionView(
+    label: Int,
+    charLimit: Int,
     description: String,
     onDescriptionChange: (String) -> Unit
 ) {
@@ -76,13 +77,13 @@ fun DescriptionView(
         TextField(
             value = description,
             onValueChange = { newValue ->
-                if (newValue.length <= DESCRIPTION_CHAR_LIMIT) {
+                if (newValue.length <= charLimit) {
                     onDescriptionChange(newValue)
                 }
             },
             placeholder = {
                 Text(
-                    text = stringResource(R.string.descriptionPlaceholder),
+                    text = stringResource(label),
                     style = SwapAppTheme.typography.body,
                     color = SwapAppTheme.colors.textSecondary
                 )
@@ -94,7 +95,7 @@ fun DescriptionView(
         )
 
         Text(
-            text = "${description.length}/$DESCRIPTION_CHAR_LIMIT",
+            text = "${description.length}/$charLimit",
             style = SwapAppTheme.typography.body,
             color = SwapAppTheme.colors.textPrimary,
             modifier = Modifier
