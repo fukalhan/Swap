@@ -22,11 +22,15 @@ class LikedItemListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val response = getUserLikedItemsUseCase.getUserLikedItems(uid)
             response.data?.let { items ->
-                _itemListState.value = Success(
-                    items.map {
-                        it.toItemState()
-                    }
-                )
+                if (items.isNotEmpty()) {
+                    _itemListState.value = Success(
+                        items.map {
+                            it.toItemState()
+                        }
+                    )
+                } else {
+                    _itemListState.value = Empty()
+                }
             } ?: run {
                 _itemListState.value = Failure()
             }
@@ -35,7 +39,7 @@ class LikedItemListViewModel(
 
     fun toggleItemLike(userId: String, itemId: String, isLiked: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = toggleItemLikeUseCase.toggleItemLike(userId, itemId, isLiked)
+            toggleItemLikeUseCase.toggleItemLike(userId, itemId, isLiked)
         }
     }
 }

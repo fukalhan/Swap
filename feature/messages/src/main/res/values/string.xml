@@ -8,4 +8,5 @@
     <string name="markAsSwapped">Označit jako vyměněný</string>
     <string name="giveReview">Udělit hodnocení</string>
     <string name="cannotChangeItemState">Změna stavu předmětu se nezdařila</string>
+    <string name="cancelReservation">Zrušit rezervaci</string>
 </resources>

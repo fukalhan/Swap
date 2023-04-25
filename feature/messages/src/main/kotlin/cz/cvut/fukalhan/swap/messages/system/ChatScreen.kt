@@ -52,7 +52,9 @@ fun ChatScreen(
     arg: String,
     viewModelFactory: ChatViewModelFactory,
     onScreenInit: (ScreenState) -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    onNavigateToItemDetail: (String) -> Unit,
+    onNavigateToAddReview: (String) -> Unit,
 ) {
     val channelId = "$CHANNEL_TYPE:$arg"
     val listViewModel: MessageListViewModel = viewModel(
@@ -73,7 +75,15 @@ fun ChatScreen(
     onScreenInit(ScreenState())
 
     CustomChatTheme {
-        Chat(arg, listViewModel, attachmentsPickerViewModel, composerViewModel, navigateBack)
+        Chat(
+            arg,
+            listViewModel,
+            attachmentsPickerViewModel,
+            composerViewModel,
+            onNavigateToItemDetail,
+            onNavigateToAddReview,
+            navigateBack
+        )
     }
 }
 
@@ -83,7 +93,9 @@ fun Chat(
     listViewModel: MessageListViewModel,
     attachmentsPickerViewModel: AttachmentsPickerViewModel,
     composerViewModel: MessageComposerViewModel,
-    navigateBack: () -> Unit
+    onNavigateToItemDetail: (String) -> Unit,
+    onNavigateToAddReview: (String) -> Unit,
+    navigateBack: () -> Unit,
 ) {
     val isShowingAttachments = attachmentsPickerViewModel.isShowingAttachments
     val selectedMessageState = listViewModel.currentMessagesState.selectedMessageState
@@ -91,6 +103,7 @@ fun Chat(
     val channel = listViewModel.channel
     val connectionState by listViewModel.connectionState.collectAsState()
     val messageMode = listViewModel.messageMode
+    val channelMembers = channel.members
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -107,7 +120,7 @@ fun Chat(
             bottomBar = { MessageComposerBar(composerViewModel, attachmentsPickerViewModel) }
         ) {
             Column {
-                ItemView(channelId, koinViewModel())
+                ItemView(channelId, koinViewModel(), onNavigateToItemDetail, onNavigateToAddReview, channelMembers)
                 MessageList(listViewModel, it)
             }
         }
