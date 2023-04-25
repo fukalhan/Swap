@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -50,9 +49,8 @@ fun ProfileInfo(viewModel: ProfileInfoViewModel) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
         modifier = Modifier
-            .padding(SwapAppTheme.dimensions.smallSidePadding)
+            .padding(bottom = SwapAppTheme.dimensions.smallSidePadding)
             .fillMaxWidth()
             .height(150.dp),
     ) {
