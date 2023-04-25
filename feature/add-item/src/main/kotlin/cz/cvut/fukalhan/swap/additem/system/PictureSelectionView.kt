@@ -60,7 +60,7 @@ fun PictureSelectionView(
 
         LazyRow {
             items(selectedImagesUri) { uri ->
-                ImageItem(uri) {
+                ImageView(uri) {
                     setSelectedImagesUri(
                         selectedImagesUri.filter {
                             it != uri
@@ -82,7 +82,7 @@ fun PictureSelectionView(
 }
 
 @Composable
-fun ImageItem(
+fun ImageView(
     uri: Uri,
     onCancelClick: () -> Unit
 ) {
