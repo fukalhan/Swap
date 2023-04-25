@@ -14,6 +14,7 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 
 @Composable
 fun ItemCard(
+    enabled: Boolean = true,
     onClick: () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -22,7 +23,7 @@ fun ItemCard(
         color = SwapAppTheme.colors.backgroundSecondary,
         modifier = Modifier
             .padding(SwapAppTheme.dimensions.smallSidePadding)
-            .clickable(onClick = onClick)
+            .clickable(enabled = enabled, onClick = onClick)
     ) {
         Column(
             modifier = Modifier

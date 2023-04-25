@@ -35,11 +35,15 @@ const val MAX_LINES = 1
 
 @Composable
 fun ItemCard(
+    enabled: Boolean,
     itemState: ItemState,
     navigateToItemDetail: (String) -> Unit,
     onLikeButtonClick: (Boolean) -> Unit,
 ) {
-    ItemCard(onClick = { navigateToItemDetail(itemState.id) }) {
+    ItemCard(
+        enabled = enabled,
+        onClick = { navigateToItemDetail(itemState.id) }
+    ) {
         Box(
             modifier = Modifier
                 .weight(1f)
