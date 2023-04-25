@@ -77,7 +77,7 @@ fun ItemListScreen(
                 searchBarVisible = !searchBarVisible
             }
         }
-        ResolveState(itemListState, viewModel, navigateToItemDetail)
+        ResolveState(itemListState, viewModel, navigateToItemDetail, !searchBarVisible)
     }
 }
 
@@ -114,10 +114,11 @@ fun ResolveState(
     state: ItemListState,
     viewModel: ItemListViewModel,
     navigateToItemDetail: (String) -> Unit,
+    itemClickEnabled: Boolean
 ) {
     when (state) {
         is Loading -> LoadingView(semiTransparentBlack)
-        is Success -> ItemList(state.items, viewModel, navigateToItemDetail)
+        is Success -> ItemList(state.items, viewModel, navigateToItemDetail, itemClickEnabled)
         is Failure -> FailureView(state.message)
         is Empty -> EmptyView(state.message)
         else -> {}
@@ -129,6 +130,7 @@ fun ItemList(
     items: List<ItemState>,
     viewModel: ItemListViewModel,
     navigateToItemDetail: (String) -> Unit,
+    itemClickEnabled: Boolean,
 ) {
     val user = Firebase.auth.currentUser
 
@@ -148,7 +150,7 @@ fun ItemList(
         horizontalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding)
     ) {
         items(items) { itemState ->
-            ItemCard(itemState, navigateToItemDetail) { isLiked ->
+            ItemCard(itemClickEnabled, itemState, navigateToItemDetail) { isLiked ->
                 user?.let {
                     viewModel.toggleItemLike(it.uid, itemState.id, isLiked)
                 }

@@ -33,7 +33,7 @@ fun LikedItemCard(
     onLikeButtonClick: (String, Boolean) -> Unit,
     onItemClick: () -> Unit,
 ) {
-    ItemCard(onItemClick) {
+    ItemCard(onClick = onItemClick) {
         Box(
             modifier = Modifier
                 .weight(1f)
