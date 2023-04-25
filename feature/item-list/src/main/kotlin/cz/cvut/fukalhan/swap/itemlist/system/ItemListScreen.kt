@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.itemlist.system
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.zIndex
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
@@ -139,18 +137,10 @@ fun ItemList(
 
     LazyVerticalGrid(
         modifier = Modifier
-            .zIndex(0f)
             .background(SwapAppTheme.colors.backgroundSecondary)
-            .padding(
-                start = SwapAppTheme.dimensions.smallSidePadding,
-                top = SwapAppTheme.dimensions.smallSidePadding,
-                end = SwapAppTheme.dimensions.smallSidePadding,
-                bottom = SwapAppTheme.dimensions.bottomScreenPadding
-            )
+            .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
             .fillMaxSize(),
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding),
-        horizontalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding)
+        columns = GridCells.Fixed(2)
     ) {
         items(items) { itemState ->
             ItemCard(itemClickEnabled, itemState, navigateToItemDetail) { isLiked ->
