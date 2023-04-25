@@ -56,6 +56,7 @@ fun ItemCard(
             )
             ItemPicture(itemState.imageUri)
             LikeButton(
+                enabled,
                 itemState,
                 Modifier
                     .align(Alignment.BottomEnd)
@@ -95,6 +96,7 @@ fun ItemPicture(uri: Uri) {
 
 @Composable
 fun LikeButton(
+    enabled: Boolean,
     itemState: ItemState,
     modifier: Modifier,
     onLikeButtonClick: (Boolean) -> Unit,
@@ -102,6 +104,7 @@ fun LikeButton(
     var isLiked by remember { mutableStateOf(itemState.isLiked) }
 
     IconButton(
+        enabled = enabled,
         onClick = {
             isLiked = !isLiked
             onLikeButtonClick(isLiked)
