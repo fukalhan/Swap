@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.additem.system.helperviews
+package cz.cvut.fukalhan.swap.additem.system
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

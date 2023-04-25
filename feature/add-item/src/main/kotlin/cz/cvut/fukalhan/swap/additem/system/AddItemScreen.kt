@@ -27,6 +27,8 @@ import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.ButtonRow
+import cz.cvut.fukalhan.design.system.components.CategoryListHeader
+import cz.cvut.fukalhan.design.system.components.CollapsingList
 import cz.cvut.fukalhan.design.system.components.DescriptionView
 import cz.cvut.fukalhan.design.system.components.InputFieldView
 import cz.cvut.fukalhan.design.system.components.RegularTextFieldView
@@ -40,9 +42,8 @@ import cz.cvut.fukalhan.swap.additem.presentation.AddItemViewModel
 import cz.cvut.fukalhan.swap.additem.presentation.Failure
 import cz.cvut.fukalhan.swap.additem.presentation.Loading
 import cz.cvut.fukalhan.swap.additem.presentation.Success
-import cz.cvut.fukalhan.swap.additem.system.helperviews.CategoryList
-import cz.cvut.fukalhan.swap.additem.system.helperviews.PictureSelectionView
 import cz.cvut.fukalhan.swap.itemdata.model.Category
+import cz.cvut.fukalhan.swap.itemdata.model.categories
 
 const val DESCRIPTION_CHAR_LIMIT = 150
 
@@ -110,6 +111,7 @@ fun ItemData(
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var category by remember { mutableStateOf(Category.DEFAULT) }
+    var expanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -160,8 +162,28 @@ fun ItemData(
                     }
                 }
 
-                CategoryList(category) {
-                    category = it
+                CategoryListHeader(
+                    label = stringResource(category.labelId),
+                    expanded = expanded,
+                    onClick = { expanded = !expanded }
+                )
+
+                if (expanded) {
+                    CollapsingList(
+                        items = categories,
+                        selectedCategory = category,
+                        onItemClick = {
+                            category = it
+                            expanded = false
+                        },
+                        itemLabel = {
+                            Text(
+                                text = stringResource(it.labelId),
+                                style = SwapAppTheme.typography.titleSecondary,
+                                color = SwapAppTheme.colors.textPrimary,
+                            )
+                        }
+                    )
                 }
             }
         }
