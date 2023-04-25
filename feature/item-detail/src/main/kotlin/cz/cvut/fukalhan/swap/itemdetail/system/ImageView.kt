@@ -28,17 +28,27 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.ItemStateView
+import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemdetail.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ImageRow(images: List<Uri>) {
+fun ImageRow(
+    images: List<Uri>,
+    itemState: State
+) {
     val pagerState = rememberPagerState()
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(350.dp)
     ) {
+        ItemStateView(
+            itemState == State.RESERVED || itemState == State.SWAPPED,
+            itemState.label,
+            Modifier.align(Alignment.BottomCenter)
+        )
         HorizontalPager(
             pageCount = images.size,
             beyondBoundsPageCount = images.size,

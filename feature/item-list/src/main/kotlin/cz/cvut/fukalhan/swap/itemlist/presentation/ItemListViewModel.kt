@@ -24,12 +24,16 @@ class ItemListViewModel(
             response.data?.let { data ->
                 val items = data.first
                 val likedItemsId = data.second
-                _itemListState.value =
-                    Success(
-                        items.map { item ->
-                            item.toItemState(likedItemsId.contains(item.id))
-                        }
-                    )
+                if (items.isNotEmpty()) {
+                    _itemListState.value =
+                        Success(
+                            items.map { item ->
+                                item.toItemState(likedItemsId.contains(item.id))
+                            }
+                        )
+                } else {
+                    _itemListState.value = Empty()
+                }
             } ?: run {
                 _itemListState.value = Failure()
             }

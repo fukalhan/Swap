@@ -3,7 +3,6 @@ package cz.cvut.fukalhan.swap.profile.system.profileinfo
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,10 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,12 +25,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
+import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Failure
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Loading
@@ -58,20 +56,33 @@ fun ProfileInfo(viewModel: ProfileInfoViewModel) {
             .fillMaxWidth()
             .height(150.dp),
     ) {
-        InitChatClient(getKoin().get(), chatToken, profileInfoState)
-        LoadingView(profileInfoState)
-        ProfileInfoContent(profileInfoState)
-        FailView(profileInfoState)
+        ResolveState(profileInfoState, chatToken)
     }
 }
 
 @Composable
-fun InitChatClient(chatClient: ChatClient, chatToken: String, profileInfoState: ProfileInfoState) {
-    if (chatToken.isNotEmpty() && profileInfoState is Success) {
+fun ResolveState(
+    state: ProfileInfoState,
+    chatToken: String
+) {
+    when (state) {
+        is Loading -> LoadingView()
+        is Success -> {
+            ProfileInfoContent(state)
+            InitChatClient(getKoin().get(), chatToken, state)
+        }
+        is Failure -> FailureView(state.message)
+        else -> {}
+    }
+}
+
+@Composable
+fun InitChatClient(chatClient: ChatClient, chatToken: String, state: Success) {
+    if (chatToken.isNotEmpty()) {
         val user = User(
-            id = profileInfoState.id,
-            name = profileInfoState.username,
-            image = profileInfoState.profilePicUri.toString()
+            id = state.id,
+            name = state.username,
+            image = state.profilePicUri.toString()
         )
 
         chatClient.connectUser(user = user, token = chatToken)
@@ -86,40 +97,25 @@ fun InitChatClient(chatClient: ChatClient, chatToken: String, profileInfoState: 
 }
 
 @Composable
-fun LoadingView(profileInfoState: ProfileInfoState) {
-    if (profileInfoState is Loading) {
-        Box(modifier = Modifier.wrapContentSize()) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(SwapAppTheme.dimensions.icon),
-                color = SwapAppTheme.colors.primary
-            )
-        }
-    }
-}
+fun ProfileInfoContent(state: Success) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(SwapAppTheme.dimensions.sidePadding),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        ProfilePicture(state.profilePicUri)
 
-@Composable
-fun ProfileInfoContent(profileInfoState: ProfileInfoState) {
-    if (profileInfoState is Success) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(SwapAppTheme.dimensions.sidePadding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+        Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
+
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start,
         ) {
-            ProfilePicture(profileInfoState.profilePicUri)
-
-            Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                InfoView(profileInfoState.username, SwapAppTheme.typography.titleSecondary)
-                InfoView(profileInfoState.joinDate, SwapAppTheme.typography.body)
-            }
+            InfoView(state.username, SwapAppTheme.typography.titleSecondary)
+            InfoView(state.joinDate, SwapAppTheme.typography.body)
         }
     }
 }
@@ -148,15 +144,4 @@ fun InfoView(text: String, style: TextStyle) {
         style = style,
         modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
     )
-}
-
-@Composable
-fun FailView(profileInfoState: ProfileInfoState) {
-    if (profileInfoState is Failure) {
-        Text(
-            text = stringResource(profileInfoState.message),
-            style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary
-        )
-    }
 }

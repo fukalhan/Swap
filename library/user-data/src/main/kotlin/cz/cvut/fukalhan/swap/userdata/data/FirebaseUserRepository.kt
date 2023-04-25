@@ -5,15 +5,15 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.ktx.storage
-import cz.cvut.fukalhan.swap.userdata.domain.UserRepository
-import cz.cvut.fukalhan.swap.userdata.model.UserProfile
+import cz.cvut.fukalhan.swap.userdata.domain.repo.UserRepository
+import cz.cvut.fukalhan.swap.userdata.model.User
 import kotlinx.coroutines.tasks.await
 
 class FirebaseUserRepository : UserRepository {
     private val storage = Firebase.storage
     private val db = Firebase.firestore
 
-    override suspend fun getUserProfileData(uid: String): Response<ResponseFlag, UserProfile> {
+    override suspend fun getUserProfileData(uid: String): DataResponse<ResponseFlag, User> {
         try {
             val profilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + uid)
 
@@ -33,20 +33,20 @@ class FirebaseUserRepository : UserRepository {
 
             val userDoc = db.collection(USERS).document(uid).get().await()
             return if (userDoc.exists()) {
-                val userProfile = UserProfile(
+                val user = User(
                     userDoc.id,
                     imageUri,
                     userDoc.getString(USERNAME) ?: EMPTY_FIELD,
                     userDoc.getString(JOIN_DATE) ?: EMPTY_FIELD
                 )
-                Response(true, ResponseFlag.SUCCESS, userProfile)
+                DataResponse(ResponseFlag.SUCCESS, user)
             } else {
-                Response(false, ResponseFlag.DATA_NOT_FOUND, null)
+                DataResponse(ResponseFlag.DATA_NOT_FOUND, null)
             }
         } catch (e: StorageException) {
-            return Response(false, ResponseFlag.STORAGE_ERROR, null)
+            return DataResponse(ResponseFlag.STORAGE_ERROR, null)
         } catch (e: FirebaseFirestoreException) {
-            return Response(false, ResponseFlag.DB_ERROR, null)
+            return DataResponse(ResponseFlag.DB_ERROR, null)
         }
     }
 }
