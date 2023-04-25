@@ -16,6 +16,7 @@ import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
+import cz.cvut.fukalhan.swap.itemdata.model.SearchQuery
 import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemdata.tools.UriAdapter
 import kotlinx.coroutines.tasks.await
@@ -211,6 +212,14 @@ class FirebaseItemRepository : ItemRepository {
             Response(true, ResponseFlag.SUCCESS)
         } catch (e: FirebaseFirestoreException) {
             Response(false, ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun getSearchedItems(searchQuery: SearchQuery): DataResponse<ResponseFlag, List<Item>> {
+        return try {
+            DataResponse(true, ResponseFlag.SUCCESS, emptyList())
+        } catch (e: Exception) {
+            DataResponse(false, ResponseFlag.FAIL)
         }
     }
 }
