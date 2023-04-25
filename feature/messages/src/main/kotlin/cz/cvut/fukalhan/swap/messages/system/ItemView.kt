@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.firebase.auth.ktx.auth
@@ -45,13 +44,15 @@ import cz.cvut.fukalhan.swap.messages.presentation.ItemViewModel
 import cz.cvut.fukalhan.swap.messages.presentation.ItemViewState
 import cz.cvut.fukalhan.swap.messages.presentation.Loading
 import cz.cvut.fukalhan.swap.messages.presentation.Success
-import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
+import io.getstream.chat.android.client.models.Member
 
 @Composable
 fun ItemView(
     channelId: String,
     viewModel: ItemViewModel,
-    navController: NavHostController
+    onNavigateToItemDetail: (String) -> Unit,
+    onNavigateToAddReview: (String) -> Unit,
+    channelMembers: List<Member>
 ) {
     val itemState by viewModel.itemViewState.collectAsState()
     LaunchedEffect(Unit) {
@@ -65,16 +66,15 @@ fun ItemView(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(bottom = SwapAppTheme.dimensions.sidePadding)
-
     ) {
         ResolveState(
             itemState,
             channelId,
             viewModel,
-            navController
-        ) {
-            // TODO add review screen
-        }
+            onNavigateToItemDetail,
+            onNavigateToAddReview,
+            channelMembers
+        )
     }
 }
 
@@ -83,12 +83,13 @@ fun ResolveState(
     state: ItemViewState,
     channelId: String,
     viewModel: ItemViewModel,
-    navController: NavHostController,
-    navigateToReviewScreen: () -> Unit
+    onNavigateToItemDetail: (String) -> Unit,
+    onNavigateToAddReview: (String) -> Unit,
+    channelMembers: List<Member>
 ) {
     when (state) {
         is Loading -> LoadingView()
-        is Success -> Item(state, channelId, viewModel, navController, navigateToReviewScreen)
+        is Success -> Item(state, channelId, viewModel, onNavigateToItemDetail, onNavigateToAddReview, channelMembers)
         is Failure -> FailureView(state.message)
         is ChangeStateFailure -> {
             val context = LocalContext.current
@@ -103,8 +104,9 @@ fun Item(
     itemState: Success,
     channelId: String,
     viewModel: ItemViewModel,
-    navController: NavHostController,
-    navigateToReviewScreen: () -> Unit
+    onNavigateToItemDetail: (String) -> Unit,
+    onNavigateToAddReview: (String) -> Unit,
+    channelMembers: List<Member>
 ) {
     Row(
         modifier = Modifier
@@ -115,7 +117,7 @@ fun Item(
         horizontalArrangement = Arrangement.Start
     ) {
         ItemPicture(itemState.image) {
-            navController.navigate("${SecondaryScreen.ItemDetail.route}/${itemState.id}")
+            onNavigateToItemDetail(itemState.id)
         }
         Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
         Column(
@@ -136,7 +138,7 @@ fun Item(
                 )
             }
 
-            ItemViewButton(itemState, channelId, viewModel, navigateToReviewScreen)
+            ItemViewButton(itemState, channelId, viewModel, onNavigateToAddReview, channelMembers)
         }
     }
 }
@@ -166,10 +168,15 @@ fun ItemViewButton(
     itemState: Success,
     channelId: String,
     viewModel: ItemViewModel,
-    navigateToReviewScreen: () -> Unit
+    onNavigateToAddReview: (String) -> Unit,
+    channelMembers: List<Member>
 ) {
     val user = Firebase.auth.currentUser
     user?.let {
+        val otherUser = channelMembers.first { member ->
+            member.user.id != it.uid
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -194,7 +201,7 @@ fun ItemViewButton(
                         when (itemState.state) {
                             State.AVAILABLE -> viewModel.changeItemState(itemState.id, State.RESERVED, channelId)
                             State.RESERVED -> viewModel.changeItemState(itemState.id, State.SWAPPED, channelId)
-                            else -> navigateToReviewScreen()
+                            else -> { onNavigateToAddReview(otherUser.user.id) }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary)

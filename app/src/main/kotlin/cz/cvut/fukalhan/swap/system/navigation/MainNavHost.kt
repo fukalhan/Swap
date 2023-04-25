@@ -29,11 +29,13 @@ import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profile.system.settings.SettingsScreen
+import cz.cvut.fukalhan.swap.review.system.AddReviewScreen
 import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
 
 const val ITEM_ID = "itemId"
 const val CHANNEL_ID = "channelId"
+const val USER_ID = "userId"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -52,8 +54,7 @@ fun MainNavHost(
         else -> true
     }
 
-    val user = Firebase.auth.currentUser
-    if (user == null) {
+    if (Firebase.auth.currentUser == null) {
         signOut()
     }
 
@@ -122,8 +123,11 @@ fun MainNavHost(
             }
 
             composable(MainScreen.Messages.route) {
-                ChannelsScreen(getKoin().get(), navController) {
-                    screenState = it
+                ChannelsScreen(
+                    getKoin().get(),
+                    onScreenInit = { screenState = it }
+                ) {
+                    navController.navigate("${SecondaryScreen.Message.route}/$it")
                 }
             }
 
@@ -135,8 +139,24 @@ fun MainNavHost(
                     ChatScreen(
                         channelId,
                         getKoin().get(),
-                        navController,
-                        { screenState = it }
+                        onScreenInit = { screenState = it },
+                        navigateBack = { navController.popBackStack() },
+                        onNavigateToItemDetail = { navController.navigate("${SecondaryScreen.ItemDetail.route}/$it") }
+                    ) {
+                        navController.navigate("${SecondaryScreen.AddReview.route}/$it")
+                    }
+                }
+            }
+
+            composable(
+                "${SecondaryScreen.AddReview.route}/{$USER_ID}",
+                arguments = listOf(navArgument(USER_ID) { type = NavType.StringType })
+            ) { backStackEntry ->
+                backStackEntry.arguments?.getString(USER_ID)?.let { userId ->
+                    AddReviewScreen(
+                        userId,
+                        koinViewModel(),
+                        onScreenInit = { screenState = it }
                     ) {
                         navController.popBackStack()
                     }

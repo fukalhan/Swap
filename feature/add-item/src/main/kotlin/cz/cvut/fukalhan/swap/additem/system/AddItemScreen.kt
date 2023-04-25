@@ -26,6 +26,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.ButtonRow
 import cz.cvut.fukalhan.design.system.components.DescriptionView
 import cz.cvut.fukalhan.design.system.components.InputFieldView
 import cz.cvut.fukalhan.design.system.components.RegularTextFieldView
@@ -39,7 +40,6 @@ import cz.cvut.fukalhan.swap.additem.presentation.AddItemViewModel
 import cz.cvut.fukalhan.swap.additem.presentation.Failure
 import cz.cvut.fukalhan.swap.additem.presentation.Loading
 import cz.cvut.fukalhan.swap.additem.presentation.Success
-import cz.cvut.fukalhan.swap.additem.system.helperviews.ButtonRow
 import cz.cvut.fukalhan.swap.additem.system.helperviews.CategoryList
 import cz.cvut.fukalhan.swap.additem.system.helperviews.PictureSelectionView
 import cz.cvut.fukalhan.swap.itemdata.model.Category

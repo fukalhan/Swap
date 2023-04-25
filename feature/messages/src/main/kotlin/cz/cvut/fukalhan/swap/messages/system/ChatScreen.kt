@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.presentation.CHANNEL_TYPE
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.CustomChatTheme
@@ -52,9 +51,10 @@ import org.koin.androidx.compose.koinViewModel
 fun ChatScreen(
     arg: String,
     viewModelFactory: ChatViewModelFactory,
-    navController: NavHostController,
     onScreenInit: (ScreenState) -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    onNavigateToItemDetail: (String) -> Unit,
+    onNavigateToAddReview: (String) -> Unit,
 ) {
     val channelId = "$CHANNEL_TYPE:$arg"
     val listViewModel: MessageListViewModel = viewModel(
@@ -75,7 +75,15 @@ fun ChatScreen(
     onScreenInit(ScreenState())
 
     CustomChatTheme {
-        Chat(arg, listViewModel, attachmentsPickerViewModel, composerViewModel, navController, navigateBack)
+        Chat(
+            arg,
+            listViewModel,
+            attachmentsPickerViewModel,
+            composerViewModel,
+            onNavigateToItemDetail,
+            onNavigateToAddReview,
+            navigateBack
+        )
     }
 }
 
@@ -85,8 +93,9 @@ fun Chat(
     listViewModel: MessageListViewModel,
     attachmentsPickerViewModel: AttachmentsPickerViewModel,
     composerViewModel: MessageComposerViewModel,
-    navController: NavHostController,
-    navigateBack: () -> Unit
+    onNavigateToItemDetail: (String) -> Unit,
+    onNavigateToAddReview: (String) -> Unit,
+    navigateBack: () -> Unit,
 ) {
     val isShowingAttachments = attachmentsPickerViewModel.isShowingAttachments
     val selectedMessageState = listViewModel.currentMessagesState.selectedMessageState
@@ -94,6 +103,7 @@ fun Chat(
     val channel = listViewModel.channel
     val connectionState by listViewModel.connectionState.collectAsState()
     val messageMode = listViewModel.messageMode
+    val channelMembers = channel.members
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -110,7 +120,7 @@ fun Chat(
             bottomBar = { MessageComposerBar(composerViewModel, attachmentsPickerViewModel) }
         ) {
             Column {
-                ItemView(channelId, koinViewModel(), navController)
+                ItemView(channelId, koinViewModel(), onNavigateToItemDetail, onNavigateToAddReview, channelMembers)
                 MessageList(listViewModel, it)
             }
         }
