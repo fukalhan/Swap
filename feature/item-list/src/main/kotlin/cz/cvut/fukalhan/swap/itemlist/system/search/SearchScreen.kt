@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,7 +50,8 @@ import cz.cvut.fukalhan.swap.itemlist.R
 @Composable
 fun SearchScreen(
     visible: Boolean,
-    onSearchClick: (SearchQuery) -> Unit
+    closeSearchView: () -> Unit,
+    onSearchClick: (SearchQuery) -> Unit,
 ) {
     AnimatedVisibility(
         modifier = Modifier.zIndex(1f),
@@ -80,8 +82,18 @@ fun SearchScreen(
                         .fillMaxWidth()
                         .height(SwapAppTheme.dimensions.mediumSpacer)
                 )
+                Column(modifier = Modifier.fillMaxSize()) {
+                    SearchView(onSearchClick)
 
-                SearchView(onSearchClick)
+                    // Workaround to make just the rest of the view beside the search clickable
+                    Box(
+                        modifier = Modifier
+                            .background(Color.Transparent)
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .clickable { closeSearchView() }
+                    )
+                }
             }
         }
     }

@@ -63,7 +63,7 @@ fun ItemListScreen(
         effect()
     }
 
-    TopBar(onScreenInit) {
+    TopBar(onScreenInit, searchBarVisible) {
         searchBarVisible = !searchBarVisible
     }
 
@@ -71,7 +71,7 @@ fun ItemListScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        SearchScreen(searchBarVisible) { searchQuery ->
+        SearchScreen(searchBarVisible, { searchBarVisible = !searchBarVisible }) { searchQuery ->
             Firebase.auth.currentUser?.let { user ->
                 viewModel.searchItems(user.uid, searchQuery)
                 searchBarVisible = !searchBarVisible
@@ -84,6 +84,7 @@ fun ItemListScreen(
 @Composable
 fun TopBar(
     onScreenInit: (ScreenState) -> Unit,
+    searchBarVisible: Boolean,
     onSearchClick: () -> Unit
 ) {
     onScreenInit(
@@ -96,13 +97,15 @@ fun TopBar(
             )
 
             Row {
-                IconButton(onClick = onSearchClick) {
-                    Icon(
-                        painter = painterResource(R.drawable.search),
-                        contentDescription = null,
-                        tint = SwapAppTheme.colors.buttonText,
-                        modifier = Modifier.size(SwapAppTheme.dimensions.icon)
-                    )
+                if (!searchBarVisible) {
+                    IconButton(onClick = onSearchClick) {
+                        Icon(
+                            painter = painterResource(R.drawable.search),
+                            contentDescription = null,
+                            tint = SwapAppTheme.colors.buttonText,
+                            modifier = Modifier.size(SwapAppTheme.dimensions.icon)
+                        )
+                    }
                 }
             }
         }

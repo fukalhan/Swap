@@ -9,7 +9,10 @@ import cz.cvut.fukalhan.swap.itemdata.model.SearchQuery
 
 class SearchItemsUseCase(private val itemRepository: ItemRepository) {
 
-    suspend fun getSearchedItems(userId: String, searchQuery: SearchQuery): DataResponse<ResponseFlag, Pair<List<Item>, List<String>>> {
+    suspend fun getSearchedItems(
+        userId: String,
+        searchQuery: SearchQuery
+    ): DataResponse<ResponseFlag, Pair<List<Item>, List<String>>> {
         val response = itemRepository.getItems(userId)
         val getItemsLikedByUserResponse = itemRepository.getItemIdsLikedByUser(userId)
         return if (response.data != null && getItemsLikedByUserResponse.data != null) {

@@ -45,6 +45,8 @@ import cz.cvut.fukalhan.swap.review.presentation.ReviewViewModel
 import cz.cvut.fukalhan.swap.review.presentation.UserInfoState
 
 const val REVIEW_CHAR_LIMIT = 150
+const val MIN_RATING = 1
+const val MAX_RATING = 5
 
 @Composable
 fun AddReviewScreen(
@@ -136,7 +138,7 @@ fun RatingView(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(SwapAppTheme.dimensions.smallSidePadding)
     ) {
-        for (i in 1..5) {
+        for (i in MIN_RATING..MAX_RATING) {
             val filled = i <= selectedRating
             IconButton(
                 onClick = { onSelectRating(i) },
