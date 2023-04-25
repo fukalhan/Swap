@@ -71,7 +71,11 @@ fun ItemListScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        SearchScreen(searchBarVisible) {
+        SearchScreen(searchBarVisible) { searchQuery ->
+            Firebase.auth.currentUser?.let { user ->
+                viewModel.searchItems(user.uid, searchQuery)
+                searchBarVisible = !searchBarVisible
+            }
         }
         ResolveState(itemListState, viewModel, navigateToItemDetail)
     }
