@@ -49,4 +49,22 @@ class FirebaseUserRepository : UserRepository {
             return DataResponse(ResponseFlag.DB_ERROR, null)
         }
     }
+
+    override suspend fun getUserRating(userId: String): DataResponse<ResponseFlag, Float> {
+        return try {
+            val querySnapshot = db.collection(REVIEWS).whereEqualTo(USER_ID, userId).get().await()
+            val size = querySnapshot.size()
+            var cumulativeRating = 0
+            querySnapshot.documents.forEach { doc ->
+                cumulativeRating += (doc.getLong(VALUE) ?: 0).toInt()
+            }
+            if (size != 0) {
+                DataResponse(ResponseFlag.SUCCESS, (cumulativeRating / size).toFloat())
+            } else {
+                DataResponse(ResponseFlag.SUCCESS, 0f)
+            }
+        } catch (e: Exception) {
+            DataResponse(ResponseFlag.FAIL)
+        }
+    }
 }

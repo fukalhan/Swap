@@ -6,5 +6,6 @@ data class User(
     val id: String,
     val profilePicUri: Uri,
     val username: String,
-    val joinDate: String
+    val joinDate: String,
+    var rating: Float = 0f
 )
