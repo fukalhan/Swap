@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
@@ -86,7 +87,14 @@ fun ChannelsList(
         channelsState = channelsState,
         currentUser = user,
         loadingContent = { LoadingView(semiTransparentBlack) },
-        emptyContent = { EmptyView(R.string.emptyChannels) },
+        emptyContent = {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                EmptyView(R.string.emptyChannels)
+            }
+        },
         onChannelClick = { channel ->
             onNavigateToChannel(channel.id)
         }
