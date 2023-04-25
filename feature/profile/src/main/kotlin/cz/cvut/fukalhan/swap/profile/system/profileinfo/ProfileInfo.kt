@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.profile.system.profileinfo
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -114,6 +115,7 @@ fun ProfileInfoContent(state: Success) {
         ) {
             InfoView(state.username, SwapAppTheme.typography.titleSecondary)
             InfoView(state.joinDate, SwapAppTheme.typography.body)
+            RatingView(state.rating)
         }
     }
 }
@@ -142,4 +144,46 @@ fun InfoView(text: String, style: TextStyle) {
         style = style,
         modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
     )
+}
+
+@Composable
+fun RatingView(rating: Float) {
+    val fullStars = rating.toInt()
+    val halfStar = (rating - fullStars >= 0.5f)
+    val emptyStar = if (halfStar) 5 - fullStars + 1 else 5 - fullStars
+
+    Row(
+        modifier = Modifier.padding(
+            start = SwapAppTheme.dimensions.smallSidePadding,
+            top = SwapAppTheme.dimensions.smallSidePadding
+        )
+    ) {
+        repeat(fullStars) {
+            Image(
+                painter = painterResource(R.drawable.filled_star),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = SwapAppTheme.dimensions.smallSidePadding)
+                    .size(20.dp)
+            )
+        }
+        if (halfStar) {
+            Image(
+                painter = painterResource(R.drawable.half_star),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = SwapAppTheme.dimensions.smallSidePadding)
+                    .size(20.dp)
+            )
+        }
+        repeat(emptyStar) {
+            Image(
+                painter = painterResource(R.drawable.star),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = SwapAppTheme.dimensions.smallSidePadding)
+                    .size(20.dp)
+            )
+        }
+    }
 }
