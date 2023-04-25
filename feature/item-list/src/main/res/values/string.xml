@@ -3,4 +3,8 @@
     <string name="items">Předměty</string>
     <string name="cannotLoadItems">Předměty nelze načíst</string>
     <string name="noItemsToDisplay">Žádné předměty k zobrazení</string>
+    <string name="sorting">Řazení</string>
+    <string name="accordingToRelevance">Podle relevance</string>
+    <string name="fromTheNewest">Od nejnovějších</string>
+    <string name="search">Hledat</string>
 </resources>
