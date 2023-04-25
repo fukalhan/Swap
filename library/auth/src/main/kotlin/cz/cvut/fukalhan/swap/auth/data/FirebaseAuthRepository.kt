@@ -20,26 +20,29 @@ class FirebaseAuthRepository : AuthRepository {
 
     override suspend fun signUpUser(credentials: SignUpCredentials): SignUpResult {
         val data = hashMapOf(
-            "email" to credentials.email,
-            "username" to credentials.username,
-            "password" to credentials.password
+            EMAIL to credentials.email,
+            USERNAME to credentials.username,
+            PASSWORD to credentials.password
         )
 
         return try {
             val httpsCallableResult = functions
-                .getHttpsCallable("createUser")
+                .getHttpsCallable(CREATE_USER)
                 .call(data)
                 .await()
 
             val result = httpsCallableResult.data as Map<*, *>
 
-            when (result["result"]) {
+            when (result[RESULT]) {
                 WEAK_PASSWORD -> SignUpResult.WEAK_PASSWORD
                 USERNAME_TAKEN -> SignUpResult.USERNAME_TAKEN
                 EMAIL_ALREADY_EXISTS -> SignUpResult.EMAIL_ALREADY_REGISTERED
                 SERVICE_UNAVAILABLE -> SignUpResult.SERVICE_UNAVAILABLE
                 REQUEST_FAILED -> SignUpResult.FAIL
-                else -> SignUpResult.SUCCESS
+                else -> {
+                    auth.signInWithEmailAndPassword(credentials.email, credentials.password).await()
+                    SignUpResult.SUCCESS
+                }
             }
         } catch (e: FirebaseFunctionsException) {
             SignUpResult.FAIL
@@ -57,5 +60,11 @@ class FirebaseAuthRepository : AuthRepository {
                 else -> SignInResult.FAIL
             }
         }
+    }
+
+    override suspend fun getStreamChatUserToken(): String? {
+        val httpsCallableResult = functions.getHttpsCallable(GET_STREAM_USER_TOKEN).call().await()
+        val result = httpsCallableResult.data
+        return result?.toString()
     }
 }

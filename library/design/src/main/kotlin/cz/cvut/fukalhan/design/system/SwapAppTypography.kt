@@ -16,8 +16,8 @@ data class SwapAppTypography(
 
 val swapAppTypography = SwapAppTypography(
     screenTitle = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 30.sp,
+        fontWeight = FontWeight.Normal,
+        fontSize = 25.sp,
         letterSpacing = 0.sp
     ),
     titlePrimary = TextStyle(
