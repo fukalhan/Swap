@@ -6,6 +6,7 @@ import cz.cvut.fukalhan.swap.itemdata.data.ResponseFlag
 import cz.cvut.fukalhan.swap.itemdata.data.SaveImagesRequest
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
+import cz.cvut.fukalhan.swap.itemdata.model.SearchQuery
 import cz.cvut.fukalhan.swap.itemdata.model.State
 
 interface ItemRepository {
@@ -20,4 +21,6 @@ interface ItemRepository {
     suspend fun dislikeItem(userId: String, itemId: String): Response<ResponseFlag>
     suspend fun getItemIdsLikedByUser(userId: String): DataResponse<ResponseFlag, List<String>>
     suspend fun changeItemState(itemId: String, state: State): Response<ResponseFlag>
+
+    suspend fun getSearchedItems(searchQuery: SearchQuery): DataResponse<ResponseFlag, List<Item>>
 }
