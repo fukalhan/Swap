@@ -26,6 +26,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.DescriptionView
+import cz.cvut.fukalhan.design.system.components.InputFieldView
+import cz.cvut.fukalhan.design.system.components.RegularTextFieldView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.system.components.screenstate.SuccessSnackMessage
@@ -38,10 +41,7 @@ import cz.cvut.fukalhan.swap.additem.presentation.Loading
 import cz.cvut.fukalhan.swap.additem.presentation.Success
 import cz.cvut.fukalhan.swap.additem.system.helperviews.ButtonRow
 import cz.cvut.fukalhan.swap.additem.system.helperviews.CategoryList
-import cz.cvut.fukalhan.swap.additem.system.helperviews.DescriptionView
-import cz.cvut.fukalhan.swap.additem.system.helperviews.InputFieldView
 import cz.cvut.fukalhan.swap.additem.system.helperviews.PictureSelectionView
-import cz.cvut.fukalhan.swap.additem.system.helperviews.RegularTextFieldView
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 
 const val DESCRIPTION_CHAR_LIMIT = 150
@@ -142,13 +142,20 @@ fun ItemData(
                     .fillMaxWidth()
             ) {
                 InputFieldView(R.string.name) {
-                    RegularTextFieldView(name) {
+                    RegularTextFieldView(
+                        R.string.namePlaceholder,
+                        name
+                    ) {
                         name = it
                     }
                 }
 
                 InputFieldView(R.string.description) {
-                    DescriptionView(description) {
+                    DescriptionView(
+                        R.string.descriptionPlaceholder,
+                        DESCRIPTION_CHAR_LIMIT,
+                        description
+                    ) {
                         description = it
                     }
                 }
