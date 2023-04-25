@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.additem.system.helperviews
+package cz.cvut.fukalhan.swap.additem.system
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -60,7 +60,7 @@ fun PictureSelectionView(
 
         LazyRow {
             items(selectedImagesUri) { uri ->
-                ImageItem(uri) {
+                ImageView(uri) {
                     setSelectedImagesUri(
                         selectedImagesUri.filter {
                             it != uri
@@ -82,7 +82,7 @@ fun PictureSelectionView(
 }
 
 @Composable
-fun ImageItem(
+fun ImageView(
     uri: Uri,
     onCancelClick: () -> Unit
 ) {

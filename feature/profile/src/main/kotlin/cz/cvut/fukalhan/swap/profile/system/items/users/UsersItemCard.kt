@@ -23,7 +23,7 @@ fun UsersItemCard(
     itemState: ItemState,
     onItemClick: () -> Unit
 ) {
-    ItemCard(onItemClick) {
+    ItemCard(onClick = onItemClick) {
         Box(
             modifier = Modifier
                 .weight(1f)

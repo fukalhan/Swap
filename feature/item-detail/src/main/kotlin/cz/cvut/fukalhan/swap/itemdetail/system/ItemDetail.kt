@@ -44,35 +44,49 @@ fun ItemDetail(
 ) {
     val user = Firebase.auth.currentUser
     val isUserTheOwner = user?.uid == itemDetailState.ownerInfo.id
-    Column(
-        modifier = Modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
-            .fillMaxSize()
+    var fullSizeImageViewVisible by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        ImageRow(itemDetailState.images, itemDetailState.state)
-        ItemInfo(
-            itemDetailState,
-            Modifier.weight(1f),
-            !isUserTheOwner
-        ) { isLiked ->
-            user?.let { user ->
-                viewModel.toggleItemLike(user.uid, itemDetailState.id, isLiked)
-            }
+        FullSizeImageView(fullSizeImageViewVisible, itemDetailState.images) {
+            fullSizeImageViewVisible = !fullSizeImageViewVisible
         }
-        if (!isUserTheOwner) {
-            UserInfoView(
-                itemDetailState.ownerInfo.profilePic,
-                itemDetailState.ownerInfo.username
-            ) {
-                SendMessageButton(Modifier.weight(1f)) {
-                    user?.let { user ->
-                        viewModel.createChannel(
-                            user.uid,
-                            itemDetailState.ownerInfo.id,
-                            itemDetailState.id,
-                            itemDetailState.images.first(),
-                            itemDetailState.name
-                        )
+
+        Column(
+            modifier = Modifier
+                .background(SwapAppTheme.colors.backgroundSecondary)
+                .fillMaxSize()
+        ) {
+            ImageView(itemDetailState.images, itemDetailState.state) {
+                fullSizeImageViewVisible = !fullSizeImageViewVisible
+            }
+
+            ItemInfo(
+                itemDetailState,
+                Modifier.weight(1f),
+                !isUserTheOwner
+            ) { isLiked ->
+                user?.let { user ->
+                    viewModel.toggleItemLike(user.uid, itemDetailState.id, isLiked)
+                }
+            }
+
+            if (!isUserTheOwner) {
+                UserInfoView(
+                    itemDetailState.ownerInfo.profilePic,
+                    itemDetailState.ownerInfo.username
+                ) {
+                    SendMessageButton(Modifier.weight(1f)) {
+                        user?.let { user ->
+                            viewModel.createChannel(
+                                user.uid,
+                                itemDetailState.ownerInfo.id,
+                                itemDetailState.id,
+                                itemDetailState.images.first(),
+                                itemDetailState.name
+                            )
+                        }
                     }
                 }
             }

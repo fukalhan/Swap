@@ -11,6 +11,7 @@ import cz.cvut.fukalhan.swap.itemdata.domain.GetItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetUserItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetUserLikedItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.SaveItemUseCase
+import cz.cvut.fukalhan.swap.itemdata.domain.SearchItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.repo.ChannelRepository
 import cz.cvut.fukalhan.swap.itemdata.domain.repo.ImageRepository
@@ -33,4 +34,5 @@ val itemDataModule = module {
     factoryOf(::CreateChannelUseCase)
     factoryOf(::GetItemFromChannelUseCase)
     factoryOf(::ChangeItemStateUseCase)
+    factoryOf(::SearchItemsUseCase)
 }

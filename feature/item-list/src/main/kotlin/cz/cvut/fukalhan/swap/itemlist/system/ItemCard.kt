@@ -35,11 +35,15 @@ const val MAX_LINES = 1
 
 @Composable
 fun ItemCard(
+    enabled: Boolean,
     itemState: ItemState,
     navigateToItemDetail: (String) -> Unit,
     onLikeButtonClick: (Boolean) -> Unit,
 ) {
-    ItemCard(onClick = { navigateToItemDetail(itemState.id) }) {
+    ItemCard(
+        enabled = enabled,
+        onClick = { navigateToItemDetail(itemState.id) }
+    ) {
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -52,6 +56,7 @@ fun ItemCard(
             )
             ItemPicture(itemState.imageUri)
             LikeButton(
+                enabled,
                 itemState,
                 Modifier
                     .align(Alignment.BottomEnd)
@@ -91,6 +96,7 @@ fun ItemPicture(uri: Uri) {
 
 @Composable
 fun LikeButton(
+    enabled: Boolean,
     itemState: ItemState,
     modifier: Modifier,
     onLikeButtonClick: (Boolean) -> Unit,
@@ -98,6 +104,7 @@ fun LikeButton(
     var isLiked by remember { mutableStateOf(itemState.isLiked) }
 
     IconButton(
+        enabled = enabled,
         onClick = {
             isLiked = !isLiked
             onLikeButtonClick(isLiked)
