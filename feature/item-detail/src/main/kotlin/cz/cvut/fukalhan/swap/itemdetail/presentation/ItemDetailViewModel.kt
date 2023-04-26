@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.CHANNEL_TYPE
+import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
@@ -20,7 +21,8 @@ class ItemDetailViewModel(
     private val getItemDetailUseCase: GetItemDetailUseCase,
     private val getUserProfileDataUseCase: GetUserProfileDataUseCase,
     private val toggleItemLikeUseCase: ToggleItemLikeUseCase,
-    private val createChannelUseCase: CreateChannelUseCase
+    private val createChannelUseCase: CreateChannelUseCase,
+    private val stringResources: StringResources
 ) : ViewModel() {
     private val _itemDetailState: MutableStateFlow<ItemDetailState> = MutableStateFlow(Init)
     val itemDetailState: StateFlow<ItemDetailState>
@@ -31,7 +33,8 @@ class ItemDetailViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             getItemDetailUseCase.getItemDetail(userId, itemId).data?.let { itemDetail ->
                 getUserProfileDataUseCase.getUserProfileData(itemDetail.ownerId).data?.let { user ->
-                    _itemDetailState.value = itemDetail.toItemDetailState(user.id, user.username, user.profilePicUri)
+                    val ownerInfo = user.toOwnerInfo(stringResources)
+                    _itemDetailState.value = itemDetail.toItemDetailState(ownerInfo)
                 } ?: run {
                     _itemDetailState.value = Failure()
                 }

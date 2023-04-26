@@ -33,11 +33,11 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.ButtonRow
 import cz.cvut.fukalhan.design.system.components.DescriptionView
 import cz.cvut.fukalhan.design.system.components.InputFieldView
+import cz.cvut.fukalhan.design.system.components.UserInfoView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.system.components.screenstate.SuccessSnackMessage
-import cz.cvut.fukalhan.design.system.components.screenstate.UserInfoView
 import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.review.R
 import cz.cvut.fukalhan.swap.review.presentation.AddReviewState
@@ -53,7 +53,8 @@ fun AddReviewScreen(
     userId: String,
     viewModel: ReviewViewModel,
     onScreenInit: (ScreenState) -> Unit,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    navigateToProfileDetail: (String) -> Unit
 ) {
     val userInfoState by viewModel.userInfoState.collectAsState()
     val addReviewState by viewModel.addReviewState.collectAsState()
@@ -72,7 +73,7 @@ fun AddReviewScreen(
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        ResolveUserInfoState(userInfoState, onNavigateBack, viewModel)
+        ResolveUserInfoState(userInfoState, onNavigateBack, viewModel, navigateToProfileDetail)
         ResolveAddReviewState(addReviewState, onNavigateBack)
     }
 }
@@ -81,11 +82,12 @@ fun AddReviewScreen(
 fun ResolveUserInfoState(
     state: UserInfoState,
     onNavigateBack: () -> Unit,
-    viewModel: ReviewViewModel
+    viewModel: ReviewViewModel,
+    navigateToProfileDetail: (String) -> Unit
 ) {
     when (state) {
         is UserInfoState.Loading -> LoadingView(semiTransparentBlack)
-        is UserInfoState.Success -> ReviewScreenContent(state, onNavigateBack, viewModel)
+        is UserInfoState.Success -> ReviewScreenContent(state, onNavigateBack, viewModel, navigateToProfileDetail)
         is UserInfoState.Failure -> FailureView(state.message)
         else -> {}
     }
@@ -95,7 +97,8 @@ fun ResolveUserInfoState(
 fun ReviewScreenContent(
     state: UserInfoState.Success,
     onNavigateBack: () -> Unit,
-    viewModel: ReviewViewModel
+    viewModel: ReviewViewModel,
+    navigateToProfileDetail: (String) -> Unit
 ) {
     var selectedRating by remember { mutableStateOf(0) }
     var reviewDescription by remember { mutableStateOf("") }
@@ -105,7 +108,16 @@ fun ReviewScreenContent(
             .background(SwapAppTheme.colors.backgroundSecondary)
             .fillMaxSize()
     ) {
-        UserInfoView(state.profilePic, state.username)
+        UserInfoView(
+            state.profilePic,
+            state.username,
+            state.joinDate,
+            state.rating,
+            true,
+            onClick = {
+                navigateToProfileDetail(state.id)
+            }
+        )
         Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.smallSpacer))
         RatingView(selectedRating) {
             selectedRating = it

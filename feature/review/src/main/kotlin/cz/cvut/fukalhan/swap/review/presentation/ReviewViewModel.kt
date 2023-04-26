@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.review.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.userdata.data.ResponseFlag
 import cz.cvut.fukalhan.swap.userdata.domain.AddReviewUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 
 class ReviewViewModel(
     private val getUserProfileDataUseCase: GetUserProfileDataUseCase,
-    private val addReviewUseCase: AddReviewUseCase
+    private val addReviewUseCase: AddReviewUseCase,
+    private val stringResources: StringResources
 ) : ViewModel() {
     private val _userInfoState: MutableStateFlow<UserInfoState> = MutableStateFlow(UserInfoState.Init)
     val userInfoState: StateFlow<UserInfoState>
@@ -28,7 +30,7 @@ class ReviewViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val response = getUserProfileDataUseCase.getUserProfileData(userId)
             response.data?.let { user ->
-                _userInfoState.value = user.toUserInfoState()
+                _userInfoState.value = user.toUserInfoState(stringResources)
             } ?: run {
                 _userInfoState.value = UserInfoState.Failure()
             }
@@ -38,7 +40,7 @@ class ReviewViewModel(
     fun addReview(
         userId: String,
         reviewerId: String,
-        review: Int,
+        rating: Int,
         description: String
     ) {
         _addReviewState.value = AddReviewState.Loading
@@ -47,7 +49,7 @@ class ReviewViewModel(
                 Review(
                     userId = userId,
                     reviewerId = reviewerId,
-                    value = review,
+                    rating = rating,
                     description = description
                 )
             )

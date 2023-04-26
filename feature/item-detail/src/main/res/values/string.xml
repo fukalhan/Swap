@@ -4,4 +4,5 @@
     <string name="createChannelFailure">Zprávu nelze aktuálně poslat</string>
     <string name="itemDetail">Detail předmětu</string>
     <string name="sendMessage">Poslat zprávu</string>
+    <string name="memberSince">Členem od %1$s</string>
 </resources>

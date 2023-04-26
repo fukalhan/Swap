@@ -26,10 +26,11 @@ import org.koin.androidx.compose.koinViewModel
 fun ProfileScreen(
     navController: NavHostController,
     onScreenInit: (ScreenState) -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    navigateToProfileDetail: (String) -> Unit
 ) {
     TopBar(onScreenInit, onSettingsClick)
-    Profile(navController)
+    Profile(navController, navigateToProfileDetail)
 }
 
 @Composable
@@ -58,7 +59,10 @@ fun TopBar(
 }
 
 @Composable
-fun Profile(navController: NavHostController) {
+fun Profile(
+    navController: NavHostController,
+    navigateToProfileDetail: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,7 +70,7 @@ fun Profile(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        ProfileInfo(koinViewModel())
+        ProfileInfo(koinViewModel(), navigateToProfileDetail)
         ItemsView(Modifier.weight(1f).fillMaxWidth(), navController)
     }
 }

@@ -1,6 +1,9 @@
-package cz.cvut.fukalhan.design.system.components.screenstate
+package cz.cvut.fukalhan.design.system.components
 
 import android.net.Uri
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -30,13 +34,18 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 fun UserInfoView(
     uri: Uri,
     username: String,
+    joinDate: String,
+    rating: Float,
+    clickEnabled: Boolean,
+    onClick: () -> Unit = {},
     additionalContent: (@Composable RowScope.() -> Unit)? = null
 ) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         modifier = Modifier
             .fillMaxWidth()
-            .height(110.dp)
+            .height(150.dp)
+            .clickable(clickEnabled, onClick = onClick)
     ) {
         Row(
             modifier = Modifier
@@ -46,11 +55,11 @@ fun UserInfoView(
         ) {
             ProfilePicture(uri)
             Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
-            Text(
-                text = username,
-                style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary
-            )
+            Column {
+                InfoView(text = username, style = SwapAppTheme.typography.titleSecondary)
+                InfoView(text = joinDate, style = SwapAppTheme.typography.body)
+                RatingView(rating)
+            }
 
             // Display additional content like buttons etc
             additionalContent?.invoke(this)
@@ -73,4 +82,56 @@ fun ProfilePicture(pictureUri: Uri) {
             .size(100.dp),
         contentScale = ContentScale.Fit
     )
+}
+
+@Composable
+fun InfoView(text: String, style: TextStyle) {
+    Text(
+        text = text,
+        style = style,
+        color = SwapAppTheme.colors.textPrimary,
+        modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
+    )
+}
+
+@Composable
+fun RatingView(rating: Float) {
+    val fullStars = rating.toInt()
+    val halfStar = (rating - fullStars >= 0.5f)
+    val emptyStar = if (halfStar) 5 - (fullStars + 1) else 5 - fullStars
+
+    Row(
+        modifier = Modifier.padding(
+            start = SwapAppTheme.dimensions.smallSidePadding,
+            top = SwapAppTheme.dimensions.smallSidePadding
+        )
+    ) {
+        repeat(fullStars) {
+            Image(
+                painter = painterResource(R.drawable.filled_star),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = SwapAppTheme.dimensions.smallSidePadding)
+                    .size(20.dp)
+            )
+        }
+        if (halfStar) {
+            Image(
+                painter = painterResource(R.drawable.half_star),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = SwapAppTheme.dimensions.smallSidePadding)
+                    .size(20.dp)
+            )
+        }
+        repeat(emptyStar) {
+            Image(
+                painter = painterResource(R.drawable.star),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(end = SwapAppTheme.dimensions.smallSidePadding)
+                    .size(20.dp)
+            )
+        }
+    }
 }

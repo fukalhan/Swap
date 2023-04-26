@@ -5,7 +5,5 @@ import cz.cvut.fukalhan.swap.userdata.data.ResponseFlag
 import cz.cvut.fukalhan.swap.userdata.model.User
 
 interface UserRepository {
-    suspend fun getUserProfileData(uid: String): DataResponse<ResponseFlag, User>
-
-    suspend fun getUserRating(userId: String): DataResponse<ResponseFlag, Float>
+    suspend fun getUserProfileData(userId: String): DataResponse<ResponseFlag, User>
 }

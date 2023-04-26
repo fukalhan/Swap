@@ -29,6 +29,7 @@ import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profile.system.settings.SettingsScreen
+import cz.cvut.fukalhan.swap.profiledetail.system.ProfileDetailScreen
 import cz.cvut.fukalhan.swap.review.system.AddReviewScreen
 import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
@@ -51,6 +52,8 @@ fun MainNavHost(
         MainScreen.AddItem.route -> false
         "${SecondaryScreen.ItemDetail.route}/{$ITEM_ID}" -> false
         "${SecondaryScreen.Message.route}/{$CHANNEL_ID}" -> false
+        SecondaryScreen.Settings.route -> false
+        "${SecondaryScreen.ProfileDetail.route}/{$USER_ID}" -> false
         else -> true
     }
 
@@ -86,10 +89,12 @@ fun MainNavHost(
                         itemId,
                         koinViewModel(),
                         navController,
-                        { navController.popBackStack() },
-                    ) {
-                        screenState = it
-                    }
+                        onNavigateBack = { navController.popBackStack() },
+                        onScreenInit = { screenState = it },
+                        navigateToOwnerProfileDetail = {
+                            navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                        }
+                    )
                 }
             }
 
@@ -99,9 +104,26 @@ fun MainNavHost(
                 }
                 ProfileScreen(
                     navController,
-                    { screenState = it },
-                ) {
-                    navController.navigate(SecondaryScreen.Settings.route)
+                    onScreenInit = { screenState = it },
+                    onSettingsClick = { navController.navigate(SecondaryScreen.Settings.route) },
+                    navigateToProfileDetail = {
+                        navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                    }
+                )
+            }
+
+            composable(
+                "${SecondaryScreen.ProfileDetail.route}/{$USER_ID}",
+                arguments = listOf(navArgument(USER_ID) { type = NavType.StringType })
+            ) { backStackEntry ->
+
+                backStackEntry.arguments?.getString(USER_ID)?.let { userId ->
+                    ProfileDetailScreen(
+                        userId,
+                        koinViewModel(),
+                        onInitScreen = { screenState = it },
+                        navigateBack = { navController.popBackStack() }
+                    )
                 }
             }
 
@@ -156,10 +178,12 @@ fun MainNavHost(
                     AddReviewScreen(
                         userId,
                         koinViewModel(),
-                        onScreenInit = { screenState = it }
-                    ) {
-                        navController.popBackStack()
-                    }
+                        onScreenInit = { screenState = it },
+                        onNavigateBack = { navController.popBackStack() },
+                        navigateToProfileDetail = {
+                            navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                        }
+                    )
                 }
             }
         }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="memberSince">Členem od %1$s</string>
+    <string name="bio">O mně:</string>
+    <string name="cannotLoadUserData">Uživatelské údaje nelze načíst</string>
+    <string name="noReviewsToDisplay">Žádná hodnocení k zobrazení</string>
+    <string name="reviews">Hodnocení</string>
+    <string name="profileDetail">Detail profilu</string>
+</resources>
