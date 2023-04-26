@@ -13,7 +13,7 @@ sealed class MainScreen(
     val route: String,
     val iconRes: Int,
 ) {
-    object Items : MainScreen("items", R.drawable.blender)
+    object Items : MainScreen("items", R.drawable.box)
     object Profile : MainScreen("profile", R.drawable.profile)
     object AddItem : MainScreen("addItem", R.drawable.add)
     object Messages : MainScreen("messages", R.drawable.message)
