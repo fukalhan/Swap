@@ -1,5 +1,6 @@
 package cz.cvut.fukalhan.swap.userdata.data
 
+import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -16,30 +17,12 @@ class FirebaseUserRepository : UserRepository {
 
     override suspend fun getUserProfileData(userId: String): DataResponse<ResponseFlag, User> {
         try {
-            val profilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + userId)
+            val docSnapshot = db.collection(USERS).document(userId).get().await()
+            return if (docSnapshot.exists()) {
+                val profilePic = docSnapshot.get(PROFILE_PIC) as String
+                val user = docSnapshot.toObject(User::class.java)
+                user?.profilePicUri = Uri.parse(profilePic)
 
-            val profilePicExists = try {
-                profilePicRef.metadata.await()
-                true
-            } catch (e: StorageException) {
-                false
-            }
-
-            val imageUri = if (profilePicExists) {
-                profilePicRef.downloadUrl.await()
-            } else {
-                val defaultProfilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + PROFILE_IMAGE_PLACEHOLDER)
-                defaultProfilePicRef.downloadUrl.await()
-            }
-
-            val userDoc = db.collection(USERS).document(userId).get().await()
-            return if (userDoc.exists()) {
-                val user = User(
-                    userDoc.id,
-                    imageUri,
-                    userDoc.getString(USERNAME) ?: EMPTY_FIELD,
-                    userDoc.getString(JOIN_DATE) ?: EMPTY_FIELD
-                )
                 DataResponse(ResponseFlag.SUCCESS, user)
             } else {
                 DataResponse(ResponseFlag.DATA_NOT_FOUND, null)
@@ -54,26 +37,41 @@ class FirebaseUserRepository : UserRepository {
     override suspend fun getUsersProfilePic(reviews: List<Review>): DataResponse<ResponseFlag, List<Review>> {
         return try {
             reviews.forEach { review ->
-                val profilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + review.reviewerId)
-
-                val profilePicExists = try {
-                    profilePicRef.metadata.await()
-                    true
-                } catch (e: StorageException) {
-                    false
+                val docSnapshot = db.collection(USERS).document(review.reviewerId).get().await()
+                if (docSnapshot.exists()) {
+                    review.reviewerProfilePic = Uri.parse(docSnapshot.get(PROFILE_PIC) as String)
                 }
-
-                val imageUri = if (profilePicExists) {
-                    profilePicRef.downloadUrl.await()
-                } else {
-                    val defaultProfilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + PROFILE_IMAGE_PLACEHOLDER)
-                    defaultProfilePicRef.downloadUrl.await()
-                }
-                review.reviewerProfilePic = imageUri
             }
             DataResponse(ResponseFlag.SUCCESS, reviews)
         } catch (e: StorageException) {
             DataResponse(ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun changeUserProfilePicture(
+        userId: String,
+        profilePic: Uri
+    ): Response<ResponseFlag> {
+        return try {
+            val imageRef = storage.reference.child(PROFILE_IMAGES_FOLDER + userId)
+            val uploadTask = imageRef.putFile(profilePic)
+
+            val downloadTask = uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                imageRef.downloadUrl
+            }
+            val downloadUri = downloadTask.await()
+
+            val userRef = db.collection(USERS).document(userId)
+            userRef.update(PROFILE_PIC, downloadUri)
+
+            Response(ResponseFlag.SUCCESS)
+        } catch (e: StorageException) {
+            Response(ResponseFlag.SUCCESS)
         }
     }
 }

@@ -60,6 +60,7 @@ dependencies {
     implementation project(':feature:add-item')
     implementation project(':feature:item-list')
     implementation project(':feature:item-detail')
+    implementation project(':feature:settings')
     implementation project(':feature:messages')
     implementation project(':feature:add-review')
     implementation project(':library:auth')
