@@ -6,10 +6,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.UserInfoView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
@@ -30,6 +34,16 @@ fun ProfileInfo(
 ) {
     val profileInfoState by viewModel.profileInfoState.collectAsState()
     val chatToken by viewModel.chatToken.collectAsState()
+    val effect = remember {
+        {
+            Firebase.auth.currentUser?.let {
+                viewModel.initProfile(it.uid)
+            }
+        }
+    }
+    LaunchedEffect(Unit) {
+        effect()
+    }
 
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
