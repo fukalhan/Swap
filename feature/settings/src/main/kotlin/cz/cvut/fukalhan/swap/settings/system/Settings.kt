@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -148,15 +149,26 @@ fun Settings(
     Column(
         modifier = Modifier
             .background(SwapAppTheme.colors.backgroundSecondary)
+            .padding(SwapAppTheme.dimensions.sidePadding)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        ProfilePicture(state.profilePic) {
-            singlePhotoPickerLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
+        Column(
+            modifier = Modifier
+                .padding(SwapAppTheme.dimensions.sidePadding)
+                .weight(1f)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            ProfilePicture(state.profilePic) {
+                singlePhotoPickerLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            }
         }
+
         SignOutButton(signOut)
     }
 }
@@ -187,6 +199,7 @@ fun SignOutButton(
     signOut: () -> Unit
 ) {
     Button(
+        modifier = Modifier.padding(SwapAppTheme.dimensions.sidePadding),
         onClick = {
             val auth = Firebase.auth
             auth.signOut()
