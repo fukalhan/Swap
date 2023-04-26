@@ -2,8 +2,6 @@ package cz.cvut.fukalhan.swap.profile.presentation.profileinfo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.auth.domain.GetStreamChatUserTokenUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
@@ -25,20 +23,15 @@ class ProfileInfoViewModel(
     val chatToken: StateFlow<String>
         get() = _chatToken
 
-    init {
-        val user = Firebase.auth.currentUser
-        user?.let {
-            initProfile(it.uid)
-        }
-    }
-
-    private fun initProfile(uid: String) {
+    fun initProfile(uid: String) {
         _profileInfoState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
             val userProfileResponse = getUserProfileDataUseCase.getUserProfileData(uid)
             userProfileResponse.data?.let {
                 _profileInfoState.value = it.toProfileInfoState(stringResources)
-                getChatToken()
+                if (chatToken.value == "") {
+                    getChatToken()
+                }
             } ?: run {
                 _profileInfoState.value = Failure()
             }
