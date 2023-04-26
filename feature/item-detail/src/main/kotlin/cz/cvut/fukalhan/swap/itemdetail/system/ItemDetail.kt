@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.design.system.components.screenstate.UserInfoView
+import cz.cvut.fukalhan.design.system.components.UserInfoView
 import cz.cvut.fukalhan.swap.itemdetail.R
 import cz.cvut.fukalhan.swap.itemdetail.presentation.ItemDetailViewModel
 import cz.cvut.fukalhan.swap.itemdetail.presentation.Success
@@ -40,7 +40,8 @@ import cz.cvut.fukalhan.swap.itemdetail.presentation.Success
 @Composable
 fun ItemDetail(
     itemDetailState: Success,
-    viewModel: ItemDetailViewModel
+    viewModel: ItemDetailViewModel,
+    navigateToOwnerProfileDetail: (String) -> Unit
 ) {
     val user = Firebase.auth.currentUser
     val isUserTheOwner = user?.uid == itemDetailState.ownerInfo.id
@@ -75,7 +76,11 @@ fun ItemDetail(
             if (!isUserTheOwner) {
                 UserInfoView(
                     itemDetailState.ownerInfo.profilePic,
-                    itemDetailState.ownerInfo.username
+                    itemDetailState.ownerInfo.username,
+                    itemDetailState.ownerInfo.joinDate,
+                    itemDetailState.ownerInfo.rating,
+                    true,
+                    { navigateToOwnerProfileDetail(itemDetailState.ownerInfo.id) }
                 ) {
                     SendMessageButton(Modifier.weight(1f)) {
                         user?.let { user ->

@@ -56,6 +56,7 @@ android {
 dependencies {
     implementation project(':feature:login')
     implementation project(':feature:profile')
+    implementation project(':feature:profile-detail')
     implementation project(':feature:add-item')
     implementation project(':feature:item-list')
     implementation project(':feature:item-detail')

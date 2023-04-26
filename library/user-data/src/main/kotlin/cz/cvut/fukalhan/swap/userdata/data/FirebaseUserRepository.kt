@@ -13,9 +13,9 @@ class FirebaseUserRepository : UserRepository {
     private val storage = Firebase.storage
     private val db = Firebase.firestore
 
-    override suspend fun getUserProfileData(uid: String): DataResponse<ResponseFlag, User> {
+    override suspend fun getUserProfileData(userId: String): DataResponse<ResponseFlag, User> {
         try {
-            val profilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + uid)
+            val profilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + userId)
 
             val profilePicExists = try {
                 profilePicRef.metadata.await()
@@ -31,7 +31,7 @@ class FirebaseUserRepository : UserRepository {
                 defaultProfilePicRef.downloadUrl.await()
             }
 
-            val userDoc = db.collection(USERS).document(uid).get().await()
+            val userDoc = db.collection(USERS).document(userId).get().await()
             return if (userDoc.exists()) {
                 val user = User(
                     userDoc.id,
@@ -47,24 +47,6 @@ class FirebaseUserRepository : UserRepository {
             return DataResponse(ResponseFlag.STORAGE_ERROR, null)
         } catch (e: FirebaseFirestoreException) {
             return DataResponse(ResponseFlag.DB_ERROR, null)
-        }
-    }
-
-    override suspend fun getUserRating(userId: String): DataResponse<ResponseFlag, Float> {
-        return try {
-            val querySnapshot = db.collection(REVIEWS).whereEqualTo(USER_ID, userId).get().await()
-            val size = querySnapshot.size()
-            var cumulativeRating = 0
-            querySnapshot.documents.forEach { doc ->
-                cumulativeRating += (doc.getLong(VALUE) ?: 0).toInt()
-            }
-            if (size != 0) {
-                DataResponse(ResponseFlag.SUCCESS, (cumulativeRating / size).toFloat())
-            } else {
-                DataResponse(ResponseFlag.SUCCESS, 0f)
-            }
-        } catch (e: Exception) {
-            DataResponse(ResponseFlag.FAIL)
         }
     }
 }
