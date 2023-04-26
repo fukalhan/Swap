@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -170,21 +171,29 @@ fun SendMessageButton(
     Box(
         modifier = modifier
             .background(SwapAppTheme.colors.backgroundSecondary)
-            .padding(SwapAppTheme.dimensions.smallSidePadding)
+            .padding(SwapAppTheme.dimensions.sidePadding)
             .fillMaxSize(),
         contentAlignment = Alignment.BottomEnd
     ) {
-        Button(
-            colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary),
-            modifier = Modifier
-                .wrapContentSize(),
-            onClick = onSendMessageButtonClick
+        Surface(
+            shape = CircleShape,
+            color = SwapAppTheme.colors.primary,
+            elevation = SwapAppTheme.dimensions.elevation,
+            modifier = Modifier.wrapContentSize()
         ) {
-            Text(
-                text = stringResource(R.string.sendMessage),
-                style = SwapAppTheme.typography.button,
-                color = SwapAppTheme.colors.buttonText
-            )
+            IconButton(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(SwapAppTheme.colors.primary)
+                    .wrapContentSize(),
+                onClick = onSendMessageButtonClick
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.message),
+                    contentDescription = null,
+                    tint = SwapAppTheme.colors.buttonText
+                )
+            }
         }
     }
 }

@@ -131,10 +131,6 @@ fun ItemData(
             Divider(
                 color = SwapAppTheme.colors.component,
                 thickness = SwapAppTheme.dimensions.borderWidth,
-                modifier = Modifier.padding(
-                    start = SwapAppTheme.dimensions.sidePadding,
-                    end = SwapAppTheme.dimensions.sidePadding,
-                )
             )
 
             Column(

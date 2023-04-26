@@ -68,9 +68,7 @@ fun AddReviewScreen(
 
     TopBar(onScreenInit, onNavigateBack)
     Box(
-        modifier = Modifier
-            .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         ResolveUserInfoState(userInfoState, onNavigateBack, viewModel, navigateToProfileDetail)
@@ -122,7 +120,10 @@ fun ReviewScreenContent(
         RatingView(selectedRating) {
             selectedRating = it
         }
-        InputFieldView(R.string.reviewDescription) {
+        InputFieldView(
+            R.string.reviewDescription,
+            SwapAppTheme.dimensions.sidePadding
+        ) {
             DescriptionView(
                 label = R.string.reviewDescriptionPlaceholder,
                 charLimit = REVIEW_CHAR_LIMIT,
@@ -131,10 +132,18 @@ fun ReviewScreenContent(
                 reviewDescription = it
             }
         }
-        ButtonRow(onCancelClick = onNavigateBack) {
-            Firebase.auth.currentUser?.let { user ->
-                viewModel.addReview(state.id, user.uid, selectedRating, reviewDescription)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            ButtonRow(onCancelClick = onNavigateBack) {
+                Firebase.auth.currentUser?.let { user ->
+                    viewModel.addReview(state.id, user.uid, selectedRating, reviewDescription)
+                }
             }
+            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.largeSpacer))
         }
     }
 }
