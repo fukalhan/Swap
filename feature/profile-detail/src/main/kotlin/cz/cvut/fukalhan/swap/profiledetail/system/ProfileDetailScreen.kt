@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -69,7 +70,6 @@ fun ProfileDetailScreen(
     Box(
         modifier = Modifier
             .background(SwapAppTheme.colors.backgroundSecondary)
-            .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -163,6 +163,11 @@ fun ReviewList(
         color = SwapAppTheme.colors.textPrimary,
         modifier = Modifier.padding(SwapAppTheme.dimensions.sidePadding)
     )
+    Divider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(SwapAppTheme.dimensions.borderWidth)
+    )
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -176,6 +181,11 @@ fun ReviewList(
             ) {
                 items(reviews) {
                     ReviewCard(it)
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(SwapAppTheme.dimensions.borderWidth)
+                    )
                 }
             }
         }
@@ -185,7 +195,7 @@ fun ReviewList(
 @Composable
 fun ReviewCard(review: ReviewState) {
     var expanded by remember { mutableStateOf(false) }
-    val modifier = if (expanded) Modifier.wrapContentHeight() else Modifier.height(100.dp)
+    val modifier = if (expanded) Modifier.wrapContentHeight() else Modifier.height(75.dp)
 
     Column(
         modifier = modifier
