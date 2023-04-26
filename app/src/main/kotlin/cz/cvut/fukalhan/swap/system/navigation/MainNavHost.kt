@@ -123,7 +123,10 @@ fun MainNavHost(
                         userId,
                         koinViewModel(),
                         onInitScreen = { screenState = it },
-                        navigateBack = { navController.popBackStack() }
+                        navigateBack = { navController.popBackStack() },
+                        navigateToProfileDetail = {
+                            navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                        }
                     )
                 }
             }

@@ -17,9 +17,14 @@ class GetUserProfileDetailUseCase(
         val ratingResponse = reviewRepository.getUserRating(userId)
 
         return if (userResponse.data != null && reviewsResponse.data != null && ratingResponse.data != null) {
-            val user = userResponse.data
-            user.rating = ratingResponse.data * 10 / 10
-            DataResponse(ResponseFlag.SUCCESS, UserDetail(user, reviewsResponse.data))
+            val reviewersProfilePicResponse = userRepository.getUsersProfilePic(reviewsResponse.data)
+            reviewersProfilePicResponse.data?.let { reviews ->
+                val user = userResponse.data
+                user.rating = ratingResponse.data * 10 / 10
+                DataResponse(ResponseFlag.SUCCESS, UserDetail(user, reviews))
+            } ?: run {
+                DataResponse(ResponseFlag.FAIL)
+            }
         } else {
             DataResponse(ResponseFlag.FAIL)
         }

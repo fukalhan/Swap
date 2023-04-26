@@ -1,6 +1,5 @@
 package cz.cvut.fukalhan.swap.userdata.data
 
-import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
@@ -52,7 +51,6 @@ class FirebaseReviewRepository : ReviewRepository {
 
             DataResponse(ResponseFlag.SUCCESS, reviews)
         } catch (e: Exception) {
-            Log.e("ffnoe", e.message.toString())
             DataResponse(ResponseFlag.FAIL)
         }
     }

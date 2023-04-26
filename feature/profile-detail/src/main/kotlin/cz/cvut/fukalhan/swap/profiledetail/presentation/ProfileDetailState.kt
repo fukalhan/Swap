@@ -41,6 +41,7 @@ private fun User.toUserState(stringResources: StringResources): UserState {
 data class ReviewState(
     val id: String,
     val reviewerId: String,
+    val reviewerProfilePic: Uri,
     val rating: Int,
     val description: String
 )
@@ -49,6 +50,7 @@ private fun Review.toReviewState(): ReviewState {
     return ReviewState(
         this.id,
         this.reviewerId,
+        this.reviewerProfilePic,
         this.rating,
         this.description
     )

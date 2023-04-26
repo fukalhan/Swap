@@ -6,6 +6,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.ktx.storage
 import cz.cvut.fukalhan.swap.userdata.domain.repo.UserRepository
+import cz.cvut.fukalhan.swap.userdata.model.Review
 import cz.cvut.fukalhan.swap.userdata.model.User
 import kotlinx.coroutines.tasks.await
 
@@ -20,7 +21,7 @@ class FirebaseUserRepository : UserRepository {
             val profilePicExists = try {
                 profilePicRef.metadata.await()
                 true
-            } catch (e: Exception) {
+            } catch (e: StorageException) {
                 false
             }
 
@@ -47,6 +48,32 @@ class FirebaseUserRepository : UserRepository {
             return DataResponse(ResponseFlag.STORAGE_ERROR, null)
         } catch (e: FirebaseFirestoreException) {
             return DataResponse(ResponseFlag.DB_ERROR, null)
+        }
+    }
+
+    override suspend fun getUsersProfilePic(reviews: List<Review>): DataResponse<ResponseFlag, List<Review>> {
+        return try {
+            reviews.forEach { review ->
+                val profilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + review.reviewerId)
+
+                val profilePicExists = try {
+                    profilePicRef.metadata.await()
+                    true
+                } catch (e: StorageException) {
+                    false
+                }
+
+                val imageUri = if (profilePicExists) {
+                    profilePicRef.downloadUrl.await()
+                } else {
+                    val defaultProfilePicRef = storage.getReference(PROFILE_IMAGES_FOLDER + PROFILE_IMAGE_PLACEHOLDER)
+                    defaultProfilePicRef.downloadUrl.await()
+                }
+                review.reviewerProfilePic = imageUri
+            }
+            DataResponse(ResponseFlag.SUCCESS, reviews)
+        } catch (e: StorageException) {
+            DataResponse(ResponseFlag.FAIL)
         }
     }
 }
