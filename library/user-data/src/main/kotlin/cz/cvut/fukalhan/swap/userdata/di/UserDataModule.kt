@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.userdata.di
 import cz.cvut.fukalhan.swap.userdata.data.FirebaseReviewRepository
 import cz.cvut.fukalhan.swap.userdata.data.FirebaseUserRepository
 import cz.cvut.fukalhan.swap.userdata.domain.AddReviewUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.ChangeProfilePictureUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDetailUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
@@ -18,4 +19,5 @@ val userDataModule = module {
     factoryOf(::GetUserProfileDataUseCase)
     factoryOf(::AddReviewUseCase)
     factoryOf(::GetUserProfileDetailUseCase)
+    factoryOf(::ChangeProfilePictureUseCase)
 }

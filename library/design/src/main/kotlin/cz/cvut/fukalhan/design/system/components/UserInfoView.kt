@@ -80,7 +80,7 @@ fun ProfilePicture(pictureUri: Uri) {
         modifier = Modifier
             .clip(CircleShape)
             .size(130.dp),
-        contentScale = ContentScale.Fit
+        contentScale = ContentScale.Crop
     )
 }
 

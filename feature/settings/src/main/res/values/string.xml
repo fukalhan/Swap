@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Nastavení</string>
+    <string name="signOut">Odhlásit se</string>
+    <string name="cannotLoadData">Data se nepodařilo načíst</string>
+    <string name="profilePictureChangeSuccess">Profilový obrázek byl změněn</string>
+    <string name="profilePictureChangeFail">Nepodařilo se změnit profilový obrázek</string>
+</resources>

@@ -28,9 +28,9 @@ import cz.cvut.fukalhan.swap.messages.system.ChatScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
-import cz.cvut.fukalhan.swap.profile.system.settings.SettingsScreen
 import cz.cvut.fukalhan.swap.profiledetail.system.ProfileDetailScreen
 import cz.cvut.fukalhan.swap.review.system.AddReviewScreen
+import cz.cvut.fukalhan.swap.settings.system.SettingsScreen
 import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
 
@@ -134,6 +134,7 @@ fun MainNavHost(
             composable(SecondaryScreen.Settings.route) {
                 SettingsScreen(
                     onScreenInit = { screenState = it },
+                    koinViewModel(),
                     onNavigateBack = { navController.popBackStack() },
                     signOut = signOut
                 )
