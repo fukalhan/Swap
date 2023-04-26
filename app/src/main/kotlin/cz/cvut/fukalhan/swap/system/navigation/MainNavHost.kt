@@ -54,6 +54,7 @@ fun MainNavHost(
         "${SecondaryScreen.Message.route}/{$CHANNEL_ID}" -> false
         SecondaryScreen.Settings.route -> false
         "${SecondaryScreen.ProfileDetail.route}/{$USER_ID}" -> false
+        "${SecondaryScreen.AddReview.route}/{$USER_ID}" -> false
         else -> true
     }
 

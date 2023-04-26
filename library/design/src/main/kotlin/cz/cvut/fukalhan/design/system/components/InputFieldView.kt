@@ -22,20 +22,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 
 @Composable
 fun InputFieldView(
     label: Int,
+    padding: Dp = SwapAppTheme.dimensions.smallSidePadding,
     textField: @Composable () -> Unit
 ) {
-    Column {
+    Column(
+        modifier = Modifier.padding(padding)
+    ) {
         Text(
             text = stringResource(label),
             style = SwapAppTheme.typography.titleSecondary,
             color = SwapAppTheme.colors.textPrimary,
-            modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
+            modifier = Modifier.padding(
+                top = SwapAppTheme.dimensions.smallSidePadding,
+                bottom = SwapAppTheme.dimensions.smallSidePadding
+            )
         )
         textField()
         Spacer(modifier = Modifier.size(SwapAppTheme.dimensions.smallSpacer))
@@ -107,7 +114,6 @@ fun DescriptionView(
 
 val inputFieldModifier = Modifier
     .fillMaxWidth()
-    .padding(SwapAppTheme.dimensions.smallSidePadding)
     .border(
         width = SwapAppTheme.dimensions.borderWidth,
         color = SwapAppTheme.colors.component,
