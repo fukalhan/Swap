@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -25,10 +29,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -40,6 +47,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.system.components.DescriptionView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
@@ -48,11 +56,13 @@ import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.settings.R
 import cz.cvut.fukalhan.swap.settings.presentation.Failure
 import cz.cvut.fukalhan.swap.settings.presentation.Loading
-import cz.cvut.fukalhan.swap.settings.presentation.ProfilePictureChangeFail
+import cz.cvut.fukalhan.swap.settings.presentation.ProfilePictureChangeFailed
 import cz.cvut.fukalhan.swap.settings.presentation.ProfilePictureChangeSuccess
 import cz.cvut.fukalhan.swap.settings.presentation.SettingsState
 import cz.cvut.fukalhan.swap.settings.presentation.SettingsViewModel
 import cz.cvut.fukalhan.swap.settings.presentation.UserDataLoaded
+
+const val BIO_CHAR_LIMIT = 100
 
 @Composable
 fun SettingsScreen(
@@ -77,11 +87,20 @@ fun SettingsScreen(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        ResolveState(settingsState, signOut) { uri ->
-            Firebase.auth.currentUser?.let { user ->
-                viewModel.changeProfilePicture(user.uid, uri)
+        ResolveState(
+            settingsState,
+            signOut,
+            onProfileImageChange = { uri ->
+                Firebase.auth.currentUser?.let { user ->
+                    viewModel.changeProfilePicture(user.uid, uri)
+                }
+            },
+            onBioChange = { bio ->
+                Firebase.auth.currentUser?.let { user ->
+                    viewModel.updateBio(user.uid, bio)
+                }
             }
-        }
+        )
     }
 }
 
@@ -120,13 +139,14 @@ fun ResolveState(
     state: SettingsState,
     signOut: () -> Unit,
     onProfileImageChange: (Uri) -> Unit,
+    onBioChange: (String) -> Unit
 ) {
     when (state) {
         is Loading -> LoadingView(semiTransparentBlack)
         is Failure -> FailureView(state.message)
-        is UserDataLoaded -> Settings(state, onProfileImageChange, signOut)
+        is UserDataLoaded -> Settings(state, onProfileImageChange, onBioChange, signOut)
         is ProfilePictureChangeSuccess -> SuccessSnackMessage(state.message)
-        is ProfilePictureChangeFail -> FailSnackMessage(state.message)
+        is ProfilePictureChangeFailed -> FailSnackMessage(state.message)
         else -> {}
     }
 }
@@ -135,6 +155,7 @@ fun ResolveState(
 fun Settings(
     state: UserDataLoaded,
     onProfileImageChange: (Uri) -> Unit,
+    onBioChange: (String) -> Unit,
     signOut: () -> Unit
 ) {
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -167,6 +188,8 @@ fun Settings(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
             }
+            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
+            Bio(state.bio, onBioChange)
         }
 
         SignOutButton(signOut)
@@ -192,6 +215,86 @@ fun ProfilePicture(
             .clickable(onClick = onClick),
         contentScale = ContentScale.Crop
     )
+}
+
+@Composable
+fun Bio(
+    bio: String,
+    onBioChange: (String) -> Unit
+) {
+    var editMode by remember { mutableStateOf(false) }
+    var description by remember { mutableStateOf(bio) }
+    Row(
+        modifier = Modifier
+            .padding(
+                top = SwapAppTheme.dimensions.smallSidePadding,
+                bottom = SwapAppTheme.dimensions.smallSidePadding
+            )
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(R.string.aboutMe),
+            style = SwapAppTheme.typography.titleSecondary,
+            color = SwapAppTheme.colors.textPrimary,
+        )
+        Row(
+            modifier = Modifier.wrapContentSize()
+        ) {
+            if (editMode) {
+                IconButton(
+                    onClick = {
+                        editMode = !editMode
+                    }
+                ) {
+                    Icon(
+                        painterResource(R.drawable.cancel_bio_update),
+                        null,
+                        tint = Color.Red
+                    )
+                }
+            }
+
+            IconButton(
+                onClick = {
+                    if (editMode) {
+                        onBioChange(description)
+                    }
+                    editMode = !editMode
+                }
+            ) {
+                Icon(
+                    if (editMode) painterResource(R.drawable.done) else painterResource(R.drawable.edit),
+                    null,
+                    tint = if (editMode) Color.Green else SwapAppTheme.colors.component
+                )
+            }
+        }
+    }
+
+    if (editMode) {
+        DescriptionView(
+            R.string.bioPlaceholder,
+            BIO_CHAR_LIMIT,
+            description,
+            onDescriptionChange = {
+                description = it
+            }
+        )
+    } else {
+        val content = bio.ifEmpty { stringResource(R.string.emptyBio) }
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            text = content,
+            style = SwapAppTheme.typography.body,
+            color = SwapAppTheme.colors.textSecondary
+        )
+    }
 }
 
 @Composable

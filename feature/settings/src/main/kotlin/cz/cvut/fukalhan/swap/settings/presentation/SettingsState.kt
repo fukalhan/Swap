@@ -13,14 +13,16 @@ object Loading : SettingsState()
 data class UserDataLoaded(
     val id: String,
     val profilePic: Uri,
-    val username: String
+    val username: String,
+    val bio: String
 ) : SettingsState()
 
 internal fun User.toUserData(): SettingsState {
     return UserDataLoaded(
         this.id,
         this.profilePicUri,
-        this.username
+        this.username,
+        this.bio
     )
 }
 
@@ -28,4 +30,8 @@ data class Failure(val message: Int = R.string.cannotLoadData) : SettingsState()
 
 data class ProfilePictureChangeSuccess(val message: Int = R.string.profilePictureChangeSuccess) : SettingsState()
 
-data class ProfilePictureChangeFail(val message: Int = R.string.profilePictureChangeSuccess) : SettingsState()
+data class ProfilePictureChangeFailed(val message: Int = R.string.profilePictureChangeSuccess) : SettingsState()
+
+data class BioChangeSuccess(val message: Int = R.string.bioUpdateSuccess) : SettingsState()
+
+data class BioChangeFailed(val message: Int = R.string.bioUpdateFail) : SettingsState()

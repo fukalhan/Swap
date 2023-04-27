@@ -7,5 +7,6 @@ data class User(
     var profilePicUri: Uri = Uri.EMPTY,
     var username: String = "",
     var joinDate: String = "",
-    var rating: Float = 0f
+    var rating: Float = 0f,
+    var bio: String = ""
 )

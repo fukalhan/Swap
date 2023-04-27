@@ -6,6 +6,7 @@ import cz.cvut.fukalhan.swap.userdata.domain.AddReviewUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.ChangeProfilePictureUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDetailUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.UpdateBioUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
 import cz.cvut.fukalhan.swap.userdata.domain.repo.UserRepository
 import org.koin.core.module.dsl.factoryOf
@@ -20,4 +21,5 @@ val userDataModule = module {
     factoryOf(::AddReviewUseCase)
     factoryOf(::GetUserProfileDetailUseCase)
     factoryOf(::ChangeProfilePictureUseCase)
+    factoryOf(::UpdateBioUseCase)
 }
