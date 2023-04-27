@@ -36,7 +36,7 @@ fun UserProfilePic(
             .clip(CircleShape)
             .size(40.dp)
             .clickable(onClick = navigateToProfileDetail),
-        contentScale = ContentScale.Fit
+        contentScale = ContentScale.Crop
     )
 }
 
