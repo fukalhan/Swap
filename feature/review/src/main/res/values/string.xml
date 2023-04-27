@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="addReview">Přidání hodnocení</string>
-    <string name="addReviewSuccess">Přidání hodnocení proběhlo úspěšně</string>
-    <string name="addReviewFailed">Přidání hodnocení se nezdařilo, zkuste to prosím znovu</string>
-    <string name="cannotLoadUserInfo">Přidání hodnocení se nezdařilo, zkuste to prosím znovu</string>
-    <string name="reviewDescription">Slovní ohodnocení</string>
-    <string name="reviewDescriptionPlaceholder">Např. popište, jak probíhala komunikace a předání a jak jste celkově spokojeni s výměnou</string>
-</resources>
