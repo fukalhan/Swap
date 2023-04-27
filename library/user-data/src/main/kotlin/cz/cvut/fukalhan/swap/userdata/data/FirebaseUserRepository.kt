@@ -74,4 +74,15 @@ class FirebaseUserRepository : UserRepository {
             Response(ResponseFlag.SUCCESS)
         }
     }
+
+    override suspend fun updateUserBio(userId: String, bio: String): Response<ResponseFlag> {
+        return try {
+            val userRef = db.collection(USERS).document(userId)
+            userRef.update(BIO, bio).await()
+
+            Response(ResponseFlag.SUCCESS)
+        } catch (e: FirebaseFirestoreException) {
+            Response(ResponseFlag.FAIL)
+        }
+    }
 }

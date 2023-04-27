@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.swap.userdata.data.ResponseFlag
 import cz.cvut.fukalhan.swap.userdata.domain.ChangeProfilePictureUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.UpdateBioUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val getUserProfileDataUseCase: GetUserProfileDataUseCase,
-    private val changeProfilePictureUseCase: ChangeProfilePictureUseCase
+    private val changeProfilePictureUseCase: ChangeProfilePictureUseCase,
+    private val updateBioUseCase: UpdateBioUseCase
 ) : ViewModel() {
     private val _settingsState: MutableStateFlow<SettingsState> = MutableStateFlow(Init)
     val settingsState: StateFlow<SettingsState>
@@ -38,7 +40,20 @@ class SettingsViewModel(
             if (response.flag == ResponseFlag.SUCCESS) {
                 _settingsState.value = ProfilePictureChangeSuccess()
             } else {
-                _settingsState.value = ProfilePictureChangeFail()
+                _settingsState.value = ProfilePictureChangeFailed()
+            }
+            getUserData(userId)
+        }
+    }
+
+    fun updateBio(userId: String, bio: String) {
+        _settingsState.value = Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = updateBioUseCase.updateUserBio(userId, bio)
+            if (response.flag == ResponseFlag.SUCCESS) {
+                _settingsState.value = BioChangeSuccess()
+            } else {
+                _settingsState.value = BioChangeFailed()
             }
             getUserData(userId)
         }

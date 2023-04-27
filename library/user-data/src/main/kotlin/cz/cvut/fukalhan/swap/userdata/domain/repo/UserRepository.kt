@@ -13,4 +13,6 @@ interface UserRepository {
     suspend fun getUsersProfilePic(reviews: List<Review>): DataResponse<ResponseFlag, List<Review>>
 
     suspend fun changeUserProfilePicture(userId: String, profilePic: Uri): Response<ResponseFlag>
+
+    suspend fun updateUserBio(userId: String, bio: String): Response<ResponseFlag>
 }
