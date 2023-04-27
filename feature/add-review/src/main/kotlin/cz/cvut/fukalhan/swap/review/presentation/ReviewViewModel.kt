@@ -61,4 +61,8 @@ class ReviewViewModel(
             }
         }
     }
+
+    fun resetAddReviewState() {
+        _addReviewState.value = AddReviewState.Init
+    }
 }
