@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    // Need to find different solution because features shouldn't be dependent on each other
+    implementation project(':feature:notifications')
     implementation project(':library:design')
     implementation project(':library:auth')
     implementation project(':library:user-data')

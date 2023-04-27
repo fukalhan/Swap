@@ -11,7 +11,8 @@ data class SwapAppTypography(
     val titlePrimary: TextStyle,
     val titleSecondary: TextStyle,
     val body: TextStyle,
-    val button: TextStyle
+    val button: TextStyle,
+    val smallText: TextStyle
 )
 
 val swapAppTypography = SwapAppTypography(
@@ -39,5 +40,10 @@ val swapAppTypography = SwapAppTypography(
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
         letterSpacing = 0.15.sp,
-    )
+    ),
+    smallText = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
+        letterSpacing = 0.15.sp,
+    ),
 )

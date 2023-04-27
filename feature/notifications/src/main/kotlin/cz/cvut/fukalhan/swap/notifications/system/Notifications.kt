@@ -1,6 +1,8 @@
 package cz.cvut.fukalhan.swap.notifications.system
 
 import android.net.Uri
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,8 +23,10 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.presentation.ScreenState
@@ -49,14 +54,32 @@ import cz.cvut.fukalhan.swap.notifications.presentation.NotificationsViewModel
 @Composable
 fun Notifications(
     viewModel: NotificationsViewModel,
+    navController: NavHostController,
     onScreenInit: (ScreenState) -> Unit,
     navigateBack: () -> Unit,
     onNotificationClick: (String) -> Unit
 ) {
+    // Workaround to reset the new notifications count on back pressed
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val backCallback = remember {
+        object : OnBackPressedCallback(true) { // `true` indicates that the callback is enabled by default
+            override fun handleOnBackPressed() {
+                viewModel.resetNewNotificationsCount()
+                navController.popBackStack()
+            }
+        }
+    }
+    SideEffect {
+        onBackPressedDispatcher?.addCallback(backCallback)
+    }
+
     val notifications by viewModel.notifications.collectAsState()
     val notificationsState by viewModel.notificationsState.collectAsState()
 
-    TopBar(onScreenInit, navigateBack)
+    TopBar(onScreenInit) {
+        viewModel.resetNewNotificationsCount()
+        navigateBack()
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),

@@ -105,6 +105,7 @@ fun MainNavHost(
                     // Do nothing on back pressed when on Profile screen (graph root)
                 }
                 ProfileScreen(
+                    koinViewModel(),
                     navController,
                     onScreenInit = { screenState = it },
                     navigateToNotifications = { navController.navigate(SecondaryScreen.Notifications.route) },
@@ -136,6 +137,7 @@ fun MainNavHost(
             composable(SecondaryScreen.Notifications.route) {
                 Notifications(
                     viewModel = koinViewModel(),
+                    navController,
                     onScreenInit = { screenState = it },
                     navigateBack = { navController.popBackStack() },
                     onNotificationClick = {
