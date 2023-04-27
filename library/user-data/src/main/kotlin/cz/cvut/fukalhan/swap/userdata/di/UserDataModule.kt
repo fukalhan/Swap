@@ -4,6 +4,7 @@ import cz.cvut.fukalhan.swap.userdata.data.FirebaseReviewRepository
 import cz.cvut.fukalhan.swap.userdata.data.FirebaseUserRepository
 import cz.cvut.fukalhan.swap.userdata.domain.AddReviewUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.ChangeProfilePictureUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.GetNotificationUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDetailUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.UpdateBioUseCase
@@ -22,4 +23,5 @@ val userDataModule = module {
     factoryOf(::GetUserProfileDetailUseCase)
     factoryOf(::ChangeProfilePictureUseCase)
     factoryOf(::UpdateBioUseCase)
+    factoryOf(::GetNotificationUseCase)
 }

@@ -8,5 +8,6 @@ data class User(
     var username: String = "",
     var joinDate: String = "",
     var rating: Float = 0f,
-    var bio: String = ""
+    var bio: String = "",
+    var fcmToken: String = ""
 )

@@ -22,7 +22,8 @@ class FirebaseAuthRepository : AuthRepository {
         val data = hashMapOf(
             EMAIL to credentials.email,
             USERNAME to credentials.username,
-            PASSWORD to credentials.password
+            PASSWORD to credentials.password,
+            FCM_TOKEN to credentials.fcmToken
         )
 
         return try {
