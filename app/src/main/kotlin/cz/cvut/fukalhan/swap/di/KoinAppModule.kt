@@ -8,6 +8,7 @@ import cz.cvut.fukalhan.swap.itemdetail.di.itemDetailModule
 import cz.cvut.fukalhan.swap.itemlist.di.itemListModule
 import cz.cvut.fukalhan.swap.login.di.loginModule
 import cz.cvut.fukalhan.swap.messages.di.messagesModule
+import cz.cvut.fukalhan.swap.notifications.di.notificationsModule
 import cz.cvut.fukalhan.swap.profile.di.profileModule
 import cz.cvut.fukalhan.swap.profiledetail.di.profileDetailModule
 import cz.cvut.fukalhan.swap.review.di.reviewModule
@@ -35,6 +36,7 @@ fun setupKoin(app: App) {
                 designModule,
                 chatClientModule,
                 messagesModule,
+                notificationsModule,
                 settingsModule
             )
         )

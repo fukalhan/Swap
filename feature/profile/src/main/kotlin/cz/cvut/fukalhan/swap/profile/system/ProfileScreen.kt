@@ -2,10 +2,13 @@ package cz.cvut.fukalhan.swap.profile.system
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -26,16 +29,18 @@ import org.koin.androidx.compose.koinViewModel
 fun ProfileScreen(
     navController: NavHostController,
     onScreenInit: (ScreenState) -> Unit,
+    navigateToNotifications: () -> Unit,
     onSettingsClick: () -> Unit,
     navigateToProfileDetail: (String) -> Unit
 ) {
-    TopBar(onScreenInit, onSettingsClick)
+    TopBar(onScreenInit, navigateToNotifications, onSettingsClick)
     Profile(navController, navigateToProfileDetail)
 }
 
 @Composable
 fun TopBar(
     onScreenInit: (ScreenState) -> Unit,
+    navigateToNotifications: () -> Unit,
     onSettingClick: () -> Unit
 ) {
     onScreenInit(
@@ -46,13 +51,30 @@ fun TopBar(
                 color = SwapAppTheme.colors.buttonText,
                 modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
             )
-            IconButton(onClick = onSettingClick) {
-                Icon(
-                    painter = painterResource(R.drawable.settings),
-                    contentDescription = null,
-                    tint = SwapAppTheme.colors.buttonText,
-                    modifier = Modifier.size(SwapAppTheme.dimensions.icon)
-                )
+
+            Row(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .fillMaxHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = navigateToNotifications) {
+                    Icon(
+                        painter = painterResource(R.drawable.notifications),
+                        contentDescription = null,
+                        tint = SwapAppTheme.colors.buttonText,
+                        modifier = Modifier.size(SwapAppTheme.dimensions.icon)
+                    )
+                }
+
+                IconButton(onClick = onSettingClick) {
+                    Icon(
+                        painter = painterResource(R.drawable.settings),
+                        contentDescription = null,
+                        tint = SwapAppTheme.colors.buttonText,
+                        modifier = Modifier.size(SwapAppTheme.dimensions.icon)
+                    )
+                }
             }
         }
     )
@@ -71,6 +93,11 @@ fun Profile(
         verticalArrangement = Arrangement.Top,
     ) {
         ProfileInfo(koinViewModel(), navigateToProfileDetail)
-        ItemsView(Modifier.weight(1f).fillMaxWidth(), navController)
+        ItemsView(
+            Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            navController
+        )
     }
 }

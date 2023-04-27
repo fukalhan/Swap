@@ -34,4 +34,5 @@ sealed class SecondaryScreen(val route: String) {
     object Settings : SecondaryScreen("settings")
     object ProfileDetail : SecondaryScreen("profileDetail")
     object AddReview : SecondaryScreen("addReview")
+    object Notifications : SecondaryScreen("notifications")
 }
