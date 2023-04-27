@@ -56,9 +56,7 @@ fun ItemDetail(
         }
 
         Column(
-            modifier = Modifier
-                .background(SwapAppTheme.colors.backgroundSecondary)
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             ImageView(itemDetailState.images, itemDetailState.state) {
                 fullSizeImageViewVisible = !fullSizeImageViewVisible

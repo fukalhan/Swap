@@ -1,6 +1,5 @@
 package cz.cvut.fukalhan.swap.review.system
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -102,9 +101,7 @@ fun ReviewScreenContent(
     var reviewDescription by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         UserInfoView(
             state.profilePic,

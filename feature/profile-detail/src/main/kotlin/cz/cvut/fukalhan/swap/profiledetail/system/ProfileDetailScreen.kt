@@ -55,9 +55,7 @@ fun ProfileDetailScreen(
 
     TopBar(onInitScreen, navigateBack)
     Box(
-        modifier = Modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         ResolveState(profileDetailState, navigateToProfileDetail)

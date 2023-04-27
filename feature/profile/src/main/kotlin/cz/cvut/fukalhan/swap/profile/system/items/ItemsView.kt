@@ -3,7 +3,6 @@ package cz.cvut.fukalhan.swap.profile.system.items
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -33,7 +32,6 @@ fun ItemsView(
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
         modifier = modifier
     ) {
         Column(

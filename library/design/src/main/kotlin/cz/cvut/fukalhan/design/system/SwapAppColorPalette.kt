@@ -21,7 +21,7 @@ data class SwapAppColorPalette(
 val swapAppColorPalette = SwapAppColorPalette(
     primary = darkPeach,
     secondary = peach,
-    background = beige,
+    background = white,
     backgroundSecondary = white,
     componentBackground = lightGrey,
     component = grey,
