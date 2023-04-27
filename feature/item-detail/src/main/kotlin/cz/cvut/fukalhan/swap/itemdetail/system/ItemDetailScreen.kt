@@ -45,6 +45,7 @@ fun ItemDetailScreen(
     navController: NavHostController,
     onNavigateBack: () -> Unit,
     onScreenInit: (ScreenState) -> Unit,
+    navigateToOwnerProfileDetail: (String) -> Unit
 ) {
     val itemDetailState: ItemDetailState by viewModel.itemDetailState.collectAsState()
 
@@ -68,10 +69,10 @@ fun ItemDetailScreen(
         ResolveState(
             itemDetailState,
             viewModel,
-            navController
-        ) {
-            viewModel.setStateToInit()
-        }
+            navController,
+            setStateToInit = { viewModel.setStateToInit() },
+            navigateToOwnerProfileDetail = navigateToOwnerProfileDetail
+        )
     }
 }
 
@@ -113,11 +114,12 @@ fun ResolveState(
     state: ItemDetailState,
     viewModel: ItemDetailViewModel,
     navController: NavHostController,
-    setStateToInit: () -> Unit
+    setStateToInit: () -> Unit,
+    navigateToOwnerProfileDetail: (String) -> Unit
 ) {
     when (state) {
         is Loading -> LoadingView(semiTransparentBlack)
-        is Success -> ItemDetail(state, viewModel)
+        is Success -> ItemDetail(state, viewModel, navigateToOwnerProfileDetail)
         is Failure -> FailureView(state.message)
         is CreateChannelSuccess -> {
             setStateToInit()

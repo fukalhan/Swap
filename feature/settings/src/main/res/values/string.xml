@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Nastavení</string>
+    <string name="signOut">Odhlásit se</string>
+    <string name="cannotLoadData">Data se nepodařilo načíst</string>
+    <string name="profilePictureChangeSuccess">Profilový obrázek byl změněn</string>
+    <string name="profilePictureChangeFail">Nepodařilo se změnit profilový obrázek</string>
+    <string name="aboutMe">O mně:</string>
+    <string name="bioPlaceholder">Napište pár vět o sobě, např. jak dlouho se již věnujete swapu …</string>
+    <string name="emptyBio">Zatím jste o sobě nic nenapsali</string>
+    <string name="bioUpdateSuccess">Popis byl úspěšně změněn</string>
+    <string name="bioUpdateFail">Nezdařilo se změnit popis</string>
+</resources>

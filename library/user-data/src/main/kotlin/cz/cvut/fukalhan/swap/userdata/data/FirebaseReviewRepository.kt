@@ -23,4 +23,35 @@ class FirebaseReviewRepository : ReviewRepository {
             Response(ResponseFlag.FAIL)
         }
     }
+
+    override suspend fun getUserRating(userId: String): DataResponse<ResponseFlag, Float> {
+        return try {
+            val querySnapshot = db.collection(REVIEWS).whereEqualTo(USER_ID, userId).get().await()
+            val size = querySnapshot.size().toFloat()
+            var cumulativeRating = 0f
+            querySnapshot.documents.forEach { doc ->
+                cumulativeRating += (doc.getLong(RATING) ?: 0).toInt()
+            }
+            if (size != 0f) {
+                DataResponse(ResponseFlag.SUCCESS, cumulativeRating / size)
+            } else {
+                DataResponse(ResponseFlag.SUCCESS, 0f)
+            }
+        } catch (e: Exception) {
+            DataResponse(ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun getUserReviews(userId: String): DataResponse<ResponseFlag, List<Review>> {
+        return try {
+            val querySnapshot = db.collection(REVIEWS).whereEqualTo(USER_ID, userId).get().await()
+            val reviews = querySnapshot.documents.mapNotNull { doc ->
+                doc.toObject(Review::class.java)
+            }
+
+            DataResponse(ResponseFlag.SUCCESS, reviews)
+        } catch (e: Exception) {
+            DataResponse(ResponseFlag.FAIL)
+        }
+    }
 }
