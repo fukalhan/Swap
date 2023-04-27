@@ -6,4 +6,5 @@
     <string name="noReviewsToDisplay">Žádná hodnocení k zobrazení</string>
     <string name="reviews">Hodnocení</string>
     <string name="profileDetail">Detail profilu</string>
+    <string name="emptyBio">Uživatel o sobě nic nenapsal</string>
 </resources>

@@ -25,7 +25,8 @@ data class UserState(
     val profilePic: Uri,
     val username: String,
     val joinDate: String,
-    val rating: Float
+    val rating: Float,
+    val bio: String
 )
 
 private fun User.toUserState(stringResources: StringResources): UserState {
@@ -34,7 +35,8 @@ private fun User.toUserState(stringResources: StringResources): UserState {
         this.profilePicUri,
         this.username,
         stringResources.getString(R.string.memberSince, convertDateString(this.joinDate)),
-        this.rating
+        this.rating,
+        this.bio
     )
 }
 
