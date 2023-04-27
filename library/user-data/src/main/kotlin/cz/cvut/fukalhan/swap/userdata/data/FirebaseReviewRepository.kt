@@ -1,5 +1,6 @@
 package cz.cvut.fukalhan.swap.userdata.data
 
+import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
@@ -46,11 +47,12 @@ class FirebaseReviewRepository : ReviewRepository {
         return try {
             val querySnapshot = db.collection(REVIEWS).whereEqualTo(USER_ID, userId).get().await()
             val reviews = querySnapshot.documents.mapNotNull { doc ->
-                doc.toObject(Review::class.java)
+                Review.fromSnapshot(doc)
             }
 
             DataResponse(ResponseFlag.SUCCESS, reviews)
         } catch (e: Exception) {
+            Log.e("fjvnek", e.message.toString())
             DataResponse(ResponseFlag.FAIL)
         }
     }
