@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'cz.cvut.fukalhan.swap.profile'
+    namespace 'cz.cvut.fukalhan.swap.notifications'
     compileSdk 33
 
     defaultConfig {
@@ -27,7 +27,7 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = '17'
     }
 
     buildFeatures {
@@ -39,13 +39,8 @@ android {
 }
 
 dependencies {
-    // Need to find different solution because features shouldn't be dependent on each other
-    implementation project(':feature:notifications')
     implementation project(':library:design')
-    implementation project(':library:auth')
     implementation project(':library:user-data')
-    implementation project(':library:item-data')
-    implementation project(':library:navigation')
 
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -65,9 +60,6 @@ dependencies {
     // Handles all Firebase libraries' versions
     implementation platform('com.google.firebase:firebase-bom:31.3.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
-    
-    // Stream Chat
-    implementation "io.getstream:stream-chat-android-client:$stream_version"
 
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
 }

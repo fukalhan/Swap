@@ -27,6 +27,7 @@ import cz.cvut.fukalhan.swap.messages.system.ChannelsScreen
 import cz.cvut.fukalhan.swap.messages.system.ChatScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
+import cz.cvut.fukalhan.swap.notifications.system.Notifications
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profiledetail.system.ProfileDetailScreen
 import cz.cvut.fukalhan.swap.review.system.AddReviewScreen
@@ -104,8 +105,10 @@ fun MainNavHost(
                     // Do nothing on back pressed when on Profile screen (graph root)
                 }
                 ProfileScreen(
+                    koinViewModel(),
                     navController,
                     onScreenInit = { screenState = it },
+                    navigateToNotifications = { navController.navigate(SecondaryScreen.Notifications.route) },
                     onSettingsClick = { navController.navigate(SecondaryScreen.Settings.route) },
                     navigateToProfileDetail = {
                         navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
@@ -129,6 +132,18 @@ fun MainNavHost(
                         }
                     )
                 }
+            }
+
+            composable(SecondaryScreen.Notifications.route) {
+                Notifications(
+                    viewModel = koinViewModel(),
+                    navController,
+                    onScreenInit = { screenState = it },
+                    navigateBack = { navController.popBackStack() },
+                    onNotificationClick = {
+                        navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                    }
+                )
             }
 
             composable(SecondaryScreen.Settings.route) {

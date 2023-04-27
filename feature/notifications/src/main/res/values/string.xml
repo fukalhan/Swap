@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notifications">Notifikace</string>
+    <string name="noData">Žádné notifikace k zobrazení</string>
+    <string name="cannotLoadData">Nepodařilo se načíst data</string>
+    <string name="userLikedItemMessage">Uživateli %1$s se líbí Váš předmět %2$s.</string>
+</resources>

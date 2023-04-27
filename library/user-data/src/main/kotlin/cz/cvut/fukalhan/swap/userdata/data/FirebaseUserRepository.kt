@@ -7,6 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.ktx.storage
 import cz.cvut.fukalhan.swap.userdata.domain.repo.UserRepository
+import cz.cvut.fukalhan.swap.userdata.model.Notification
 import cz.cvut.fukalhan.swap.userdata.model.Review
 import cz.cvut.fukalhan.swap.userdata.model.User
 import kotlinx.coroutines.tasks.await
@@ -83,6 +84,27 @@ class FirebaseUserRepository : UserRepository {
             Response(ResponseFlag.SUCCESS)
         } catch (e: FirebaseFirestoreException) {
             Response(ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun getNotificationData(
+        userId: String,
+        itemId: String
+    ): DataResponse<ResponseFlag, Notification> {
+        return try {
+            val userDoc = db.collection(USERS).document(userId).get().await()
+            val itemDoc = db.collection(ITEMS).document(itemId).get().await()
+            if (userDoc.exists() && itemDoc.exists()) {
+                val userProfilePic = Uri.parse(userDoc.getString(PROFILE_PIC) ?: EMPTY_FIELD)
+                val username = userDoc.getString(USERNAME) ?: EMPTY_FIELD
+                val itemName = itemDoc.getString(NAME) ?: EMPTY_FIELD
+
+                DataResponse(ResponseFlag.SUCCESS, Notification(userId, userProfilePic, username, itemId, itemName))
+            } else {
+                DataResponse(ResponseFlag.FAIL)
+            }
+        } catch (e: FirebaseFirestoreException) {
+            DataResponse(ResponseFlag.FAIL)
         }
     }
 }
