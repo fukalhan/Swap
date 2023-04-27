@@ -106,12 +106,14 @@ fun MainNavHost(
                 }
                 ProfileScreen(
                     koinViewModel(),
-                    navController,
                     onScreenInit = { screenState = it },
                     navigateToNotifications = { navController.navigate(SecondaryScreen.Notifications.route) },
                     onSettingsClick = { navController.navigate(SecondaryScreen.Settings.route) },
                     navigateToProfileDetail = {
                         navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                    },
+                    navigateToItemDetail = {
+                        navController.navigate("${SecondaryScreen.ItemDetail.route}/$it")
                     }
                 )
             }
@@ -151,7 +153,11 @@ fun MainNavHost(
                     onScreenInit = { screenState = it },
                     koinViewModel(),
                     onNavigateBack = { navController.popBackStack() },
-                    signOut = signOut
+                    signOut = {
+                        Firebase.auth.signOut()
+                        navController.popBackStack()
+                        signOut()
+                    }
                 )
             }
 
