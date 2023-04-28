@@ -6,11 +6,11 @@ import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
 import cz.cvut.fukalhan.swap.userdata.domain.repo.UserRepository
 import cz.cvut.fukalhan.swap.userdata.model.User
 
-class GetUserProfileDataUseCase(
+class GetUserDataUseCase(
     private val userRepository: UserRepository,
     private val reviewRepository: ReviewRepository
 ) {
-    suspend fun getUserProfileData(userId: String): DataResponse<ResponseFlag, User> {
+    suspend fun getUserData(userId: String): DataResponse<ResponseFlag, User> {
         val userResponse = userRepository.getUserProfileData(userId)
         val ratingResponse = reviewRepository.getUserRating(userId)
         return if (userResponse.data != null && ratingResponse.data != null) {
