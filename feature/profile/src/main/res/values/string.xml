@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="profile">Profil</string>
-    <string name="settings">Nastavení</string>
     <string name="memberSince">Členem od %1$s</string>
     <string name="myItems">Moje předměty</string>
     <string name="likedItems">Oblíbené předměty</string>
-    <string name="signOut">Odhlásit se</string>
     <string name="cannotLoadData">Data nelze načíst</string>
     <string name="cannotLoadItems">Předměty nelze načíst</string>
     <string name="noItemsToDisplay">Žádné předměty k zobrazení</string>

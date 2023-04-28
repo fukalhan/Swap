@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
@@ -36,15 +35,15 @@ import cz.cvut.fukalhan.swap.itemdetail.presentation.ItemDetailState
 import cz.cvut.fukalhan.swap.itemdetail.presentation.ItemDetailViewModel
 import cz.cvut.fukalhan.swap.itemdetail.presentation.Loading
 import cz.cvut.fukalhan.swap.itemdetail.presentation.Success
-import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 
 @Composable
 fun ItemDetailScreen(
     itemId: String,
     viewModel: ItemDetailViewModel,
-    navController: NavHostController,
     onNavigateBack: () -> Unit,
     onScreenInit: (ScreenState) -> Unit,
+    navigateToOwnerProfileDetail: (String) -> Unit,
+    navigateToChat: (String) -> Unit
 ) {
     val itemDetailState: ItemDetailState by viewModel.itemDetailState.collectAsState()
 
@@ -68,10 +67,10 @@ fun ItemDetailScreen(
         ResolveState(
             itemDetailState,
             viewModel,
-            navController
-        ) {
-            viewModel.setStateToInit()
-        }
+            setStateToInit = { viewModel.setStateToInit() },
+            navigateToOwnerProfileDetail = navigateToOwnerProfileDetail,
+            navigateToChat
+        )
     }
 }
 
@@ -112,16 +111,17 @@ fun TopBar(
 fun ResolveState(
     state: ItemDetailState,
     viewModel: ItemDetailViewModel,
-    navController: NavHostController,
-    setStateToInit: () -> Unit
+    setStateToInit: () -> Unit,
+    navigateToOwnerProfileDetail: (String) -> Unit,
+    navigateToChat: (String) -> Unit
 ) {
     when (state) {
         is Loading -> LoadingView(semiTransparentBlack)
-        is Success -> ItemDetail(state, viewModel)
+        is Success -> ItemDetail(state, viewModel, navigateToOwnerProfileDetail)
         is Failure -> FailureView(state.message)
         is CreateChannelSuccess -> {
             setStateToInit()
-            navController.navigate("${SecondaryScreen.Message.route}/${state.channelId}")
+            navigateToChat(state.channelId)
         }
         is CreateChannelFailure -> {
             setStateToInit()

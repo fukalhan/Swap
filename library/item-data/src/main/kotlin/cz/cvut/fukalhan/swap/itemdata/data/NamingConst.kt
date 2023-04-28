@@ -3,7 +3,7 @@ package cz.cvut.fukalhan.swap.itemdata.data
 const val ITEMS = "items"
 const val LIKED_ITEMS = "likedItems"
 const val OWNER_ID = "ownerId"
-const val USERS = "Users"
+const val USERS = "users"
 const val ID = "id"
 const val IMAGES = "images"
 const val NAME = "name"

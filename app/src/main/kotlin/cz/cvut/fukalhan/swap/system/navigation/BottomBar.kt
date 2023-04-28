@@ -12,12 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.navigation.presentation.menuItems
 
 @Composable
 fun AnimatedBottomBar(
@@ -36,9 +36,9 @@ fun AnimatedBottomBar(
 @Composable
 fun BottomBar(navController: NavController) {
     BottomNavigation(
-        backgroundColor = SwapAppTheme.colors.backgroundSecondary,
+        backgroundColor = SwapAppTheme.colors.background,
         contentColor = SwapAppTheme.colors.primary,
-        elevation = SwapAppTheme.dimensions.elevation,
+        elevation = 10.dp,
         modifier = Modifier.height(SwapAppTheme.dimensions.bar)
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()

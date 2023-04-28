@@ -39,11 +39,12 @@ android {
 }
 
 dependencies {
+    // Need to find different solution because features shouldn't be dependent on each other
+    implementation project(':feature:notifications')
     implementation project(':library:design')
     implementation project(':library:auth')
     implementation project(':library:user-data')
     implementation project(':library:item-data')
-    implementation project(':library:navigation')
 
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

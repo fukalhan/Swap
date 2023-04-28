@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.itemdata.data
 
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -103,7 +102,6 @@ class FirebaseItemRepository : ItemRepository {
             }
             DataResponse(true, ResponseFlag.SUCCESS, items)
         } catch (e: Exception) {
-            Log.e("getItems", e.message.toString())
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
