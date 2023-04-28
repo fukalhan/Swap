@@ -140,11 +140,13 @@ fun NavHost() {
                 backStackEntry.arguments?.getString(USER_ID)?.let { userId ->
                     ProfileDetailScreen(
                         userId,
-                        koinViewModel(),
                         onInitScreen = { screenState = it },
                         navigateBack = { navController.popBackStack() },
                         navigateToProfileDetail = {
                             navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                        },
+                        navigateToItemDetail = {
+                            navController.navigate("${SecondaryScreen.ItemDetail.route}/$it")
                         }
                     )
                 }

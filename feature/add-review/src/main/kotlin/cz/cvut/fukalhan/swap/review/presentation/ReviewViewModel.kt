@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.userdata.data.ResponseFlag
 import cz.cvut.fukalhan.swap.userdata.domain.AddReviewUseCase
-import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import cz.cvut.fukalhan.swap.userdata.model.Review
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ReviewViewModel(
-    private val getUserProfileDataUseCase: GetUserProfileDataUseCase,
+    private val getUserDataUseCase: GetUserDataUseCase,
     private val addReviewUseCase: AddReviewUseCase,
     private val stringResources: StringResources
 ) : ViewModel() {
@@ -28,7 +28,7 @@ class ReviewViewModel(
     fun getUserInfo(userId: String) {
         _userInfoState.value = UserInfoState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getUserProfileDataUseCase.getUserProfileData(userId)
+            val response = getUserDataUseCase.getUserData(userId)
             response.data?.let { user ->
                 _userInfoState.value = user.toUserInfoState(stringResources)
             } ?: run {
