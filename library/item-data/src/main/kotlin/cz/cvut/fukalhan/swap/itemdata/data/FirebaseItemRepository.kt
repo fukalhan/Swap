@@ -68,7 +68,7 @@ class FirebaseItemRepository : ItemRepository {
         }
     }
 
-    override suspend fun getUsersItems(uid: String): DataResponse<ResponseFlag, List<Item>> {
+    override suspend fun getUserItems(uid: String): DataResponse<ResponseFlag, List<Item>> {
         return try {
             val querySnapshot = db.collection(ITEMS).whereEqualTo(OWNER_ID, uid).get().await()
             val items = if (querySnapshot.isEmpty) {

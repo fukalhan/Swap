@@ -23,14 +23,16 @@ data class ItemState(
     val id: String,
     val imageUri: Uri,
     val name: String,
-    val state: State
+    val state: State,
+    val isLiked: Boolean
 )
 
-internal fun Item.toItemState(): ItemState {
+internal fun Item.toItemState(isLiked: Boolean): ItemState {
     return ItemState(
         this.id,
         this.imagesUri.first(),
         this.name,
-        this.state
+        this.state,
+        isLiked
     )
 }

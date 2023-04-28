@@ -29,6 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.ItemCard
 import cz.cvut.fukalhan.design.system.components.ItemStateView
@@ -41,6 +43,8 @@ import cz.cvut.fukalhan.swap.profiledetail.presentation.items.ItemListState
 import cz.cvut.fukalhan.swap.profiledetail.presentation.items.ItemListViewModel
 import cz.cvut.fukalhan.swap.profiledetail.presentation.items.ItemState
 
+const val ITEM_MAX_LINES = 1
+
 @Composable
 fun ItemListView(
     userId: String,
@@ -50,7 +54,9 @@ fun ItemListView(
     val itemListState by viewModel.itemListState.collectAsState()
     val effect = remember {
         {
-            viewModel.getUserItems(userId)
+            Firebase.auth.currentUser?.let {
+                viewModel.getUserItems(it.uid, userId)
+            }
         }
     }
     LaunchedEffect(Unit) {
@@ -62,7 +68,9 @@ fun ItemListView(
         contentAlignment = Alignment.Center
     ) {
         ResolveState(itemListState, navigateToItemDetail) { itemId, isLiked ->
-            viewModel.toggleItemLike(userId, itemId, isLiked)
+            Firebase.auth.currentUser?.let {
+                viewModel.toggleItemLike(it.uid, userId, itemId, isLiked)
+            }
         }
     }
 }
@@ -126,6 +134,7 @@ fun LikedItemCard(
             )
             ItemPicture(itemState.imageUri)
             LikeButton(
+                itemState,
                 Modifier
                     .align(Alignment.BottomEnd)
                     .padding(SwapAppTheme.dimensions.smallSidePadding)
@@ -142,7 +151,7 @@ fun LikedItemCard(
                 .fillMaxWidth(),
             text = itemState.name,
             style = SwapAppTheme.typography.titleSecondary,
-            maxLines = MAX_LINES,
+            maxLines = ITEM_MAX_LINES,
             overflow = TextOverflow.Ellipsis
         )
     }
@@ -164,10 +173,11 @@ fun ItemPicture(uri: Uri) {
 
 @Composable
 fun LikeButton(
+    state: ItemState,
     modifier: Modifier,
     onLikeButtonClick: (Boolean) -> Unit,
 ) {
-    var isLiked by remember { mutableStateOf(true) }
+    var isLiked by remember { mutableStateOf(state.isLiked) }
 
     IconButton(
         onClick = {
