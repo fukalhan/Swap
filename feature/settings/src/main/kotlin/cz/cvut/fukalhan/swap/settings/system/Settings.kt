@@ -301,11 +301,7 @@ fun SignOutButton(
 ) {
     Button(
         modifier = Modifier.padding(SwapAppTheme.dimensions.sidePadding),
-        onClick = {
-            val auth = Firebase.auth
-            auth.signOut()
-            signOut()
-        },
+        onClick = signOut,
         colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary)
     ) {
         Text(

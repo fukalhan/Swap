@@ -41,7 +41,6 @@ android {
 dependencies {
     implementation project(':library:design')
     implementation project(':library:auth')
-    implementation project(':library:navigation')
 
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
