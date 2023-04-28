@@ -19,6 +19,8 @@ import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 
+const val MAX_RATING = 5
+
 @Composable
 fun UserProfilePic(
     uri: Uri,
@@ -57,7 +59,7 @@ fun Rating(rating: Int) {
                     .size(20.dp)
             )
         }
-        repeat(5 - rating) {
+        repeat(MAX_RATING - rating) {
             Image(
                 painter = painterResource(R.drawable.star),
                 contentDescription = null,

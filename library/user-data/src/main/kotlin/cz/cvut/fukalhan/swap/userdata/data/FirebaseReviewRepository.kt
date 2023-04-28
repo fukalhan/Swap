@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.userdata.data
 
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -58,7 +57,6 @@ class FirebaseReviewRepository : ReviewRepository {
 
             DataResponse(ResponseFlag.SUCCESS, reviews)
         } catch (e: Exception) {
-            Log.e("fjvnek", e.message.toString())
             DataResponse(ResponseFlag.FAIL)
         }
     }

@@ -1,6 +1,6 @@
-package cz.cvut.fukalhan.swap.navigation.presentation
+package cz.cvut.fukalhan.swap.system.navigation
 
-import cz.cvut.fukalhan.swap.navigation.R
+import cz.cvut.fukalhan.swap.R
 
 // Screens in main part of the app, contain route and icon for the bottom bar navigation
 sealed class MainScreen(
