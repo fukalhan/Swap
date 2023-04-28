@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.auth.domain.GetStreamChatUserTokenUseCase
-import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ProfileInfoViewModel(
-    private val getUserProfileDataUseCase: GetUserProfileDataUseCase,
+    private val getUserDataUseCase: GetUserDataUseCase,
     private val getStreamChatUserTokenUseCase: GetStreamChatUserTokenUseCase,
     private val stringResources: StringResources
 ) : ViewModel() {
@@ -26,7 +26,7 @@ class ProfileInfoViewModel(
     fun initProfile(uid: String) {
         _profileInfoState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val userProfileResponse = getUserProfileDataUseCase.getUserProfileData(uid)
+            val userProfileResponse = getUserDataUseCase.getUserData(uid)
             userProfileResponse.data?.let {
                 _profileInfoState.value = it.toProfileInfoState(stringResources)
                 if (chatToken.value == "") {

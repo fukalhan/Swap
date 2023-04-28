@@ -12,7 +12,7 @@ import cz.cvut.fukalhan.swap.itemdata.model.State
 interface ItemRepository {
     suspend fun createItemRecord(item: Item): DataResponse<ResponseFlag, String>
     suspend fun updateItemImages(saveImagesRequest: SaveImagesRequest): Response<ResponseFlag>
-    suspend fun getUsersItems(uid: String): DataResponse<ResponseFlag, List<Item>>
+    suspend fun getUserItems(uid: String): DataResponse<ResponseFlag, List<Item>>
     suspend fun getItems(uid: String): DataResponse<ResponseFlag, List<Item>>
     suspend fun getItemsById(ids: List<String>): DataResponse<ResponseFlag, List<Item>>
     suspend fun getItemDetail(id: String): DataResponse<ResponseFlag, ItemDetail>
