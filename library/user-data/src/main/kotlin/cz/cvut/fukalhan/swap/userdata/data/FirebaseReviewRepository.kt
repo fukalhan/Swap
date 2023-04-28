@@ -1,5 +1,7 @@
 package cz.cvut.fukalhan.swap.userdata.data
 
+import android.net.Uri
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
@@ -45,8 +47,12 @@ class FirebaseReviewRepository : ReviewRepository {
     override suspend fun getUserReviews(userId: String): DataResponse<ResponseFlag, List<Review>> {
         return try {
             val querySnapshot = db.collection(REVIEWS).whereEqualTo(USER_ID, userId).get().await()
-            val reviews = querySnapshot.documents.mapNotNull { doc ->
-                doc.toObject(Review::class.java)
+            val reviews = if (querySnapshot.documents.isEmpty()) {
+                emptyList()
+            } else {
+                querySnapshot.documents.mapNotNull { doc ->
+                    mapDocToReview(doc)
+                }
             }
 
             DataResponse(ResponseFlag.SUCCESS, reviews)
@@ -54,4 +60,15 @@ class FirebaseReviewRepository : ReviewRepository {
             DataResponse(ResponseFlag.FAIL)
         }
     }
+}
+
+private fun mapDocToReview(doc: DocumentSnapshot): Review {
+    return Review(
+        doc.id,
+        doc.getString(USER_ID) ?: EMPTY_FIELD,
+        doc.getString(REVIEWER_ID) ?: EMPTY_FIELD,
+        Uri.parse(doc.getString(REVIEWER_PROFILE_PIC)),
+        doc.get(RATING) as? Int ?: 0,
+        doc.getString(DESCRIPTION) ?: EMPTY_FIELD
+    )
 }

@@ -71,7 +71,9 @@ fun AddReviewScreen(
         contentAlignment = Alignment.Center
     ) {
         ResolveUserInfoState(userInfoState, onNavigateBack, viewModel, navigateToProfileDetail)
-        ResolveAddReviewState(addReviewState, onNavigateBack)
+        ResolveAddReviewState(addReviewState, onNavigateBack) {
+            viewModel.resetAddReviewState()
+        }
     }
 }
 
@@ -175,18 +177,24 @@ fun RatingView(
 @Composable
 fun ResolveAddReviewState(
     state: AddReviewState,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    resetAddReviewState: () -> Unit
 ) {
     when (state) {
         is AddReviewState.Loading -> LoadingView(semiTransparentBlack)
-        is AddReviewState.Success -> OnSuccess(state.message, navigateBack)
+        is AddReviewState.Success -> OnSuccess(state.message, navigateBack, resetAddReviewState)
         is AddReviewState.Failure -> FailSnackMessage(state.message)
         else -> {}
     }
 }
 
 @Composable
-fun OnSuccess(message: Int, navigateBack: () -> Unit) {
+fun OnSuccess(
+    message: Int,
+    navigateBack: () -> Unit,
+    resetAddReviewState: () -> Unit
+) {
+    resetAddReviewState()
     SuccessSnackMessage(message)
     navigateBack()
 }

@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.notifications.presentation.NotificationsViewModel
@@ -38,11 +37,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ProfileScreen(
     viewModel: NotificationsViewModel,
-    navController: NavHostController,
     onScreenInit: (ScreenState) -> Unit,
     navigateToNotifications: () -> Unit,
     onSettingsClick: () -> Unit,
-    navigateToProfileDetail: (String) -> Unit
+    navigateToProfileDetail: (String) -> Unit,
+    navigateToItemDetail: (String) -> Unit
 ) {
     val newNotifications by viewModel.newNotificationsCount.collectAsState()
 
@@ -56,7 +55,7 @@ fun ProfileScreen(
         newNotifications,
     )
 
-    Profile(navController, navigateToProfileDetail)
+    Profile(navigateToProfileDetail, navigateToItemDetail)
 }
 
 @Composable
@@ -128,8 +127,8 @@ fun TopBar(
 
 @Composable
 fun Profile(
-    navController: NavHostController,
-    navigateToProfileDetail: (String) -> Unit
+    navigateToProfileDetail: (String) -> Unit,
+    navigateToItemDetail: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -143,7 +142,7 @@ fun Profile(
             Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            navController
+            navigateToItemDetail
         )
     }
 }
