@@ -3,7 +3,6 @@ package cz.cvut.fukalhan.swap.profile.system.items
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -15,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.system.items.liked.LikedItemList
@@ -25,7 +23,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ItemsView(
     modifier: Modifier,
-    navController: NavHostController
+    navigateToItemDetail: (String) -> Unit
 ) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(R.string.myItems), stringResource(R.string.likedItems))
@@ -33,7 +31,6 @@ fun ItemsView(
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
         color = SwapAppTheme.colors.backgroundSecondary,
-        shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
         modifier = modifier
     ) {
         Column(
@@ -67,8 +64,8 @@ fun ItemsView(
             }
 
             when (tabIndex) {
-                0 -> UsersItemList(koinViewModel(), navController)
-                1 -> LikedItemList(koinViewModel(), navController)
+                0 -> UsersItemList(koinViewModel(), navigateToItemDetail)
+                1 -> LikedItemList(koinViewModel(), navigateToItemDetail)
             }
         }
     }

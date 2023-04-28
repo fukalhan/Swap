@@ -8,8 +8,11 @@ import cz.cvut.fukalhan.swap.itemdetail.di.itemDetailModule
 import cz.cvut.fukalhan.swap.itemlist.di.itemListModule
 import cz.cvut.fukalhan.swap.login.di.loginModule
 import cz.cvut.fukalhan.swap.messages.di.messagesModule
+import cz.cvut.fukalhan.swap.notifications.di.notificationsModule
 import cz.cvut.fukalhan.swap.profile.di.profileModule
+import cz.cvut.fukalhan.swap.profiledetail.di.profileDetailModule
 import cz.cvut.fukalhan.swap.review.di.reviewModule
+import cz.cvut.fukalhan.swap.settings.di.settingsModule
 import cz.cvut.fukalhan.swap.system.App
 import cz.cvut.fukalhan.swap.userdata.di.userDataModule
 import org.koin.android.ext.koin.androidContext
@@ -24,6 +27,7 @@ fun setupKoin(app: App) {
                 authModule,
                 userDataModule,
                 profileModule,
+                profileDetailModule,
                 itemDataModule,
                 addItemModule,
                 itemListModule,
@@ -31,7 +35,9 @@ fun setupKoin(app: App) {
                 reviewModule,
                 designModule,
                 chatClientModule,
-                messagesModule
+                messagesModule,
+                notificationsModule,
+                settingsModule
             )
         )
     }

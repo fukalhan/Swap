@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.additem.system
 
 import android.net.Uri
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -118,7 +117,6 @@ fun ItemData(
     ) {
         Column(
             modifier = Modifier
-                .background(SwapAppTheme.colors.backgroundSecondary)
                 .weight(1f)
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
@@ -131,10 +129,6 @@ fun ItemData(
             Divider(
                 color = SwapAppTheme.colors.component,
                 thickness = SwapAppTheme.dimensions.borderWidth,
-                modifier = Modifier.padding(
-                    start = SwapAppTheme.dimensions.sidePadding,
-                    end = SwapAppTheme.dimensions.sidePadding,
-                )
             )
 
             Column(
