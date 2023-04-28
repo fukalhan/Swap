@@ -26,8 +26,6 @@ import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
 import cz.cvut.fukalhan.swap.login.system.LoginTabScreen
 import cz.cvut.fukalhan.swap.messages.system.ChannelsScreen
 import cz.cvut.fukalhan.swap.messages.system.ChatScreen
-import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
-import cz.cvut.fukalhan.swap.navigation.presentation.SecondaryScreen
 import cz.cvut.fukalhan.swap.notifications.system.Notifications
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profiledetail.system.ProfileDetailScreen
@@ -42,7 +40,7 @@ const val USER_ID = "userId"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainNavHost() {
+fun NavHost() {
     val navController = rememberNavController()
     var screenState by remember { mutableStateOf(ScreenState()) }
     var bottomBarVisible by remember { mutableStateOf(true) }
@@ -97,11 +95,13 @@ fun MainNavHost() {
                     ItemDetailScreen(
                         itemId,
                         koinViewModel(),
-                        navController,
                         onNavigateBack = { navController.popBackStack() },
                         onScreenInit = { screenState = it },
                         navigateToOwnerProfileDetail = {
                             navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                        },
+                        navigateToChat = {
+                            navController.navigate("${SecondaryScreen.Message.route}/$it")
                         }
                     )
                 }

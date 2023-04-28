@@ -5,14 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.FirebaseApp
 import cz.cvut.fukalhan.swap.notifications.presentation.NotificationsViewModel
-import cz.cvut.fukalhan.swap.system.navigation.MainNavHost
+import cz.cvut.fukalhan.swap.system.navigation.NavHost
 import cz.cvut.fukalhan.swap.system.service.ITEM_ID
 import cz.cvut.fukalhan.swap.system.service.LIKED_ITEM_NOTIFICATION_INTENT
 import cz.cvut.fukalhan.swap.system.service.USER_ID
@@ -25,7 +24,7 @@ class MainActivity : ComponentActivity() {
         override fun onReceive(p0: Context?, p1: Intent?) {
             val userId = p1?.getStringExtra(USER_ID)
             val itemId = p1?.getStringExtra(ITEM_ID)
-            Log.e("service", "User id: $userId, itemId: $itemId")
+
             if (userId != null && itemId != null) {
                 notificationsViewModel.getNotification(userId, itemId)
             }
@@ -45,7 +44,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                MainNavHost()
+                NavHost()
             }
         }
     }

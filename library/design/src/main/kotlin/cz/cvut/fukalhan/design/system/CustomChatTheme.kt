@@ -1,25 +1,8 @@
 package cz.cvut.fukalhan.design.system
 
-import androidx.compose.material.Colors
 import androidx.compose.runtime.Composable
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
 import io.getstream.chat.android.compose.ui.theme.StreamColors
-
-private val colorPalette = Colors(
-    primary = darkPeach,
-    primaryVariant = darkPeach,
-    secondary = peach,
-    secondaryVariant = peach,
-    background = white,
-    surface = beige,
-    error = lightGrey,
-    onPrimary = white,
-    onSecondary = grey,
-    onBackground = darkGrey,
-    onSurface = grey,
-    onError = red,
-    isLight = true
-)
 
 private val customChatColorPalette = StreamColors(
     textHighEmphasis = darkGrey,
