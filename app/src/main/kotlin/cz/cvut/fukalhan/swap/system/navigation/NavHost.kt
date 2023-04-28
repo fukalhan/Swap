@@ -23,6 +23,7 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
 import cz.cvut.fukalhan.swap.itemdetail.system.ItemDetailScreen
 import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
+import cz.cvut.fukalhan.swap.login.system.LoginTabScreen
 import cz.cvut.fukalhan.swap.messages.system.ChannelsScreen
 import cz.cvut.fukalhan.swap.messages.system.ChatScreen
 import cz.cvut.fukalhan.swap.navigation.presentation.MainScreen
@@ -41,26 +42,17 @@ const val USER_ID = "userId"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainNavHost(
-    signOut: () -> Unit
-) {
+fun MainNavHost() {
     val navController = rememberNavController()
     var screenState by remember { mutableStateOf(ScreenState()) }
     var bottomBarVisible by remember { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     bottomBarVisible = when (navBackStackEntry?.destination?.route) {
-        MainScreen.AddItem.route -> false
-        "${SecondaryScreen.ItemDetail.route}/{$ITEM_ID}" -> false
-        "${SecondaryScreen.Message.route}/{$CHANNEL_ID}" -> false
-        SecondaryScreen.Settings.route -> false
-        "${SecondaryScreen.ProfileDetail.route}/{$USER_ID}" -> false
-        "${SecondaryScreen.AddReview.route}/{$USER_ID}" -> false
-        else -> true
-    }
-
-    if (Firebase.auth.currentUser == null) {
-        signOut()
+        MainScreen.Profile.route -> true
+        MainScreen.Messages.route -> true
+        MainScreen.Items.route -> true
+        else -> false
     }
 
     Scaffold(
@@ -73,6 +65,21 @@ fun MainNavHost(
             navController,
             MainScreen.Profile.route,
         ) {
+            composable(SecondaryScreen.Login.route) {
+                BackHandler(true) {
+                    // Do nothing on back pressed
+                }
+                LoginTabScreen(
+                    onScreenInit = { screenState = it }
+                ) {
+                    navController.navigate(MainScreen.Profile.route) {
+                        popUpTo(SecondaryScreen.Login.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            }
+
             composable(MainScreen.Items.route) {
                 ItemListScreen(
                     koinViewModel(),
@@ -101,6 +108,13 @@ fun MainNavHost(
             }
 
             composable(MainScreen.Profile.route) {
+                if (Firebase.auth.currentUser == null) {
+                    navController.navigate(SecondaryScreen.Login.route) {
+                        popUpTo(MainScreen.Profile.route) {
+                            inclusive = true
+                        }
+                    }
+                }
                 BackHandler(true) {
                     // Do nothing on back pressed when on Profile screen (graph root)
                 }
@@ -155,8 +169,11 @@ fun MainNavHost(
                     onNavigateBack = { navController.popBackStack() },
                     signOut = {
                         Firebase.auth.signOut()
-                        navController.popBackStack()
-                        signOut()
+                        navController.navigate(SecondaryScreen.Login.route) {
+                            popUpTo(MainScreen.Profile.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
