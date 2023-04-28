@@ -7,5 +7,5 @@ import cz.cvut.fukalhan.swap.itemdata.model.Item
 
 class GetUserItemsUseCase(private val itemRepository: ItemRepository) {
 
-    suspend fun getUserItems(uid: String): DataResponse<ResponseFlag, List<Item>> = itemRepository.getUsersItems(uid)
+    suspend fun getUserItems(uid: String): DataResponse<ResponseFlag, List<Item>> = itemRepository.getUserItems(uid)
 }

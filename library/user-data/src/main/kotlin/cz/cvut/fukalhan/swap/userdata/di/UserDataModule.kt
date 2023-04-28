@@ -5,8 +5,8 @@ import cz.cvut.fukalhan.swap.userdata.data.FirebaseUserRepository
 import cz.cvut.fukalhan.swap.userdata.domain.AddReviewUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.ChangeProfilePictureUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetNotificationUseCase
-import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
-import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDetailUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.GetUserReviewsUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.UpdateBioUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
 import cz.cvut.fukalhan.swap.userdata.domain.repo.UserRepository
@@ -18,9 +18,9 @@ import org.koin.dsl.module
 val userDataModule = module {
     singleOf(::FirebaseUserRepository) bind UserRepository::class
     singleOf(::FirebaseReviewRepository) bind ReviewRepository::class
-    factoryOf(::GetUserProfileDataUseCase)
+    factoryOf(::GetUserDataUseCase)
     factoryOf(::AddReviewUseCase)
-    factoryOf(::GetUserProfileDetailUseCase)
+    factoryOf(::GetUserReviewsUseCase)
     factoryOf(::ChangeProfilePictureUseCase)
     factoryOf(::UpdateBioUseCase)
     factoryOf(::GetNotificationUseCase)

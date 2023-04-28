@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.profiledetail.system
+package cz.cvut.fukalhan.swap.profiledetail.system.user
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
