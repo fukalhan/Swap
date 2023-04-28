@@ -9,7 +9,7 @@ import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
 import cz.cvut.fukalhan.swap.itemdata.model.Channel
-import cz.cvut.fukalhan.swap.userdata.domain.GetUserProfileDataUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import io.getstream.chat.android.client.ChatClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class ItemDetailViewModel(
     private val chatClient: ChatClient,
     private val getItemDetailUseCase: GetItemDetailUseCase,
-    private val getUserProfileDataUseCase: GetUserProfileDataUseCase,
+    private val getUserDataUseCase: GetUserDataUseCase,
     private val toggleItemLikeUseCase: ToggleItemLikeUseCase,
     private val createChannelUseCase: CreateChannelUseCase,
     private val stringResources: StringResources
@@ -32,7 +32,7 @@ class ItemDetailViewModel(
         _itemDetailState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
             getItemDetailUseCase.getItemDetail(userId, itemId).data?.let { itemDetail ->
-                getUserProfileDataUseCase.getUserProfileData(itemDetail.ownerId).data?.let { user ->
+                getUserDataUseCase.getUserData(itemDetail.ownerId).data?.let { user ->
                     val ownerInfo = user.toOwnerInfo(stringResources)
                     _itemDetailState.value = itemDetail.toItemDetailState(ownerInfo)
                 } ?: run {

@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="profileDetail">Detail profilu</string>
+
+    <!--User-->
     <string name="memberSince">Členem od %1$s</string>
     <string name="bio">O mně:</string>
-    <string name="cannotLoadUserData">Uživatelské údaje nelze načíst</string>
-    <string name="noReviewsToDisplay">Žádná hodnocení k zobrazení</string>
-    <string name="reviews">Hodnocení</string>
-    <string name="profileDetail">Detail profilu</string>
     <string name="emptyBio">Uživatel o sobě nic nenapsal</string>
+    <string name="cannotLoadUserData">Uživatelské údaje se nepodařilo načíst</string>
+
+    <!--Reviews-->
+    <string name="reviews">Hodnocení</string>
+    <string name="noReviewsToDisplay">Žádná hodnocení k zobrazení</string>
+    <string name="cannotLoadReviews">Informace u uživatelových hodnocení se nepodařilo načíst</string>
+
+    <!--Items-->
+    <string name="items">Předměty</string>
+    <string name="noItemsToDisplay">Žádné předměty k zobrazení</string>
+    <string name="cannotLoadItems">Informace o uživatelových předmětech se nepodařilo načíst</string>
+
 </resources>
