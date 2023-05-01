@@ -13,4 +13,11 @@
     <string name="pickDate">Vybrat datum</string>
     <string name="emptyDate">Není vybráno</string>
     <string name="dateRange">%1$s - %2$s</string>
+    <string name="emptyAddress">Není zadáno místo konání</string>
+
+    <!-- Address prediction -->
+    <string name="address">Místo konání:</string>
+    <string name="predictionsLoadingError">Něco se pokazilo, zkuste to prosím znovu</string>
+    <string name="emptyPredictions">Nenalezeny žádné výsledky</string>
+    <string name="insertAddress">Zadejte adresu</string>
 </resources>

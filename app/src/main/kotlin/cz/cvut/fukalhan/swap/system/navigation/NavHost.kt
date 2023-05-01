@@ -21,8 +21,8 @@ import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
-import cz.cvut.fukalhan.swap.events.system.AddEventScreen
 import cz.cvut.fukalhan.swap.events.system.EventListScreen
+import cz.cvut.fukalhan.swap.events.system.addevent.AddEventScreen
 import cz.cvut.fukalhan.swap.itemdetail.system.ItemDetailScreen
 import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
 import cz.cvut.fukalhan.swap.login.system.LoginTabScreen
