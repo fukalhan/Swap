@@ -10,6 +10,7 @@ import cz.cvut.fukalhan.swap.itemlist.di.itemListModule
 import cz.cvut.fukalhan.swap.login.di.loginModule
 import cz.cvut.fukalhan.swap.messages.di.messagesModule
 import cz.cvut.fukalhan.swap.notifications.di.notificationsModule
+import cz.cvut.fukalhan.swap.placesdata.di.placesDataModule
 import cz.cvut.fukalhan.swap.profile.di.profileModule
 import cz.cvut.fukalhan.swap.profiledetail.di.profileDetailModule
 import cz.cvut.fukalhan.swap.review.di.reviewModule
@@ -39,7 +40,8 @@ fun setupKoin(app: App) {
                 messagesModule,
                 notificationsModule,
                 settingsModule,
-                eventsModule
+                eventsModule,
+                placesDataModule
             )
         )
     }
