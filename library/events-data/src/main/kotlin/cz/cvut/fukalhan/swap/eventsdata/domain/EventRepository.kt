@@ -1,9 +1,12 @@
 package cz.cvut.fukalhan.swap.eventsdata.domain
 
+import cz.cvut.fukalhan.swap.eventsdata.data.DataResponse
 import cz.cvut.fukalhan.swap.eventsdata.data.Response
-import cz.cvut.fukalhan.swap.eventsdata.data.ResponseFlag
+import cz.cvut.fukalhan.swap.eventsdata.model.Event
+import cz.cvut.fukalhan.swap.eventsdata.model.GroupChat
 
 interface EventRepository {
+    suspend fun createEvent(event: Event): DataResponse<String>
 
-    suspend fun addEvent(): Response<ResponseFlag>
+    suspend fun createGroupChat(groupChat: GroupChat): Response
 }

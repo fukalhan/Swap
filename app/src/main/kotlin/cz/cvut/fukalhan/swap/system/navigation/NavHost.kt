@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
@@ -37,6 +38,7 @@ import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
 
 const val ITEM_ID = "itemId"
+const val CHANNEL_TYPE = "channelType"
 const val CHANNEL_ID = "channelId"
 const val USER_ID = "userId"
 
@@ -104,7 +106,7 @@ fun NavHost() {
                             navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
                         },
                         navigateToChat = {
-                            navController.navigate("${SecondaryScreen.Message.route}/$it")
+                            navController.navigate("${SecondaryScreen.Message.route}/$PRIVATE_CHAT/$it")
                         }
                     )
                 }
@@ -196,24 +198,32 @@ fun NavHost() {
                 ChannelsScreen(
                     getKoin().get(),
                     onScreenInit = { screenState = it }
-                ) {
-                    navController.navigate("${SecondaryScreen.Message.route}/$it")
+                ) { channelType, channelId ->
+                    navController.navigate("${SecondaryScreen.Message.route}/$channelType/$channelId")
                 }
             }
 
             composable(
-                "${SecondaryScreen.Message.route}/{$CHANNEL_ID}",
-                arguments = listOf(navArgument(CHANNEL_ID) { type = NavType.StringType })
+                "${SecondaryScreen.Message.route}/{$CHANNEL_TYPE}/{$CHANNEL_ID}",
+                arguments = listOf(
+                    navArgument(CHANNEL_TYPE) { type = NavType.StringType },
+                    navArgument(CHANNEL_ID) { type = NavType.StringType }
+                )
             ) { backStackEntry ->
-                backStackEntry.arguments?.getString(CHANNEL_ID)?.let { channelId ->
-                    ChatScreen(
-                        channelId,
-                        getKoin().get(),
-                        onScreenInit = { screenState = it },
-                        navigateBack = { navController.popBackStack() },
-                        onNavigateToItemDetail = { navController.navigate("${SecondaryScreen.ItemDetail.route}/$it") }
-                    ) {
-                        navController.navigate("${SecondaryScreen.AddReview.route}/$it")
+                backStackEntry.arguments?.let { bundle ->
+                    val channelType = bundle.getString(CHANNEL_TYPE)
+                    val channelId = bundle.getString(CHANNEL_ID)
+                    if (channelType != null && channelId != null) {
+                        ChatScreen(
+                            channelType,
+                            channelId,
+                            getKoin().get(),
+                            onScreenInit = { screenState = it },
+                            navigateBack = { navController.popBackStack() },
+                            onNavigateToItemDetail = { navController.navigate("${SecondaryScreen.ItemDetail.route}/$it") }
+                        ) {
+                            navController.navigate("${SecondaryScreen.AddReview.route}/$it")
+                        }
                     }
                 }
             }

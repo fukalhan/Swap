@@ -86,7 +86,10 @@ fun CalendarPicker(
     calendarState: UseCaseState,
     updateDates: (List<LocalDate>) -> Unit,
 ) {
-    val disabledDates = listOf(LocalDate.now().minusDays(3))
+    val disabledDates = listOf(
+        LocalDate.now().minusDays(7),
+        LocalDate.now().plusDays(3)
+    )
 
     CalendarDialog(
         state = calendarState,

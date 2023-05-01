@@ -1,9 +1,11 @@
 package cz.cvut.fukalhan.swap.eventsdata.data
 
-data class Response<S>(val success: Boolean, val flag: S)
+sealed class Response {
+    object Success : Response()
+    object Error : Response()
+}
 
-data class DataResponse<S, T>(val success: Boolean, val flag: S, val data: T? = null)
-
-enum class ResponseFlag {
-    SUCCESS, FAIL
+sealed class DataResponse<T>(val data: T? = null) {
+    class Success<T>(data: T) : DataResponse<T>(data)
+    class Error<T> : DataResponse<T>()
 }

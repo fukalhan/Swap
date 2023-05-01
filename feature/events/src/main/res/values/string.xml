@@ -14,6 +14,11 @@
     <string name="emptyDate">Není vybráno</string>
     <string name="dateRange">%1$s - %2$s</string>
     <string name="emptyAddress">Není zadáno místo konání</string>
+    <string name="getLocationFail">Nepodařilo se získat souřadnice místa konání</string>
+    <string name="addEventSuccess">Událost byla založena</string>
+    <string name="addEventFail">Událost se nepodařilo založit</string>
+    <string name="addressSaved">Adresa uložena</string>
+    <string name="createEventChatFail">Nepodařilo se vytvořit skupinový chat akce</string>
 
     <!-- Address prediction -->
     <string name="address">Místo konání:</string>
