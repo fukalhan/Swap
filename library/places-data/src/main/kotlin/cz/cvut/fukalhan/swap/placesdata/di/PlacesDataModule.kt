@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.placesdata.di
 
 import cz.cvut.fukalhan.swap.placesdata.data.GooglePlacesRepository
+import cz.cvut.fukalhan.swap.placesdata.domain.GetPlaceDetailUseCase
 import cz.cvut.fukalhan.swap.placesdata.domain.GetPlacesPredictionsUseCase
 import cz.cvut.fukalhan.swap.placesdata.domain.PlacesRepository
 import cz.cvut.fukalhan.swap.placesdata.system.RetrofitBuilder
@@ -13,4 +14,5 @@ val placesDataModule = module {
     singleOf(::GooglePlacesRepository) bind PlacesRepository::class
     single { RetrofitBuilder.apiService }
     factoryOf(::GetPlacesPredictionsUseCase)
+    factoryOf(::GetPlaceDetailUseCase)
 }

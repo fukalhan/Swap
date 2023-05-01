@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.placesdata.data
 
 import android.util.Log
+import cz.cvut.fukalhan.swap.placesdata.data.placedetail.PlaceDetailResponse
 import cz.cvut.fukalhan.swap.placesdata.data.predictions.GooglePredictionsResponse
 import cz.cvut.fukalhan.swap.placesdata.domain.GooglePlacesApiService
 import cz.cvut.fukalhan.swap.placesdata.domain.PlacesRepository
@@ -13,6 +14,16 @@ internal class GooglePlacesRepository(private val api: GooglePlacesApiService) :
             Response.Success(response)
         } catch (e: Exception) {
             Log.e("getPlacesPredictions", "Exceptiop $e")
+            Response.Error()
+        }
+    }
+
+    override suspend fun getPlaceDetail(placeId: String): Response<PlaceDetailResponse> {
+        return try {
+            val response = api.getPlaceDetails(placeId = placeId)
+            Response.Success(response)
+        } catch (e: Exception) {
+            Log.e("getPlaceDetail", "Exceptiop $e")
             Response.Error()
         }
     }

@@ -1,9 +1,10 @@
 package cz.cvut.fukalhan.swap.itemdetail.presentation
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.cvut.fukalhan.design.presentation.CHANNEL_TYPE
+import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
@@ -64,16 +65,18 @@ class ItemDetailViewModel(
             response.data?.let { channelId ->
                 chatClient.createChannel(
                     channelId = channelId,
-                    channelType = CHANNEL_TYPE,
+                    channelType = PRIVATE_CHAT,
                     memberIds = listOf(userId, itemOwnerId),
                     extraData = mapOf(
-                        "name" to channelName,
+                        "name" to "Předmět: $channelName",
                         "image" to itemImage.toString()
                     )
                 ).enqueue { result ->
                     if (result.isSuccess) {
+                        Log.e("owjfoiw", result.toString())
                         _itemDetailState.value = CreateChannelSuccess(channelId)
                     } else {
+                        Log.e("owjfoiw", result.toString())
                         _itemDetailState.value = CreateChannelFailure()
                         // TODO delete channel record from the db
                     }

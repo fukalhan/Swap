@@ -15,7 +15,7 @@ sealed class PredictionListState {
 
 data class PredictionState(
     val description: String,
-    val place_id: String
+    val placeId: String
 )
 
 internal fun GooglePredictionsResponse.toPredictionListState(): PredictionListState {
