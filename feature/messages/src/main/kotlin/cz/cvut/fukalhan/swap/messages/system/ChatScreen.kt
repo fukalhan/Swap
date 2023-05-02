@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import cz.cvut.fukalhan.design.presentation.CHANNEL_TYPE
+import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.CustomChatTheme
 import cz.cvut.fukalhan.design.system.SwapAppTheme
@@ -49,34 +49,36 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ChatScreen(
-    arg: String,
+    channelType: String,
+    channelId: String,
     viewModelFactory: ChatViewModelFactory,
     onScreenInit: (ScreenState) -> Unit,
     navigateBack: () -> Unit,
     onNavigateToItemDetail: (String) -> Unit,
     onNavigateToAddReview: (String) -> Unit,
 ) {
-    val channelId = "$CHANNEL_TYPE:$arg"
+    val channelIdWithType = "$channelType:$channelId"
     val listViewModel: MessageListViewModel = viewModel(
         checkNotNull(LocalViewModelStoreOwner.current),
         null,
-        viewModelFactory.createFactory(channelId)
+        viewModelFactory.createFactory(channelIdWithType)
     )
     val attachmentsPickerViewModel: AttachmentsPickerViewModel = viewModel(
         checkNotNull(LocalViewModelStoreOwner.current),
         null,
-        viewModelFactory.createFactory(channelId)
+        viewModelFactory.createFactory(channelIdWithType)
     )
     val composerViewModel: MessageComposerViewModel = viewModel(
         checkNotNull(LocalViewModelStoreOwner.current),
         null,
-        viewModelFactory.createFactory(channelId)
+        viewModelFactory.createFactory(channelIdWithType)
     )
     onScreenInit(ScreenState())
 
     CustomChatTheme {
         Chat(
-            arg,
+            channelType,
+            channelId,
             listViewModel,
             attachmentsPickerViewModel,
             composerViewModel,
@@ -89,6 +91,7 @@ fun ChatScreen(
 
 @Composable
 fun Chat(
+    channelType: String,
     channelId: String,
     listViewModel: MessageListViewModel,
     attachmentsPickerViewModel: AttachmentsPickerViewModel,
@@ -120,7 +123,9 @@ fun Chat(
             bottomBar = { MessageComposerBar(composerViewModel, attachmentsPickerViewModel) }
         ) {
             Column {
-                ItemView(channelId, koinViewModel(), onNavigateToItemDetail, onNavigateToAddReview, channelMembers)
+                if (channelType == PRIVATE_CHAT) {
+                    ItemView(channelId, koinViewModel(), onNavigateToItemDetail, onNavigateToAddReview, channelMembers)
+                }
                 MessageList(listViewModel, it)
             }
         }

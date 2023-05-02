@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.userdata.data
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -104,6 +105,30 @@ class FirebaseUserRepository : UserRepository {
                 DataResponse(ResponseFlag.FAIL)
             }
         } catch (e: FirebaseFirestoreException) {
+            DataResponse(ResponseFlag.FAIL)
+        }
+    }
+
+    override suspend fun getUsersById(userIds: List<String>): DataResponse<ResponseFlag, List<User>> {
+        return try {
+            if (userIds.isEmpty()) {
+                DataResponse(ResponseFlag.SUCCESS, emptyList<User>())
+            }
+
+            val querySnapshot = db.collection(USERS).whereIn(ID, userIds).get().await()
+            val users = if (querySnapshot.isEmpty) {
+                emptyList()
+            } else {
+                querySnapshot.documents.mapNotNull { doc ->
+                    val profilePic = doc.get(PROFILE_PIC) as String
+                    val user = doc.toObject(User::class.java)
+                    user?.profilePicUri = Uri.parse(profilePic)
+                    user
+                }
+            }
+            DataResponse(ResponseFlag.SUCCESS, users)
+        } catch (e: Exception) {
+            Log.e("getUsersById", "Exception $e")
             DataResponse(ResponseFlag.FAIL)
         }
     }

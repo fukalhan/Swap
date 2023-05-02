@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Event list -->
+    <string name="swapEvents">Swap akce</string>
+    <string name="eventListFail">Nepodařilo se načíst údaje</string>
+    <string name="eventListEmpty">Nejsou naplánovány žádné akce</string>
+
+    <!-- Add event -->
+    <string name="addEvent">Založení nové akce</string>
+    <string name="title">Název</string>
+    <string name="titlePlaceholder">Zadejte vhodné pojmenování akce</string>
+    <string name="description">Popis</string>
+    <string name="eventDescriptionPlaceholder">Popište detaily akce - jak bude probíhat, zda-li má nějakou tématiku a další informace …</string>
+    <string name="date">Datum konání:</string>
+    <string name="pickDate">Vybrat datum</string>
+    <string name="emptyDate">Není vybráno</string>
+    <string name="dateRange">%1$s - %2$s</string>
+    <string name="emptyAddress">Není zadáno místo konání</string>
+    <string name="getLocationFail">Nepodařilo se získat souřadnice místa konání</string>
+    <string name="addEventSuccess">Událost byla založena</string>
+    <string name="addEventFail">Událost se nepodařilo založit</string>
+    <string name="addressSaved">Adresa uložena</string>
+    <string name="createEventChatFail">Nepodařilo se vytvořit skupinový chat akce</string>
+    <string name="allFieldsMustBeFilled">Všechny údaje o události musí být vyplněny</string>
+
+    <!-- Address prediction -->
+    <string name="address">Místo konání:</string>
+    <string name="predictionsLoadingError">Něco se pokazilo, zkuste to prosím znovu</string>
+    <string name="emptyPredictions">Nenalezeny žádné výsledky</string>
+    <string name="insertAddress">Zadejte adresu</string>
+
+    <!-- Event detail -->
+    <string name="eventDetail">Detail události</string>
+    <string name="eventDescription">Popis události:</string>
+    <string name="cannotLoadEventData">Nepodařilo se načíst informace o události</string>
+    <string name="organizer">Organizátor:</string>
+    <string name="cannotLoadOrganizerInfo">Nepodařilo se načíst uživatelská data</string>
+    <string name="memberSince">Členem od %1$s</string>
+    <string name="participants">Účastnící:</string>
+    <string name="participate">Zúčastnit se</string>
+    <string name="cannotLoadParticipantList">Nepodařilo se načíst data účastníků</string>
+    <string name="emptyParticipantList">Na tuto akci se zatím nikdo nepřihlásil</string>
+    <string name="participateSuccess">Jste přihlášeni na akci</string>
+    <string name="participateFail">Přihlášení na akci se nezdařilo, zkuste to znovu</string>
+    <string name="userRegisteredToEvent">Na akci jste přihlášeni</string>
+    <string name="unsubscribe">Odhlásit se</string>
+    <string name="unsubscribeSuccess">Odhlášení z událost proběhlo v pořádku</string>
+    <string name="unsubscribeFail">Odhlášení z události se nezdařilo</string>
+    <string name="participantsCount">Počet účastníků: %1$d</string>
+</resources>

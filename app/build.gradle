@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id "io.gitlab.arturbosch.detekt" version "1.22.0"
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -64,10 +65,13 @@ dependencies {
     implementation project(':feature:messages')
     implementation project(':feature:notifications')
     implementation project(':feature:add-review')
+    implementation project(':feature:events')
     implementation project(':library:auth')
     implementation project(':library:design')
     implementation project(':library:user-data')
     implementation project(':library:item-data')
+    implementation project(':library:events-data')
+    implementation project(':library:places-data')
 
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'

@@ -30,7 +30,7 @@ import io.getstream.chat.android.compose.viewmodel.channels.ChannelListViewModel
 fun ChannelsScreen(
     viewModelFactory: ChatViewModelFactory,
     onScreenInit: (ScreenState) -> Unit,
-    onNavigateToChannel: (String) -> Unit,
+    onNavigateToChannel: (String, String) -> Unit,
 ) {
     val listViewModel: ChannelListViewModel = viewModel(
         checkNotNull(LocalViewModelStoreOwner.current),
@@ -63,7 +63,7 @@ fun TopBar(
 @Composable
 fun Channels(
     listViewModel: ChannelListViewModel,
-    onNavigateToChannel: (String) -> Unit
+    onNavigateToChannel: (String, String) -> Unit
 ) {
     val user by listViewModel.user.collectAsState()
     val channelsState = listViewModel.channelsState
@@ -81,7 +81,7 @@ fun Channels(
 fun ChannelsList(
     channelsState: ChannelsState,
     user: User?,
-    onNavigateToChannel: (String) -> Unit
+    onNavigateToChannel: (String, String) -> Unit
 ) {
     ChannelList(
         channelsState = channelsState,
@@ -96,7 +96,7 @@ fun ChannelsList(
             }
         },
         onChannelClick = { channel ->
-            onNavigateToChannel(channel.id)
+            onNavigateToChannel(channel.type, channel.id)
         }
     )
 }
