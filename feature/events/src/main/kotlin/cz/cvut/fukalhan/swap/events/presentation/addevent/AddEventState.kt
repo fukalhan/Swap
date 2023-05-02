@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.events.presentation
+package cz.cvut.fukalhan.swap.events.presentation.addevent
 
 import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.placesdata.data.placedetail.Coordinates

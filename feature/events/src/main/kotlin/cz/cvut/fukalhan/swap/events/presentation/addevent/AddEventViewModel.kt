@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.events.presentation
+package cz.cvut.fukalhan.swap.events.presentation.addevent
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

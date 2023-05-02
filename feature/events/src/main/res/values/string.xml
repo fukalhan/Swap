@@ -2,6 +2,8 @@
 <resources>
     <!-- Event list -->
     <string name="swapEvents">Swap akce</string>
+    <string name="eventListFail">Nepodařilo se načíst údaje</string>
+    <string name="eventListEmpty">Nejsou naplánovány žádné akce</string>
 
     <!-- Add event -->
     <string name="addEvent">Založení nové akce</string>

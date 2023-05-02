@@ -39,9 +39,9 @@ import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.system.components.screenstate.SuccessSnackMessage
 import cz.cvut.fukalhan.design.system.semiTransparentBlack
 import cz.cvut.fukalhan.swap.events.R
-import cz.cvut.fukalhan.swap.events.presentation.AddEventState
-import cz.cvut.fukalhan.swap.events.presentation.AddEventViewModel
-import cz.cvut.fukalhan.swap.events.presentation.LocationState
+import cz.cvut.fukalhan.swap.events.presentation.addevent.AddEventState
+import cz.cvut.fukalhan.swap.events.presentation.addevent.AddEventViewModel
+import cz.cvut.fukalhan.swap.events.presentation.addevent.LocationState
 import cz.cvut.fukalhan.swap.events.presentation.prediction.PredictionState
 import java.time.LocalDate
 
