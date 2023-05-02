@@ -11,6 +11,15 @@ sealed class EventDetailState {
     data class Success(
         val event: EventState
     ) : EventDetailState()
+
+    data class AddParticipantToEventSuccess(val message: Int = R.string.participateSuccess) : EventDetailState()
+
+    data class AddParticipantToEventFail(val message: Int = R.string.participateFail) : EventDetailState()
+
+    data class RemoveParticipantFromEventSuccess(val message: Int = R.string.unsubscribeSuccess) : EventDetailState()
+
+    data class RemoveParticipantFromEventFail(val message: Int = R.string.unsubscribeFail) : EventDetailState()
+
     data class Failure(val message: Int = R.string.cannotLoadEventData) : EventDetailState()
 }
 
@@ -20,6 +29,7 @@ data class EventState(
     val title: String,
     val date: String,
     val description: String,
+    val participants: List<String>
 )
 
 internal fun Event.toEventState(stringResources: StringResources): EventDetailState {
@@ -31,7 +41,8 @@ internal fun Event.toEventState(stringResources: StringResources): EventDetailSt
             this.organizerId,
             this.title,
             date,
-            this.description
+            this.description,
+            this.participants
         )
     )
 }

@@ -13,4 +13,8 @@ interface EventRepository {
     suspend fun getUpcomingEvents(date: Long): DataResponse<List<Event>>
 
     suspend fun getEvent(eventId: String): DataResponse<Event>
+
+    suspend fun addParticipantToEvent(eventId: String, userId: String): Response
+
+    suspend fun removeParticipantFromEvent(eventId: String, userId: String): Response
 }

@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,7 +32,6 @@ import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.swap.events.R
-import cz.cvut.fukalhan.swap.events.presentation.eventdetail.OrganizerInfo
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.OrganizerInfoState
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.OrganizerInfoViewModel
 
@@ -55,8 +53,9 @@ fun OrganizerInfo(
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .wrapContentHeight()
+            .padding(SwapAppTheme.dimensions.smallSidePadding)
     ) {
         Text(
             text = stringResource(id = R.string.organizer),
@@ -79,7 +78,12 @@ fun ResolveState(
         is OrganizerInfoState.Loading -> LoadingView()
         is OrganizerInfoState.Failure -> FailureView(state.message)
         is OrganizerInfoState.Success -> {
-            UserInfo(state.organizer, onOrganizerClick)
+            UserInfo(
+                state.organizer.id,
+                state.organizer.profilePic,
+                state.organizer.username,
+                onOrganizerClick
+            )
         }
         else -> Unit
     }
@@ -87,21 +91,23 @@ fun ResolveState(
 
 @Composable
 fun UserInfo(
-    user: OrganizerInfo,
-    onOrganizerClick: (String) -> Unit
+    id: String,
+    profilePic: Uri,
+    username: String,
+    onUserClick: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable { onOrganizerClick(user.id) }
+            .clickable { onUserClick(id) }
             .padding(SwapAppTheme.dimensions.smallSidePadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        UserProfilePic(uri = user.profilePic)
+        UserProfilePic(uri = profilePic)
         Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.smallSpacer))
         Text(
-            text = user.username,
+            text = username,
             style = SwapAppTheme.typography.titleSecondary,
             color = SwapAppTheme.colors.textPrimary,
         )
