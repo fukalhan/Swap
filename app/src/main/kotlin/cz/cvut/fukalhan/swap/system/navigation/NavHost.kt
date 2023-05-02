@@ -18,9 +18,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
+import cz.cvut.fukalhan.swap.events.system.EventListScreen
+import cz.cvut.fukalhan.swap.events.system.addevent.AddEventScreen
+import cz.cvut.fukalhan.swap.events.system.eventdetail.EventDetailScreen
 import cz.cvut.fukalhan.swap.itemdetail.system.ItemDetailScreen
 import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
 import cz.cvut.fukalhan.swap.login.system.LoginTabScreen
@@ -35,8 +39,10 @@ import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
 
 const val ITEM_ID = "itemId"
+const val CHANNEL_TYPE = "channelType"
 const val CHANNEL_ID = "channelId"
 const val USER_ID = "userId"
+const val EVENT_ID = "eventId"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -50,6 +56,7 @@ fun NavHost() {
         MainScreen.Profile.route -> true
         MainScreen.Messages.route -> true
         MainScreen.Items.route -> true
+        MainScreen.Events.route -> true
         else -> false
     }
 
@@ -101,7 +108,7 @@ fun NavHost() {
                             navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
                         },
                         navigateToChat = {
-                            navController.navigate("${SecondaryScreen.Message.route}/$it")
+                            navController.navigate("${SecondaryScreen.Message.route}/$PRIVATE_CHAT/$it")
                         }
                     )
                 }
@@ -193,24 +200,32 @@ fun NavHost() {
                 ChannelsScreen(
                     getKoin().get(),
                     onScreenInit = { screenState = it }
-                ) {
-                    navController.navigate("${SecondaryScreen.Message.route}/$it")
+                ) { channelType, channelId ->
+                    navController.navigate("${SecondaryScreen.Message.route}/$channelType/$channelId")
                 }
             }
 
             composable(
-                "${SecondaryScreen.Message.route}/{$CHANNEL_ID}",
-                arguments = listOf(navArgument(CHANNEL_ID) { type = NavType.StringType })
+                "${SecondaryScreen.Message.route}/{$CHANNEL_TYPE}/{$CHANNEL_ID}",
+                arguments = listOf(
+                    navArgument(CHANNEL_TYPE) { type = NavType.StringType },
+                    navArgument(CHANNEL_ID) { type = NavType.StringType }
+                )
             ) { backStackEntry ->
-                backStackEntry.arguments?.getString(CHANNEL_ID)?.let { channelId ->
-                    ChatScreen(
-                        channelId,
-                        getKoin().get(),
-                        onScreenInit = { screenState = it },
-                        navigateBack = { navController.popBackStack() },
-                        onNavigateToItemDetail = { navController.navigate("${SecondaryScreen.ItemDetail.route}/$it") }
-                    ) {
-                        navController.navigate("${SecondaryScreen.AddReview.route}/$it")
+                backStackEntry.arguments?.let { bundle ->
+                    val channelType = bundle.getString(CHANNEL_TYPE)
+                    val channelId = bundle.getString(CHANNEL_ID)
+                    if (channelType != null && channelId != null) {
+                        ChatScreen(
+                            channelType,
+                            channelId,
+                            getKoin().get(),
+                            onScreenInit = { screenState = it },
+                            navigateBack = { navController.popBackStack() },
+                            onNavigateToItemDetail = { navController.navigate("${SecondaryScreen.ItemDetail.route}/$it") }
+                        ) {
+                            navController.navigate("${SecondaryScreen.AddReview.route}/$it")
+                        }
                     }
                 }
             }
@@ -226,6 +241,45 @@ fun NavHost() {
                         onScreenInit = { screenState = it },
                         onNavigateBack = { navController.popBackStack() },
                         navigateToProfileDetail = {
+                            navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                        }
+                    )
+                }
+            }
+
+            composable(MainScreen.Events.route) {
+                EventListScreen(
+                    koinViewModel(),
+                    onScreenInit = { screenState = it },
+                    navigateToAddEvent = {
+                        navController.navigate(SecondaryScreen.AddEvent.route)
+                    },
+                    navigateToEventDetail = {
+                        navController.navigate("${SecondaryScreen.EventDetail.route}/$it")
+                    }
+                )
+            }
+
+            composable(SecondaryScreen.AddEvent.route) {
+                AddEventScreen(
+                    koinViewModel(),
+                    onScreenInit = { screenState = it }
+                ) {
+                    navController.popBackStack()
+                }
+            }
+
+            composable(
+                "${SecondaryScreen.EventDetail.route}/{$EVENT_ID}",
+                arguments = listOf(navArgument(EVENT_ID) { type = NavType.StringType })
+            ) { backStackEntry ->
+                backStackEntry.arguments?.getString(EVENT_ID)?.let { eventId ->
+                    EventDetailScreen(
+                        eventId = eventId,
+                        viewModel = koinViewModel(),
+                        onScreenInit = { screenState = it },
+                        navigateBack = { navController.popBackStack() },
+                        navigateToUserProfile = {
                             navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
                         }
                     )
