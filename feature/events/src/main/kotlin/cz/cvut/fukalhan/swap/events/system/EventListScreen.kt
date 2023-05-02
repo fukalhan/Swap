@@ -39,7 +39,8 @@ import cz.cvut.fukalhan.swap.events.presentation.EventState
 fun EventListScreen(
     viewModel: EventListViewModel,
     onScreenInit: (ScreenState) -> Unit,
-    navigateToAddEvent: () -> Unit
+    navigateToAddEvent: () -> Unit,
+    navigateToEventDetail: (String) -> Unit
 ) {
     val eventListState by viewModel.eventListState.collectAsState()
     val effect = remember {
@@ -58,6 +59,7 @@ fun EventListScreen(
         contentAlignment = Alignment.Center
     ) {
         ResolveState(eventListState) {
+            navigateToEventDetail(it)
         }
     }
 }

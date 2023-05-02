@@ -4,6 +4,7 @@ import cz.cvut.fukalhan.swap.eventsdata.data.FirebaseEventRepository
 import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventChatUseCase
 import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventUseCase
 import cz.cvut.fukalhan.swap.eventsdata.domain.EventRepository
+import cz.cvut.fukalhan.swap.eventsdata.domain.GetEventDetailUseCase
 import cz.cvut.fukalhan.swap.eventsdata.domain.GetUpcomingEventsUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -15,4 +16,5 @@ val eventsDataModule = module {
     factoryOf(::CreateEventUseCase)
     factoryOf(::CreateEventChatUseCase)
     factoryOf(::GetUpcomingEventsUseCase)
+    factoryOf(::GetEventDetailUseCase)
 }

@@ -22,6 +22,7 @@ import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
+import cz.cvut.fukalhan.swap.events.system.EventDetailScreen
 import cz.cvut.fukalhan.swap.events.system.EventListScreen
 import cz.cvut.fukalhan.swap.events.system.addevent.AddEventScreen
 import cz.cvut.fukalhan.swap.itemdetail.system.ItemDetailScreen
@@ -41,6 +42,7 @@ const val ITEM_ID = "itemId"
 const val CHANNEL_TYPE = "channelType"
 const val CHANNEL_ID = "channelId"
 const val USER_ID = "userId"
+const val EVENT_ID = "eventId"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -249,9 +251,13 @@ fun NavHost() {
                 EventListScreen(
                     koinViewModel(),
                     onScreenInit = { screenState = it },
-                ) {
-                    navController.navigate(SecondaryScreen.AddEvent.route)
-                }
+                    navigateToAddEvent = {
+                        navController.navigate(SecondaryScreen.AddEvent.route)
+                    },
+                    navigateToEventDetail = {
+                        navController.navigate("${SecondaryScreen.EventDetail.route}/$it")
+                    }
+                )
             }
 
             composable(SecondaryScreen.AddEvent.route) {
@@ -260,6 +266,21 @@ fun NavHost() {
                     onScreenInit = { screenState = it }
                 ) {
                     navController.popBackStack()
+                }
+            }
+
+            composable(
+                "${SecondaryScreen.EventDetail.route}/{$EVENT_ID}",
+                arguments = listOf(navArgument(EVENT_ID) { type = NavType.StringType })
+            ) { backStackEntry ->
+                backStackEntry.arguments?.getString(EVENT_ID)?.let { eventId ->
+                    EventDetailScreen(
+                        eventId = eventId,
+                        viewModel = koinViewModel(),
+                        onScreenInit = { screenState = it },
+                        navigateBack = { navController.popBackStack() },
+                        navigateToOrganizerProfile = { }
+                    )
                 }
             }
         }

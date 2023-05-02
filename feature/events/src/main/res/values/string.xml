@@ -27,4 +27,9 @@
     <string name="predictionsLoadingError">Něco se pokazilo, zkuste to prosím znovu</string>
     <string name="emptyPredictions">Nenalezeny žádné výsledky</string>
     <string name="insertAddress">Zadejte adresu</string>
+
+    <!-- Event detail -->
+    <string name="eventDetail">Detail události</string>
+    <string name="eventDescription">Popis události:</string>
+    <string name="cannotLoadEventData">Nepodařilo se načíst informace o události</string>
 </resources>
