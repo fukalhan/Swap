@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.events.system
+package cz.cvut.fukalhan.swap.events.system.eventdetail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
@@ -31,6 +29,7 @@ import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventDetailState
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventDetailViewModel
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventState
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun EventDetailScreen(
@@ -51,16 +50,12 @@ fun EventDetailScreen(
     }
 
     EventDetailTopBar(onScreenInit, navigateBack)
-    Column(
-        modifier = Modifier.fillMaxSize()
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            ResolveState(eventDetailState)
+        ResolveState(eventDetailState) {
+            navigateToOrganizerProfile(it)
         }
     }
 }
@@ -99,17 +94,23 @@ fun EventDetailTopBar(
 }
 
 @Composable
-fun ResolveState(state: EventDetailState) {
+fun ResolveState(
+    state: EventDetailState,
+    navigateToOrganizerProfile: (String) -> Unit
+) {
     when (state) {
         is EventDetailState.Loading -> LoadingView()
-        is EventDetailState.Success -> EventDetail(state.event)
+        is EventDetailState.Success -> EventDetail(state.event, navigateToOrganizerProfile)
         is EventDetailState.Failure -> FailureView(state.message)
         else -> Unit
     }
 }
 
 @Composable
-fun EventDetail(event: EventState) {
+fun EventDetail(
+    event: EventState,
+    navigateToOrganizerProfile: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(SwapAppTheme.dimensions.sidePadding)
@@ -139,6 +140,12 @@ fun EventDetail(event: EventState) {
             text = event.description,
             style = SwapAppTheme.typography.body,
             color = SwapAppTheme.colors.textSecondary
+        )
+
+        OrganizerInfo(
+            userId = event.organizerId,
+            viewModel = koinViewModel(),
+            navigateToUserProfile = navigateToOrganizerProfile
         )
     }
 }

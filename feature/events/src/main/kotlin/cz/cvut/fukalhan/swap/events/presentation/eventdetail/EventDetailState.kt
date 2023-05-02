@@ -16,6 +16,7 @@ sealed class EventDetailState {
 
 data class EventState(
     val id: String,
+    val organizerId: String,
     val title: String,
     val date: String,
     val description: String,
@@ -27,6 +28,7 @@ internal fun Event.toEventState(stringResources: StringResources): EventDetailSt
     return EventDetailState.Success(
         EventState(
             this.id,
+            this.organizerId,
             this.title,
             date,
             this.description

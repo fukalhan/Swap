@@ -32,4 +32,7 @@
     <string name="eventDetail">Detail události</string>
     <string name="eventDescription">Popis události:</string>
     <string name="cannotLoadEventData">Nepodařilo se načíst informace o události</string>
+    <string name="organizer">Organizátor:</string>
+    <string name="cannotLoadOrganizerInfo">Nepodařilo se načíst uživatelská data</string>
+    <string name="memberSince">Členem od %1$s</string>
 </resources>
