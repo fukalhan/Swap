@@ -6,5 +6,6 @@ data class Event(
     var title: String = "",
     var description: String = "",
     var selectedDays: List<Long> = emptyList(),
-    var location: Location = Location()
+    var location: Location = Location(),
+    var participants: List<String> = emptyList()
 )

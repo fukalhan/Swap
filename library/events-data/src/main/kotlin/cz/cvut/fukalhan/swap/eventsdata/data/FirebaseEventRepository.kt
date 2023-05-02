@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.eventsdata.data
 
 import android.util.Log
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -8,7 +9,6 @@ import cz.cvut.fukalhan.swap.eventsdata.domain.EventRepository
 import cz.cvut.fukalhan.swap.eventsdata.model.Event
 import cz.cvut.fukalhan.swap.eventsdata.model.GroupChat
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 
 class FirebaseEventRepository : EventRepository {
     private val db = Firebase.firestore
@@ -80,6 +80,28 @@ class FirebaseEventRepository : EventRepository {
         } catch (e: Exception) {
             Log.e("getEvent", "Exception $e")
             DataResponse.Error()
+        }
+    }
+
+    override suspend fun addParticipantToEvent(eventId: String, userId: String): Response {
+        return try {
+            val eventRef = db.collection(EVENTS).document(eventId)
+            eventRef.update(PARTICIPANTS, FieldValue.arrayUnion(userId)).await()
+            Response.Success
+        } catch (e: Exception) {
+            Log.e("addParticipantToEvent", "Exception $e")
+            Response.Error
+        }
+    }
+
+    override suspend fun removeParticipantFromEvent(eventId: String, userId: String): Response {
+        return try {
+            val eventRef = db.collection(EVENTS).document(eventId)
+            eventRef.update(PARTICIPANTS, FieldValue.arrayRemove(userId)).await()
+            Response.Success
+        } catch (e: Exception) {
+            Log.e("removeParticipantFromEvent", "Exception $e")
+            Response.Error
         }
     }
 }
