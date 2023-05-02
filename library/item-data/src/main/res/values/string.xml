@@ -11,6 +11,10 @@
     <string name="electronics">Elektronika</string>
     <string name="toys">Hračky</string>
     <string name="booksMoviesMusic">Knihy, filmy a hudba</string>
+    <string name="shoes">Boty</string>
+    <string name="sportsEquipment">Sportovní vybavení</string>
+    <string name="gardenEquipment">Zahradní nářadí a vybavení</string>
+    <string name="others">Jiná</string>
 
     <string name="available">Volný</string>
     <string name="reserved">Rezervovaný</string>
