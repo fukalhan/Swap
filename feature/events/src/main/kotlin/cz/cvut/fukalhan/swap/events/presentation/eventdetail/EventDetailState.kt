@@ -4,6 +4,7 @@ import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.tools.DateFormatter
 import cz.cvut.fukalhan.swap.eventsdata.model.Event
+import cz.cvut.fukalhan.swap.eventsdata.model.Location
 
 sealed class EventDetailState {
     object Init : EventDetailState()
@@ -29,6 +30,7 @@ data class EventState(
     val title: String,
     val date: String,
     val description: String,
+    val location: Location,
     val participants: List<String>
 )
 
@@ -42,6 +44,7 @@ internal fun Event.toEventState(stringResources: StringResources): EventDetailSt
             this.title,
             date,
             this.description,
+            this.location,
             this.participants
         )
     )
