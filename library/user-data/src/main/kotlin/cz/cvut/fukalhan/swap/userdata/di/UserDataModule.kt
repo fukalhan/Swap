@@ -6,6 +6,7 @@ import cz.cvut.fukalhan.swap.userdata.domain.AddReviewUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.ChangeProfilePictureUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetNotificationUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
+import cz.cvut.fukalhan.swap.userdata.domain.GetUserListUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserReviewsUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.UpdateBioUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
@@ -24,4 +25,5 @@ val userDataModule = module {
     factoryOf(::ChangeProfilePictureUseCase)
     factoryOf(::UpdateBioUseCase)
     factoryOf(::GetNotificationUseCase)
+    factoryOf(::GetUserListUseCase)
 }

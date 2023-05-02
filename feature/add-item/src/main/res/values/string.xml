@@ -11,4 +11,5 @@
     <string name="itemSaveFail">Uložení předmětu se nezdařilo</string>
     <string name="namePlaceholder">Zvolte výstižný název předmětu</string>
     <string name="descriptionPlaceholder">Popište předmět, uveďte v jakém je stavu, kde vyměnit …</string>
+    <string name="allFieldsMustBeFilled">Všechny údaje musí být vyplněny</string>
 </resources>
