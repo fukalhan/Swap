@@ -7,6 +7,8 @@ import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.eventsdata.domain.EventRepository
 import cz.cvut.fukalhan.swap.eventsdata.model.Event
 import cz.cvut.fukalhan.swap.eventsdata.model.GroupChat
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class FirebaseEventRepository : EventRepository {
     private val db = Firebase.firestore
@@ -32,6 +34,33 @@ class FirebaseEventRepository : EventRepository {
         } catch (e: FirebaseFirestoreException) {
             Log.e("createGroupChat", "Exception $e")
             Response.Error
+        }
+    }
+
+    override suspend fun getUpcomingEvents(date: Long): DataResponse<List<Event>> {
+        return try {
+            val querySnapshot = db
+                .collection(EVENTS)
+                .orderBy(SELECTED_DAYS)
+                .get()
+                .await()
+
+            val events = if (querySnapshot.isEmpty) {
+                emptyList()
+            } else {
+                querySnapshot.documents.mapNotNull { doc ->
+                    doc.toObject(Event::class.java)
+                }.filter { event ->
+                    // Filter because dumb Firestore doesn't work
+                    event.selectedDays.any {
+                        it > date
+                    }
+                }
+            }
+            DataResponse.Success(events)
+        } catch (e: Exception) {
+            Log.e("getUpcomingEvents", "Exception $e")
+            DataResponse.Error()
         }
     }
 }

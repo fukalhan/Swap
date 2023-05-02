@@ -55,7 +55,7 @@ fun PickDateRow(
             )
             Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.smallSpacer))
 
-            val date = DateFormatter(getKoin().get()).formatEventDate(selectedDates)
+            val date = DateFormatter(getKoin().get()).formatEventSelectedDate(selectedDates)
 
             Text(
                 text = date,
