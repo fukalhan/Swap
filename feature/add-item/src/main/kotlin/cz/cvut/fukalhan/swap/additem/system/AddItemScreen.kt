@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.additem.system
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -103,6 +105,7 @@ fun ItemData(
     navigateBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
 
     var selectedImagesUri by remember {
         mutableStateOf<List<Uri>>(emptyList())
@@ -185,13 +188,17 @@ fun ItemData(
         ButtonRow(navigateBack) {
             val user = Firebase.auth.currentUser
             user?.let {
-                viewModel.saveItem(
-                    it.uid,
-                    name,
-                    description,
-                    selectedImagesUri,
-                    category
-                )
+                if (name.isBlank() || description.isBlank() || category == Category.DEFAULT) {
+                    Toast.makeText(context, context.getText(R.string.allFieldsMustBeFilled), Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.saveItem(
+                        it.uid,
+                        name,
+                        description,
+                        selectedImagesUri,
+                        category
+                    )
+                }
             }
         }
     }

@@ -18,4 +18,6 @@ interface UserRepository {
     suspend fun updateUserBio(userId: String, bio: String): Response<ResponseFlag>
 
     suspend fun getNotificationData(userId: String, itemId: String): DataResponse<ResponseFlag, Notification>
+
+    suspend fun getUsersById(userIds: List<String>): DataResponse<ResponseFlag, List<User>>
 }
