@@ -21,6 +21,7 @@
     <string name="addEventFail">Událost se nepodařilo založit</string>
     <string name="addressSaved">Adresa uložena</string>
     <string name="createEventChatFail">Nepodařilo se vytvořit skupinový chat akce</string>
+    <string name="allFieldsMustBeFilled">Všechny údaje o události musí být vyplněny</string>
 
     <!-- Address prediction -->
     <string name="address">Místo konání:</string>

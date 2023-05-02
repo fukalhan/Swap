@@ -1,5 +1,6 @@
 package cz.cvut.fukalhan.swap.events.system.addevent
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.ktx.auth
@@ -55,6 +57,7 @@ fun AddEventScreen(
 ) {
     val addEventState by viewModel.addEventState.collectAsState()
     var location by remember { mutableStateOf(LocationState()) }
+    val context = LocalContext.current
 
     AddEventTopBar(onScreenInit, navigateBack)
 
@@ -78,13 +81,17 @@ fun AddEventScreen(
                 val coordinates = location.coordinate
                 val user = Firebase.auth.currentUser
                 if (user != null && coordinates != null) {
-                    viewModel.createEvent(
-                        title,
-                        description,
-                        selectedDates,
-                        user.uid,
-                        coordinates
-                    )
+                    if (title.isBlank() || description.isBlank() || selectedDates.isEmpty()) {
+                        Toast.makeText(context, context.getText(R.string.allFieldsMustBeFilled), Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.createEvent(
+                            title,
+                            description,
+                            selectedDates,
+                            user.uid,
+                            coordinates
+                        )
+                    }
                 }
             }
         )
