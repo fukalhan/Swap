@@ -86,21 +86,18 @@ fun CalendarPicker(
     calendarState: UseCaseState,
     updateDates: (List<LocalDate>) -> Unit,
 ) {
-    val disabledDates = listOf(
-        LocalDate.now().minusDays(7),
-        LocalDate.now().plusDays(3)
-    )
+    val timeBoundary = LocalDate.now().let { now -> now.plusDays(3)..now.plusYears(1) }
 
     CalendarDialog(
         state = calendarState,
-        selection = CalendarSelection.Dates { newDates ->
-            updateDates(newDates)
+        selection = CalendarSelection.Period { startDate, endDate ->
+            updateDates(listOf(startDate, endDate))
         },
         config = CalendarConfig(
             yearSelection = true,
             monthSelection = true,
             style = CalendarStyle.MONTH,
-            disabledDates = disabledDates
+            boundary = timeBoundary
         ),
     )
 }
