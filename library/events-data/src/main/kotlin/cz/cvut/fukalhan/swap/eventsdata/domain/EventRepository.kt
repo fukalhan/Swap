@@ -11,4 +11,6 @@ interface EventRepository {
     suspend fun createGroupChat(groupChat: GroupChat): Response
 
     suspend fun getUpcomingEvents(date: Long): DataResponse<List<Event>>
+
+    suspend fun getEvent(eventId: String): DataResponse<Event>
 }

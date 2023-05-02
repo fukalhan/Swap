@@ -63,4 +63,23 @@ class FirebaseEventRepository : EventRepository {
             DataResponse.Error()
         }
     }
+
+    override suspend fun getEvent(eventId: String): DataResponse<Event> {
+        return try {
+            val doc = db.collection(EVENTS).document(eventId).get().await()
+            if (doc.exists()) {
+                val event = doc.toObject(Event::class.java)
+                event?.let {
+                    DataResponse.Success(it)
+                } ?: run {
+                    DataResponse.Error()
+                }
+            } else {
+                DataResponse.Error()
+            }
+        } catch (e: Exception) {
+            Log.e("getEvent", "Exception $e")
+            DataResponse.Error()
+        }
+    }
 }
