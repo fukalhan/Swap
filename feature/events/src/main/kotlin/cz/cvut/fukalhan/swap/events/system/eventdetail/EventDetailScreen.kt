@@ -25,10 +25,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
@@ -40,6 +49,7 @@ import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventDetailState
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventDetailViewModel
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventState
+import cz.cvut.fukalhan.swap.events.tools.getBitmapFromImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -148,6 +158,17 @@ fun EventDetail(
     onParticipateButtonClick: (String) -> Unit,
     onCancelParticipationButtonClick: (String) -> Unit
 ) {
+    val eventLocation = LatLng(event.location.lat, event.location.lng)
+    val markerState = rememberMarkerState(position = eventLocation)
+    val cameraPosition = rememberCameraPositionState {
+        position = CameraPosition(
+            eventLocation,
+            10f,
+            0f,
+            0f
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -170,7 +191,7 @@ fun EventDetail(
                 color = SwapAppTheme.colors.textSecondary
             )
 
-            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
+            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.smallSpacer))
 
             Text(
                 text = stringResource(R.string.eventDescription),
@@ -183,6 +204,22 @@ fun EventDetail(
                 style = SwapAppTheme.typography.body,
                 color = SwapAppTheme.colors.textSecondary
             )
+        }
+
+        Box(
+            modifier = Modifier
+                .padding(SwapAppTheme.dimensions.smallSidePadding)
+                .fillMaxWidth()
+                .height(170.dp)
+        ) {
+            GoogleMap(cameraPositionState = cameraPosition) {
+                Marker(
+                    state = markerState,
+                    icon = BitmapDescriptorFactory.fromBitmap(
+                        getBitmapFromImage(LocalContext.current, R.drawable.location)
+                    )
+                )
+            }
         }
 
         Row(
