@@ -6,16 +6,17 @@ import cz.cvut.fukalhan.swap.R
 sealed class MainScreen(
     val route: String,
     val iconRes: Int,
+    val label: Int
 ) {
-    object Items : MainScreen("items", R.drawable.box)
+    object Items : MainScreen("items", R.drawable.box, R.string.swap)
 
-    object Profile : MainScreen("profile", R.drawable.profile)
+    object Profile : MainScreen("profile", R.drawable.profile, R.string.profile)
 
-    object AddItem : MainScreen("addItem", R.drawable.add)
+    object AddItem : MainScreen("addItem", R.drawable.add, R.string.add)
 
-    object Messages : MainScreen("messages", R.drawable.message)
+    object Messages : MainScreen("messages", R.drawable.message, R.string.messages)
 
-    object Events : MainScreen("events", R.drawable.calendar)
+    object Events : MainScreen("events", R.drawable.calendar, R.string.events)
 }
 
 val menuItems = listOf(

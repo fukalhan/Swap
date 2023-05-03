@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Swap</string>
-    <string name="itemsForSwap">Předměty na výměnu</string>
+
+    <!-- Menu labels -->
+    <string name="swap">Swap</string>
     <string name="profile">Profil</string>
-    <string name="settings">Nastavení</string>
-    <string name="addItem">Přidat předmět</string>
+    <string name="add">Přidat</string>
+    <string name="messages">Zprávy</string>
+    <string name="events">Akce</string>
 </resources>
