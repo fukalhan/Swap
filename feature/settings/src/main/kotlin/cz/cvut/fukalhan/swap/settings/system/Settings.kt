@@ -216,9 +216,16 @@ fun Settings(
             }
             Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
             Bio(state.bio, onBioChange)
-        }
 
-        SignOutButton(signOut)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                SignOutButton(signOut)
+            }
+        }
     }
 }
 
