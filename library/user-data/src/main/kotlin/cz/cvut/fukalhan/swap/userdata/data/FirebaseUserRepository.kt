@@ -112,7 +112,7 @@ class FirebaseUserRepository : UserRepository {
     override suspend fun getUsersById(userIds: List<String>): DataResponse<ResponseFlag, List<User>> {
         return try {
             if (userIds.isEmpty()) {
-                DataResponse(ResponseFlag.SUCCESS, emptyList<User>())
+                return DataResponse(ResponseFlag.SUCCESS, emptyList())
             }
 
             val querySnapshot = db.collection(USERS).whereIn(ID, userIds).get().await()
