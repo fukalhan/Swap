@@ -4,12 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -101,6 +101,7 @@ fun ReviewScreenContent(
 ) {
     var selectedRating by remember { mutableStateOf(0) }
     var reviewDescription by remember { mutableStateOf("") }
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -115,34 +116,33 @@ fun ReviewScreenContent(
                 navigateToProfileDetail(state.id)
             }
         )
-        Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.smallSpacer))
-        RatingView(selectedRating) {
-            selectedRating = it
-        }
-        InputFieldView(
-            R.string.reviewDescription,
-            SwapAppTheme.dimensions.sidePadding
-        ) {
-            DescriptionView(
-                label = R.string.reviewDescriptionPlaceholder,
-                charLimit = REVIEW_CHAR_LIMIT,
-                description = reviewDescription
-            ) {
-                reviewDescription = it
-            }
-        }
         Column(
             modifier = Modifier
+                .padding(top = SwapAppTheme.dimensions.sidePadding)
                 .fillMaxWidth()
-                .weight(1f),
-            verticalArrangement = Arrangement.Bottom
+                .weight(1f)
+                .verticalScroll(scrollState)
         ) {
-            ButtonRow(onCancelClick = onNavigateBack) {
-                Firebase.auth.currentUser?.let { user ->
-                    viewModel.addReview(state.id, user.uid, selectedRating, reviewDescription)
+            RatingView(selectedRating) {
+                selectedRating = it
+            }
+            InputFieldView(
+                R.string.reviewDescription,
+                SwapAppTheme.dimensions.sidePadding
+            ) {
+                DescriptionView(
+                    label = R.string.reviewDescriptionPlaceholder,
+                    charLimit = REVIEW_CHAR_LIMIT,
+                    description = reviewDescription
+                ) {
+                    reviewDescription = it
                 }
             }
-            Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.largeSpacer))
+        }
+        ButtonRow(onCancelClick = onNavigateBack) {
+            Firebase.auth.currentUser?.let { user ->
+                viewModel.addReview(state.id, user.uid, selectedRating, reviewDescription)
+            }
         }
     }
 }
