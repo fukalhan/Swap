@@ -23,6 +23,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.firebase.auth.ktx.auth
@@ -52,6 +54,7 @@ import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.system.components.screenstate.SuccessSnackMessage
 import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.system.white
 import cz.cvut.fukalhan.swap.settings.R
 import cz.cvut.fukalhan.swap.settings.presentation.Failure
 import cz.cvut.fukalhan.swap.settings.presentation.Loading
@@ -181,10 +184,35 @@ fun Settings(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            ProfilePicture(state.profilePic) {
-                singlePhotoPickerLauncher.launch(
-                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                )
+            Box(
+                modifier = Modifier
+                    .size(185.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        singlePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                ProfilePicture(state.profilePic)
+                Surface(
+                    shape = CircleShape,
+                    color = white,
+                    elevation = SwapAppTheme.dimensions.elevation,
+                    modifier = Modifier
+                        .padding(25.dp)
+                        .wrapContentSize()
+                        .align(Alignment.BottomEnd)
+                        .zIndex(1f),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.edit),
+                        contentDescription = null,
+                        tint = SwapAppTheme.colors.component,
+                        modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
             Bio(state.bio, onBioChange)
@@ -195,10 +223,7 @@ fun Settings(
 }
 
 @Composable
-fun ProfilePicture(
-    uri: Uri,
-    onClick: () -> Unit
-) {
+fun ProfilePicture(uri: Uri) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(uri)
@@ -210,7 +235,7 @@ fun ProfilePicture(
         modifier = Modifier
             .clip(CircleShape)
             .size(150.dp)
-            .clickable(onClick = onClick),
+            .zIndex(0f),
         contentScale = ContentScale.Crop
     )
 }
