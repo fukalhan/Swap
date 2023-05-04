@@ -58,7 +58,7 @@ class FirebaseEventRepository : EventRepository {
                 }
             }
             DataResponse.Success(events)
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
             Log.e("getUpcomingEvents", "Exception $e")
             DataResponse.Error()
         }
@@ -77,7 +77,7 @@ class FirebaseEventRepository : EventRepository {
             } else {
                 DataResponse.Error()
             }
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
             Log.e("getEvent", "Exception $e")
             DataResponse.Error()
         }
@@ -88,7 +88,7 @@ class FirebaseEventRepository : EventRepository {
             val eventRef = db.collection(EVENTS).document(eventId)
             eventRef.update(PARTICIPANTS, FieldValue.arrayUnion(userId)).await()
             Response.Success
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
             Log.e("addParticipantToEvent", "Exception $e")
             Response.Error
         }
@@ -99,7 +99,7 @@ class FirebaseEventRepository : EventRepository {
             val eventRef = db.collection(EVENTS).document(eventId)
             eventRef.update(PARTICIPANTS, FieldValue.arrayRemove(userId)).await()
             Response.Success
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
             Log.e("removeParticipantFromEvent", "Exception $e")
             Response.Error
         }
