@@ -3,6 +3,7 @@
     <string name="email">Email</string>
     <string name="username">Uživatelské jméno</string>
     <string name="password">Heslo</string>
+    <string name="passwordCheck">Kontrola hesla</string>
     <string name="signIn">Přihlásit</string>
     <string name="signUp">Registrovat</string>
     <string name="passwordMustBeTheSame">Hesla se musí shodovat</string>

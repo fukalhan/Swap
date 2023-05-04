@@ -16,7 +16,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -155,20 +154,9 @@ fun ResolveState(
 fun EventDetail(
     event: EventState,
     navigateToUserProfile: (String) -> Unit,
-    onParticipateButtonClick: (String) -> Unit,
-    onCancelParticipationButtonClick: (String) -> Unit
+    onSubscribeToEventButtonClick: (String) -> Unit,
+    onCancelSubscriptionButtonClick: (String) -> Unit
 ) {
-    val eventLocation = LatLng(event.location.lat, event.location.lng)
-    val markerState = rememberMarkerState(position = eventLocation)
-    val cameraPosition = rememberCameraPositionState {
-        position = CameraPosition(
-            eventLocation,
-            10f,
-            0f,
-            0f
-        )
-    }
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -206,97 +194,110 @@ fun EventDetail(
             )
         }
 
-        Box(
-            modifier = Modifier
-                .padding(SwapAppTheme.dimensions.smallSidePadding)
-                .fillMaxWidth()
-                .height(170.dp)
-        ) {
-            GoogleMap(cameraPositionState = cameraPosition) {
-                Marker(
-                    state = markerState,
-                    icon = BitmapDescriptorFactory.fromBitmap(
-                        getBitmapFromImage(LocalContext.current, R.drawable.location)
-                    )
-                )
+        MapView(eventLocation = LatLng(event.location.lat, event.location.lng))
+
+        EventSubscription(
+            event.participants,
+            subscribeToEvent = {
+                onSubscribeToEventButtonClick(event.id)
+            },
+            cancelSubscriptionToEvent = {
+                onCancelSubscriptionButtonClick(event.id)
             }
+        )
+
+        OrganizerInfo(
+            userId = event.organizerId,
+            viewModel = koinViewModel(),
+            navigateToUserProfile = navigateToUserProfile
+        )
+
+        ParticipantListView(
+            participants = event.participants,
+            koinViewModel(),
+            onParticipantClick = navigateToUserProfile
+        )
+    }
+}
+
+@Composable
+fun MapView(eventLocation: LatLng) {
+    val markerState = rememberMarkerState(position = eventLocation)
+    val cameraPosition = rememberCameraPositionState {
+        position = CameraPosition(
+            eventLocation,
+            10f,
+            0f,
+            0f
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .padding(SwapAppTheme.dimensions.smallSidePadding)
+            .fillMaxWidth()
+            .height(170.dp)
+    ) {
+        GoogleMap(cameraPositionState = cameraPosition) {
+            Marker(
+                state = markerState,
+                icon = BitmapDescriptorFactory.fromBitmap(
+                    getBitmapFromImage(LocalContext.current, R.drawable.location)
+                )
+            )
         }
+    }
+}
 
-        Row(
-            modifier = Modifier
-                .padding(SwapAppTheme.dimensions.sidePadding)
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Firebase.auth.currentUser?.let { user ->
-                if (event.participants.contains(user.uid)) {
+@Composable
+fun EventSubscription(
+    participants: List<String>,
+    subscribeToEvent: () -> Unit,
+    cancelSubscriptionToEvent: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .padding(SwapAppTheme.dimensions.sidePadding)
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Firebase.auth.currentUser?.let { user ->
+            if (participants.contains(user.uid)) {
+                Text(
+                    text = stringResource(R.string.userRegisteredToEvent),
+                    style = SwapAppTheme.typography.titleSecondary,
+                    color = SwapAppTheme.colors.textPrimary
+                )
+
+                Button(
+                    onClick = cancelSubscriptionToEvent,
+                    colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary)
+                ) {
                     Text(
-                        text = stringResource(R.string.userRegisteredToEvent),
-                        style = SwapAppTheme.typography.titleSecondary,
-                        color = SwapAppTheme.colors.textPrimary
+                        text = stringResource(R.string.unsubscribe),
+                        style = SwapAppTheme.typography.button,
+                        color = SwapAppTheme.colors.buttonText
                     )
-
+                }
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
                     Button(
-                        onClick = {
-                            onCancelParticipationButtonClick(event.id)
-                        },
+                        onClick = subscribeToEvent,
                         colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary)
                     ) {
                         Text(
-                            text = stringResource(R.string.unsubscribe),
+                            text = stringResource(R.string.participate),
                             style = SwapAppTheme.typography.button,
                             color = SwapAppTheme.colors.buttonText
                         )
                     }
-                } else {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        Button(
-                            onClick = {
-                                onParticipateButtonClick(event.id)
-                            },
-                            colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.primary)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.participate),
-                                style = SwapAppTheme.typography.button,
-                                color = SwapAppTheme.colors.buttonText
-                            )
-                        }
-                    }
                 }
             }
-        }
-
-        Surface(
-            elevation = SwapAppTheme.dimensions.elevation,
-            modifier = Modifier
-                .padding(bottom = SwapAppTheme.dimensions.smallSidePadding)
-                .wrapContentHeight()
-                .fillMaxWidth()
-        ) {
-            OrganizerInfo(
-                userId = event.organizerId,
-                viewModel = koinViewModel(),
-                navigateToUserProfile = navigateToUserProfile
-            )
-        }
-
-        Surface(
-            elevation = SwapAppTheme.dimensions.elevation,
-            modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth()
-        ) {
-            ParticipantListView(
-                participants = event.participants,
-                koinViewModel(),
-                onParticipantClick = navigateToUserProfile
-            )
         }
     }
 }

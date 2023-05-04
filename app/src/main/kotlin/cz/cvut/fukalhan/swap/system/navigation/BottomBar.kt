@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -51,6 +53,11 @@ fun BottomBar(navController: NavController) {
                         painter = painterResource(screen.iconRes),
                         contentDescription = null,
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
+                    )
+                },
+                label = {
+                    Text(
+                        text = stringResource(screen.label),
                     )
                 },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,

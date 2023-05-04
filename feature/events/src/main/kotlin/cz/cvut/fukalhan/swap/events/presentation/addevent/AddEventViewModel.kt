@@ -74,7 +74,8 @@ class AddEventViewModel(
             when (response) {
                 is DataResponse.Success -> {
                     response.data?.let { eventId ->
-                        createChannel(eventId, organizerId, title)
+                        _addEventState.value = AddEventState.AddEventSuccess()
+                        // createChannel(eventId, organizerId, title)
                     } ?: run {
                         _addEventState.value = AddEventState.AddEventFail()
                     }

@@ -6,6 +6,8 @@ import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemdata.model.SearchQuery
+import java.text.Normalizer
+import java.util.regex.Pattern
 
 class SearchItemsUseCase(private val itemRepository: ItemRepository) {
 
@@ -42,7 +44,21 @@ class SearchItemsUseCase(private val itemRepository: ItemRepository) {
         }
     }
 
+    // Search string function with removed diacritics
     private fun searchForString(searchString: String, name: String, description: String): Boolean {
-        return name.contains(searchString, ignoreCase = true) || description.contains(searchString, ignoreCase = true)
+        val normalizedSearchString = Normalizer
+            .normalize(searchString, Normalizer.Form.NFD)
+            .replace("\\p{M}".toRegex(), "")
+
+        val pattern = Pattern.compile(normalizedSearchString, Pattern.CASE_INSENSITIVE)
+
+        val normalizedName = Normalizer
+            .normalize(name, Normalizer.Form.NFD)
+            .replace("\\p{M}".toRegex(), "")
+        val normalizedDescription = Normalizer
+            .normalize(description, Normalizer.Form.NFD)
+            .replace("\\p{M}".toRegex(), "")
+
+        return pattern.matcher(normalizedName).find() || pattern.matcher(normalizedDescription).find()
     }
 }

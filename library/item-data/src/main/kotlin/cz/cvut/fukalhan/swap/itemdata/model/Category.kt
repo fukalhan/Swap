@@ -16,6 +16,7 @@ enum class Category(val labelId: Int) {
     SHOES(R.string.shoes),
     SPORT_EQUIPMENT(R.string.sportsEquipment),
     GARDEN_EQUIPMENT(R.string.gardenEquipment),
+    PLANTS(R.string.plants),
     OTHER(R.string.others)
 }
 
@@ -29,6 +30,7 @@ val categories = listOf(
     Category.APPLIANCES,
     Category.HOUSEHOLD_SUPPLIES,
     Category.GARDEN_EQUIPMENT,
+    Category.PLANTS,
     Category.APPLIANCES,
     Category.ELECTRONICS,
     Category.TOYS,

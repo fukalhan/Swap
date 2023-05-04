@@ -1,13 +1,14 @@
 package cz.cvut.fukalhan.swap.userdata.data
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.userdata.domain.repo.ReviewRepository
 import cz.cvut.fukalhan.swap.userdata.model.Review
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 
 class FirebaseReviewRepository : ReviewRepository {
     private val db = Firebase.firestore
@@ -21,7 +22,8 @@ class FirebaseReviewRepository : ReviewRepository {
 
             db.collection(REVIEWS).document(review.id).set(review).await()
             Response(ResponseFlag.SUCCESS)
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
+            Log.e("addReview", "Exception $e")
             Response(ResponseFlag.FAIL)
         }
     }
@@ -39,7 +41,8 @@ class FirebaseReviewRepository : ReviewRepository {
             } else {
                 DataResponse(ResponseFlag.SUCCESS, 0f)
             }
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
+            Log.e("getUserRating", "Exception $e")
             DataResponse(ResponseFlag.FAIL)
         }
     }
@@ -56,7 +59,8 @@ class FirebaseReviewRepository : ReviewRepository {
             }
 
             DataResponse(ResponseFlag.SUCCESS, reviews)
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
+            Log.e("getUserReviews", "Exception $e")
             DataResponse(ResponseFlag.FAIL)
         }
     }

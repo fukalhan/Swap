@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.FirebaseApp
 import cz.cvut.fukalhan.swap.notifications.presentation.NotificationsViewModel
-import cz.cvut.fukalhan.swap.system.navigation.NavHost
+import cz.cvut.fukalhan.swap.system.navigation.NavigationComponent
 import cz.cvut.fukalhan.swap.system.service.ITEM_ID
 import cz.cvut.fukalhan.swap.system.service.LIKED_ITEM_NOTIFICATION_INTENT
 import cz.cvut.fukalhan.swap.system.service.USER_ID
@@ -34,6 +35,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
         // Initialize FirebaseApp
         FirebaseApp.initializeApp(this)
 
@@ -44,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                NavHost()
+                NavigationComponent()
             }
         }
     }

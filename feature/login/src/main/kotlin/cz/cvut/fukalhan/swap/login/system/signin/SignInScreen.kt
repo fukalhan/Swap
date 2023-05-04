@@ -56,7 +56,7 @@ fun SignInScreen(
                 email = it
             }
 
-            PasswordView(password) {
+            PasswordView(R.string.password, password) {
                 password = it
             }
 
