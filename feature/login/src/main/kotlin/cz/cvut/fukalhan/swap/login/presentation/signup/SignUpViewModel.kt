@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
 import cz.cvut.fukalhan.swap.auth.domain.SignUpUseCase
-import cz.cvut.fukalhan.swap.auth.model.signup.SignUpCredentials
+import cz.cvut.fukalhan.swap.auth.model.SignUpCredentials
 import cz.cvut.fukalhan.swap.login.presentation.common.Init
 import cz.cvut.fukalhan.swap.login.presentation.common.Loading
 import cz.cvut.fukalhan.swap.login.presentation.common.LoginState

@@ -1,6 +1,10 @@
 package cz.cvut.fukalhan.swap.placesdata.data.predictions
 
+import com.google.gson.annotations.SerializedName
+
 data class GooglePrediction(
+    @SerializedName("description")
     val description: String,
-    val place_id: String
+    @SerializedName("place_id")
+    val placeId: String
 )

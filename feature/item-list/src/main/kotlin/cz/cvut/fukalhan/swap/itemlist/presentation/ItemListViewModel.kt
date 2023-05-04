@@ -45,10 +45,7 @@ class ItemListViewModel(
 
     fun toggleItemLike(userId: String, itemId: String, isLiked: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = toggleItemLikeUseCase.toggleItemLike(userId, itemId, isLiked)
-            if (response.success) {
-                getItems(userId)
-            }
+            toggleItemLikeUseCase.toggleItemLike(userId, itemId, isLiked)
         }
     }
 

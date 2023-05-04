@@ -20,7 +20,7 @@ fun TopBar(
             backgroundColor = SwapAppTheme.colors.primary,
             contentColor = SwapAppTheme.colors.buttonText,
             elevation = SwapAppTheme.dimensions.elevation,
-            modifier = Modifier.height(SwapAppTheme.dimensions.bar),
+            modifier = Modifier.height(SwapAppTheme.dimensions.topBar),
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
