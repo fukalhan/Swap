@@ -8,17 +8,15 @@ import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.auth.domain.AuthRepository
-import cz.cvut.fukalhan.swap.auth.model.signin.SignInCredentials
-import cz.cvut.fukalhan.swap.auth.model.signin.SignInResult
-import cz.cvut.fukalhan.swap.auth.model.signup.SignUpCredentials
-import cz.cvut.fukalhan.swap.auth.model.signup.SignUpResult
+import cz.cvut.fukalhan.swap.auth.model.SignInCredentials
+import cz.cvut.fukalhan.swap.auth.model.SignUpCredentials
 import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthRepository : AuthRepository {
     private val functions = Firebase.functions
     private val auth = Firebase.auth
 
-    override suspend fun signUpUser(credentials: SignUpCredentials): SignUpResult {
+    override suspend fun signUpUser(credentials: SignUpCredentials): Response<SignUpResult> {
         val data = hashMapOf(
             EMAIL to credentials.email,
             USERNAME to credentials.username,
@@ -34,7 +32,7 @@ class FirebaseAuthRepository : AuthRepository {
 
             val result = httpsCallableResult.data as Map<*, *>
 
-            when (result[RESULT]) {
+            val code = when (result[RESULT]) {
                 WEAK_PASSWORD -> SignUpResult.WEAK_PASSWORD
                 USERNAME_TAKEN -> SignUpResult.USERNAME_TAKEN
                 EMAIL_ALREADY_EXISTS -> SignUpResult.EMAIL_ALREADY_REGISTERED
@@ -45,21 +43,23 @@ class FirebaseAuthRepository : AuthRepository {
                     SignUpResult.SUCCESS
                 }
             }
+            Response(code)
         } catch (e: FirebaseFunctionsException) {
-            SignUpResult.FAIL
+            Response(SignUpResult.FAIL)
         }
     }
 
-    override suspend fun signInUser(credentials: SignInCredentials): SignInResult {
+    override suspend fun signInUser(credentials: SignInCredentials): Response<SignInResult> {
         return try {
             auth.signInWithEmailAndPassword(credentials.email, credentials.password).await()
-            SignInResult.SUCCESS
+            Response(SignInResult.SUCCESS)
         } catch (e: FirebaseAuthException) {
-            when (e) {
+            val code = when (e) {
                 is FirebaseAuthInvalidUserException -> SignInResult.NOT_EXISTING_ACCOUNT
                 is FirebaseAuthInvalidCredentialsException -> SignInResult.WRONG_PASSWORD
                 else -> SignInResult.FAIL
             }
+            Response(code)
         }
     }
 

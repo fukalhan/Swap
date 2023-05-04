@@ -71,13 +71,13 @@ fun SignUpScreen(
                 username = it
             }
 
-            PasswordView(password) {
+            PasswordView(R.string.password, password) {
                 password = it
                 passwordMatch = password == passwordCheck
                 passwordValid = password.length >= PASSWORD_MIN_LENGTH
             }
 
-            PasswordView(passwordCheck) {
+            PasswordView(R.string.passwordCheck, passwordCheck) {
                 passwordCheck = it
                 passwordMatch = password == passwordCheck
             }
