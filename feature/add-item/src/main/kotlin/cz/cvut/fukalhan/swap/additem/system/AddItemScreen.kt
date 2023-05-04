@@ -62,8 +62,14 @@ fun AddItemScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        ResolveState(addItemState, navigateBack, viewModel)
-        ItemData(viewModel, navigateBack)
+        ResolveState(addItemState, navigateBack) {
+            viewModel.setStateToInit()
+        }
+        ItemData(navigateBack) { name, description, imagesUri, category ->
+            Firebase.auth.currentUser?.let { user ->
+                viewModel.saveItem(user.uid, name, description, imagesUri, category)
+            }
+        }
     }
 }
 
@@ -85,12 +91,12 @@ fun TopBar(onScreenInit: (ScreenState) -> Unit) {
 fun ResolveState(
     state: AddItemState,
     navigateBack: () -> Unit,
-    viewModel: AddItemViewModel,
+    setStateToInit: () -> Unit,
 ) {
     when (state) {
         is Loading -> LoadingView(semiTransparentBlack)
         is Success -> {
-            viewModel.setStateToInit()
+            setStateToInit()
             SuccessSnackMessage(state.message)
             navigateBack()
         }
@@ -101,8 +107,8 @@ fun ResolveState(
 
 @Composable
 fun ItemData(
-    viewModel: AddItemViewModel,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    onSaveClick: (String, String, List<Uri>, Category) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -186,19 +192,10 @@ fun ItemData(
         }
 
         ButtonRow(navigateBack) {
-            val user = Firebase.auth.currentUser
-            user?.let {
-                if (name.isBlank() || description.isBlank() || category == Category.DEFAULT) {
-                    Toast.makeText(context, context.getText(R.string.allFieldsMustBeFilled), Toast.LENGTH_SHORT).show()
-                } else {
-                    viewModel.saveItem(
-                        it.uid,
-                        name,
-                        description,
-                        selectedImagesUri,
-                        category
-                    )
-                }
+            if (name.isBlank() || description.isBlank() || category == Category.DEFAULT) {
+                Toast.makeText(context, context.getText(R.string.allFieldsMustBeFilled), Toast.LENGTH_SHORT).show()
+            } else {
+                onSaveClick(name, description, selectedImagesUri, category)
             }
         }
     }
