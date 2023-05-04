@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,30 +40,37 @@ fun ParticipantListView(
     val effect = remember {
         {
             viewModel.getParticipantList(participants)
-        }
+        } 
     }
     LaunchedEffect(Unit) {
         effect()
     }
 
-    Column(
+    Surface(
+        elevation = SwapAppTheme.dimensions.elevation,
         modifier = Modifier
+            .wrapContentHeight()
             .fillMaxWidth()
-            .height(200.dp)
-            .padding(SwapAppTheme.dimensions.smallSidePadding),
     ) {
-        Text(
-            text = stringResource(id = R.string.participants),
-            style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary,
-        )
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(SwapAppTheme.dimensions.smallSidePadding),
         ) {
-            ResolveState(participantListState) {
-                onParticipantClick(it)
+            Text(
+                text = stringResource(id = R.string.participants),
+                style = SwapAppTheme.typography.titleSecondary,
+                color = SwapAppTheme.colors.textPrimary,
+            )
+
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                ResolveState(participantListState) {
+                    onParticipantClick(it)
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.firebase.auth.UserInfo
 import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
@@ -51,20 +51,28 @@ fun OrganizerInfo(
         effect()
     }
 
-    Column(
+    Surface(
+        elevation = SwapAppTheme.dimensions.elevation,
         modifier = Modifier
-            .fillMaxWidth()
+            .padding(bottom = SwapAppTheme.dimensions.smallSidePadding)
             .wrapContentHeight()
-            .padding(SwapAppTheme.dimensions.smallSidePadding)
+            .fillMaxWidth()
     ) {
-        Text(
-            text = stringResource(id = R.string.organizer),
-            style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary,
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(SwapAppTheme.dimensions.smallSidePadding)
+        ) {
+            Text(
+                text = stringResource(id = R.string.organizer),
+                style = SwapAppTheme.typography.titleSecondary,
+                color = SwapAppTheme.colors.textPrimary,
+            )
 
-        ResolveState(organizerInfoState) {
-            navigateToUserProfile(it)
+            ResolveState(organizerInfoState) {
+                navigateToUserProfile(it)
+            }
         }
     }
 }
