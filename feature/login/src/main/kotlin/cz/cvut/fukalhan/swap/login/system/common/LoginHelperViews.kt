@@ -71,12 +71,12 @@ fun LoginButton(label: Int, onClick: () -> Unit) {
 }
 
 @Composable
-fun PasswordView(password: String, onValueChange: (String) -> Unit) {
+fun PasswordView(label: Int, password: String, onValueChange: (String) -> Unit) {
     var passwordVisible by remember { mutableStateOf(false) }
 
     Column {
         Text(
-            text = stringResource(id = R.string.password)
+            text = stringResource(label)
         )
 
         TextField(

@@ -3,7 +3,7 @@ package cz.cvut.fukalhan.swap.login.presentation.signin
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.swap.auth.domain.SignInUseCase
-import cz.cvut.fukalhan.swap.auth.model.signin.SignInCredentials
+import cz.cvut.fukalhan.swap.auth.model.SignInCredentials
 import cz.cvut.fukalhan.swap.login.presentation.common.Init
 import cz.cvut.fukalhan.swap.login.presentation.common.Loading
 import cz.cvut.fukalhan.swap.login.presentation.common.LoginState

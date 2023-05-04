@@ -22,7 +22,7 @@ internal fun GooglePredictionsResponse.toPredictionListState(): PredictionListSt
     val predictions = this.predictions.map {
         PredictionState(
             it.description,
-            it.place_id
+            it.placeId
         )
     }
     return PredictionListState.Success(

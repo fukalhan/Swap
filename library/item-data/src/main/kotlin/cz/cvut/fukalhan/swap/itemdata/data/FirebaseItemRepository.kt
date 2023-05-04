@@ -1,6 +1,7 @@
 package cz.cvut.fukalhan.swap.itemdata.data
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -15,7 +16,6 @@ import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
 import cz.cvut.fukalhan.swap.itemdata.model.ItemDetail
-import cz.cvut.fukalhan.swap.itemdata.model.SearchQuery
 import cz.cvut.fukalhan.swap.itemdata.model.State
 import cz.cvut.fukalhan.swap.itemdata.tools.UriAdapter
 import kotlinx.coroutines.tasks.await
@@ -45,6 +45,7 @@ class FirebaseItemRepository : ItemRepository {
             val id = result[DATA] as String?
             DataResponse(success, mapResponseFlag(flag), id)
         } catch (e: FirebaseFunctionsException) {
+            Log.e("createItemRecord", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -64,6 +65,7 @@ class FirebaseItemRepository : ItemRepository {
             val flag = result[FLAG] as Int
             Response(success, mapResponseFlag(flag))
         } catch (e: FirebaseFunctionsException) {
+            Log.e("updateItemImages", "Exception $e")
             Response(false, ResponseFlag.FAIL)
         }
     }
@@ -80,6 +82,7 @@ class FirebaseItemRepository : ItemRepository {
             }
             DataResponse(true, ResponseFlag.SUCCESS, items)
         } catch (e: FirebaseFirestoreException) {
+            Log.e("getUserItems", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -101,7 +104,8 @@ class FirebaseItemRepository : ItemRepository {
                 }
             }
             DataResponse(true, ResponseFlag.SUCCESS, items)
-        } catch (e: Exception) {
+        } catch (e: FirebaseFirestoreException) {
+            Log.e("getItems", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -125,6 +129,7 @@ class FirebaseItemRepository : ItemRepository {
             }
             DataResponse(true, ResponseFlag.SUCCESS, items)
         } catch (e: FirebaseFirestoreException) {
+            Log.e("getItemsById", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -148,6 +153,7 @@ class FirebaseItemRepository : ItemRepository {
                 DataResponse(false, ResponseFlag.FAIL)
             }
         } catch (e: FirebaseFirestoreException) {
+            Log.e("getItemDetail", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -165,6 +171,7 @@ class FirebaseItemRepository : ItemRepository {
                 DataResponse(true, ResponseFlag.SUCCESS, false)
             }
         } catch (e: FirebaseFirestoreException) {
+            Log.e("getItemLikeState", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -175,6 +182,7 @@ class FirebaseItemRepository : ItemRepository {
             userRef.update(LIKED_ITEMS, FieldValue.arrayUnion(itemId))
             Response(true, ResponseFlag.SUCCESS)
         } catch (e: FirebaseFirestoreException) {
+            Log.e("likeItem", "Exception $e")
             Response(false, ResponseFlag.FAIL)
         }
     }
@@ -189,6 +197,7 @@ class FirebaseItemRepository : ItemRepository {
             }
             Response(true, ResponseFlag.SUCCESS)
         } catch (e: FirebaseFirestoreException) {
+            Log.e("dislikeItem", "Exception $e")
             Response(false, ResponseFlag.FAIL)
         }
     }
@@ -199,6 +208,7 @@ class FirebaseItemRepository : ItemRepository {
             val likedItems = (docSnapshot.get(LIKED_ITEMS) as? List<*>)?.mapNotNull { it?.toString() } ?: emptyList()
             DataResponse(true, ResponseFlag.SUCCESS, likedItems)
         } catch (e: FirebaseFirestoreException) {
+            Log.e("getItemIdsLikedByUser", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -209,15 +219,8 @@ class FirebaseItemRepository : ItemRepository {
             itemRef.update(STATE, state).await()
             Response(true, ResponseFlag.SUCCESS)
         } catch (e: FirebaseFirestoreException) {
+            Log.e("changeItemState", "Exception $e")
             Response(false, ResponseFlag.FAIL)
-        }
-    }
-
-    override suspend fun getSearchedItems(searchQuery: SearchQuery): DataResponse<ResponseFlag, List<Item>> {
-        return try {
-            DataResponse(true, ResponseFlag.SUCCESS, emptyList())
-        } catch (e: Exception) {
-            DataResponse(false, ResponseFlag.FAIL)
         }
     }
 }
