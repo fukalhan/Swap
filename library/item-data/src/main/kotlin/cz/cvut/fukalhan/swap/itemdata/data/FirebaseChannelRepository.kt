@@ -1,5 +1,6 @@
 package cz.cvut.fukalhan.swap.itemdata.data
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -15,6 +16,7 @@ class FirebaseChannelRepository : ChannelRepository {
             val docRef = db.collection(CHANNELS).add(channel).await()
             DataResponse(true, ResponseFlag.SUCCESS, docRef.id)
         } catch (e: FirebaseFirestoreException) {
+            Log.e("createChannel", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -35,6 +37,7 @@ class FirebaseChannelRepository : ChannelRepository {
                 DataResponse(true, ResponseFlag.SUCCESS)
             }
         } catch (e: FirebaseFirestoreException) {
+            Log.e("channelExist", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }
@@ -50,6 +53,7 @@ class FirebaseChannelRepository : ChannelRepository {
                 DataResponse(false, ResponseFlag.FAIL)
             }
         } catch (e: FirebaseFirestoreException) {
+            Log.e("getItemFromChannel", "Exception $e")
             DataResponse(false, ResponseFlag.FAIL)
         }
     }

@@ -12,7 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.FirebaseApp
 import cz.cvut.fukalhan.swap.notifications.presentation.NotificationsViewModel
-import cz.cvut.fukalhan.swap.system.navigation.NavHost
+import cz.cvut.fukalhan.swap.system.navigation.NavigationComponent
 import cz.cvut.fukalhan.swap.system.service.ITEM_ID
 import cz.cvut.fukalhan.swap.system.service.LIKED_ITEM_NOTIFICATION_INTENT
 import cz.cvut.fukalhan.swap.system.service.USER_ID
@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                NavHost()
+                NavigationComponent()
             }
         }
     }

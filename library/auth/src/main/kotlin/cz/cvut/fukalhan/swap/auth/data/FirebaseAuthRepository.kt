@@ -1,5 +1,6 @@
 package cz.cvut.fukalhan.swap.auth.data
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -45,6 +46,7 @@ class FirebaseAuthRepository : AuthRepository {
             }
             Response(code)
         } catch (e: FirebaseFunctionsException) {
+            Log.e("signUpUser", "Exception $e")
             Response(SignUpResult.FAIL)
         }
     }
@@ -59,6 +61,7 @@ class FirebaseAuthRepository : AuthRepository {
                 is FirebaseAuthInvalidCredentialsException -> SignInResult.WRONG_PASSWORD
                 else -> SignInResult.FAIL
             }
+            Log.e("signInUser", "Exception $e")
             Response(code)
         }
     }
