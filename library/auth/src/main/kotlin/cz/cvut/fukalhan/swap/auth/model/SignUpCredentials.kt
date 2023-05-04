@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.auth.model.signup
+package cz.cvut.fukalhan.swap.auth.model
 
 data class SignUpCredentials(
     val email: String,
