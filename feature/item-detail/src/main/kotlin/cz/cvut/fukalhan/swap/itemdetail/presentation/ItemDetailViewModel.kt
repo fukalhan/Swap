@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.StringResources
+import cz.cvut.fukalhan.swap.itemdata.data.resolve
 import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
@@ -33,17 +34,20 @@ class ItemDetailViewModel(
     fun getItemDetail(userId: String, itemId: String) {
         _itemDetailState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            getItemDetailUseCase.getItemDetail(userId, itemId).data?.let { itemDetail ->
-                getUserDataUseCase.getUserData(itemDetail.ownerId).resolve(
-                    onSuccess = {
-                        val ownerInfo = it.toOwnerInfo(stringResources)
-                        _itemDetailState.value = itemDetail.toItemDetailState(ownerInfo)
-                    },
-                    onError = { _itemDetailState.value = Failure() }
-                )
-            } ?: run {
-                _itemDetailState.value = Failure()
-            }
+            getItemDetailUseCase.getItemDetail(userId, itemId).resolve(
+                onSuccess = { itemDetail ->
+                    this.launch {
+                        getUserDataUseCase.getUserData(itemDetail.ownerId).resolve(
+                            onSuccess = {
+                                val ownerInfo = it.toOwnerInfo(stringResources)
+                                _itemDetailState.value = itemDetail.toItemDetailState(ownerInfo)
+                            },
+                            onError = { _itemDetailState.value = Failure() }
+                        )
+                    }
+                },
+                onError = { _itemDetailState.value = Failure() }
+            )
         }
     }
 
@@ -63,29 +67,28 @@ class ItemDetailViewModel(
         _itemDetailState.value = Loading
         val channel = Channel(userId, itemId, itemOwnerId)
         viewModelScope.launch(Dispatchers.IO) {
-            val response = createChannelUseCase.createChannel(channel)
-            response.data?.let { channelId ->
-                chatClient.createChannel(
-                    channelId = channelId,
-                    channelType = PRIVATE_CHAT,
-                    memberIds = listOf(userId, itemOwnerId),
-                    extraData = mapOf(
-                        "name" to "Předmět: $channelName",
-                        "image" to itemImage.toString()
-                    )
-                ).enqueue { result ->
-                    if (result.isSuccess) {
-                        Log.e("owjfoiw", result.toString())
-                        _itemDetailState.value = CreateChannelSuccess(channelId)
-                    } else {
-                        Log.e("owjfoiw", result.toString())
-                        _itemDetailState.value = CreateChannelFailure()
-                        // TODO delete channel record from the db
+            createChannelUseCase.createChannel(channel).resolve(
+                onSuccess = { channelId ->
+                    chatClient.createChannel(
+                        channelId = channelId,
+                        channelType = PRIVATE_CHAT,
+                        memberIds = listOf(userId, itemOwnerId),
+                        extraData = mapOf(
+                            "name" to "Předmět: $channelName",
+                            "image" to itemImage.toString()
+                        )
+                    ).enqueue { result ->
+                        if (result.isSuccess) {
+                            Log.e("CreateChannel", result.toString())
+                            _itemDetailState.value = CreateChannelSuccess(channelId)
+                        } else {
+                            Log.e("CreateChannel", result.toString())
+                            _itemDetailState.value = CreateChannelFailure()
+                        }
                     }
-                }
-            } ?: run {
-                _itemDetailState.value = CreateChannelFailure()
-            }
+                },
+                onError = { _itemDetailState.value = CreateChannelFailure() }
+            )
         }
     }
 

@@ -1,16 +1,34 @@
 package cz.cvut.fukalhan.swap.itemdata.data
 
-data class Response<S>(val success: Boolean, val flag: S)
+sealed class Response {
+    object Success : Response()
 
-data class DataResponse<S, T>(val success: Boolean, val flag: S, val data: T? = null)
-
-enum class ResponseFlag {
-    SUCCESS, FAIL
+    object Error : Response()
 }
 
-internal fun mapResponseFlag(flag: Int): ResponseFlag {
-    return when (flag) {
-        0 -> ResponseFlag.SUCCESS
-        else -> ResponseFlag.FAIL
+fun Response.resolve(
+    onSuccess: () -> Unit,
+    onError: () -> Unit
+) {
+    when (this) {
+        is Response.Success -> onSuccess()
+        is Response.Error -> onError()
+    }
+}
+
+sealed class DataResponse<T> {
+
+    data class Success<T>(val data: T) : DataResponse<T>()
+
+    class Error<T> : DataResponse<T>()
+}
+
+fun <T> DataResponse<T>.resolve(
+    onSuccess: (T) -> Unit,
+    onError: () -> Unit
+) {
+    when (this) {
+        is DataResponse.Success -> onSuccess(this.data)
+        is DataResponse.Error -> onError()
     }
 }
