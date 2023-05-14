@@ -37,11 +37,9 @@ class AddEventViewModel(
             val response = getPlaceDetailUseCase.getPlaceDetail(placeId)
             when (response) {
                 is Response.Success -> {
-                    response.data?.let {
-                        _addEventState.value = AddEventState.GetLocationSuccess(
-                            LocationState(it.result.geometry.location)
-                        )
-                    }
+                    _addEventState.value = AddEventState.GetLocationSuccess(
+                        LocationState(response.data.result.geometry.location)
+                    )
                 }
                 else -> _addEventState.value = AddEventState.GetLocationFail()
             }

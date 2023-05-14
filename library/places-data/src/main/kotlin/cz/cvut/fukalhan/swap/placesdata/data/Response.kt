@@ -1,6 +1,6 @@
 package cz.cvut.fukalhan.swap.placesdata.data
 
-sealed class Response<T>(val data: T? = null) {
-    class Success<T>(data: T) : Response<T>(data)
+sealed class Response<T> {
+    class Success<T>(val data: T) : Response<T>()
     class Error<T> : Response<T>()
 }

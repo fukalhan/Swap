@@ -23,20 +23,15 @@ class PredictionListViewModel(
             val response = getPlacesPredictionsUseCase.getPredictions(address)
             when (response) {
                 is Response.Success -> {
-                    response.data?.let {
-                        if (it.predictions.isNotEmpty()) {
-                            _predictionListState.value = it.toPredictionListState()
-                        } else {
-                            _predictionListState.value = PredictionListState.Empty()
-                        }
+                    val data = response.data
+                    if (data.predictions.isNotEmpty()) {
+                        _predictionListState.value = data.toPredictionListState()
+                    } else {
+                        _predictionListState.value = PredictionListState.Empty()
                     }
                 }
                 else -> _predictionListState.value = PredictionListState.Failure()
             }
         }
-    }
-
-    fun setStateToInit() {
-        _predictionListState.value = PredictionListState.Init
     }
 }
