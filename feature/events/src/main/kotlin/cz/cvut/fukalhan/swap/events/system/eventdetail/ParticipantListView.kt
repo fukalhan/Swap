@@ -40,7 +40,7 @@ fun ParticipantListView(
     val effect = remember {
         {
             viewModel.getParticipantList(participants)
-        } 
+        }
     }
     LaunchedEffect(Unit) {
         effect()

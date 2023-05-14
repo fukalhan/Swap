@@ -3,7 +3,8 @@ package cz.cvut.fukalhan.swap.review.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.StringResources
-import cz.cvut.fukalhan.swap.userdata.data.ResponseFlag
+import cz.cvut.fukalhan.swap.userdata.data.DataResponse
+import cz.cvut.fukalhan.swap.userdata.data.resolve
 import cz.cvut.fukalhan.swap.userdata.domain.AddReviewUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import cz.cvut.fukalhan.swap.userdata.model.Review
@@ -29,10 +30,9 @@ class ReviewViewModel(
         _userInfoState.value = UserInfoState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             val response = getUserDataUseCase.getUserData(userId)
-            response.data?.let { user ->
-                _userInfoState.value = user.toUserInfoState(stringResources)
-            } ?: run {
-                _userInfoState.value = UserInfoState.Failure()
+            when (response) {
+                is DataResponse.Success -> _userInfoState.value = response.data.toUserInfoState(stringResources)
+                is DataResponse.Error -> _userInfoState.value = UserInfoState.Failure()
             }
         }
     }
@@ -45,20 +45,16 @@ class ReviewViewModel(
     ) {
         _addReviewState.value = AddReviewState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = addReviewUseCase.addReview(
-                Review(
-                    userId = userId,
-                    reviewerId = reviewerId,
-                    rating = rating,
-                    description = description
-                )
+            val review = Review(
+                userId = userId,
+                reviewerId = reviewerId,
+                rating = rating,
+                description = description
             )
-
-            if (response.flag == ResponseFlag.SUCCESS) {
-                _addReviewState.value = AddReviewState.Success()
-            } else {
-                _addReviewState.value = AddReviewState.Failure()
-            }
+            addReviewUseCase.addReview(review).resolve(
+                onSuccess = { _addReviewState.value = AddReviewState.Success() },
+                onError = { _addReviewState.value = AddReviewState.Failure() }
+            )
         }
     }
 

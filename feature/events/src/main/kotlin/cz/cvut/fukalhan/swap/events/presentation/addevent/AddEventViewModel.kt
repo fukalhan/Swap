@@ -4,14 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.GROUP_CHAT
-import cz.cvut.fukalhan.swap.eventsdata.data.DataResponse
+import cz.cvut.fukalhan.swap.eventsdata.data.resolve
 import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventChatUseCase
 import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventUseCase
 import cz.cvut.fukalhan.swap.eventsdata.model.Event
 import cz.cvut.fukalhan.swap.eventsdata.model.GroupChat
 import cz.cvut.fukalhan.swap.eventsdata.model.Location
-import cz.cvut.fukalhan.swap.placesdata.data.Response
 import cz.cvut.fukalhan.swap.placesdata.data.placedetail.Coordinates
+import cz.cvut.fukalhan.swap.placesdata.data.resolve
 import cz.cvut.fukalhan.swap.placesdata.domain.GetPlaceDetailUseCase
 import io.getstream.chat.android.client.ChatClient
 import kotlinx.coroutines.Dispatchers
@@ -34,17 +34,14 @@ class AddEventViewModel(
     fun getPlaceLocation(placeId: String) {
         _addEventState.value = AddEventState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getPlaceDetailUseCase.getPlaceDetail(placeId)
-            when (response) {
-                is Response.Success -> {
-                    response.data?.let {
-                        _addEventState.value = AddEventState.GetLocationSuccess(
-                            LocationState(it.result.geometry.location)
-                        )
-                    }
-                }
-                else -> _addEventState.value = AddEventState.GetLocationFail()
-            }
+            getPlaceDetailUseCase.getPlaceDetail(placeId).resolve(
+                onSuccess = {
+                    _addEventState.value = AddEventState.GetLocationSuccess(
+                        LocationState(it.result.geometry.location)
+                    )
+                },
+                onError = { _addEventState.value = AddEventState.GetLocationFail() }
+            )
         }
     }
 
@@ -70,18 +67,13 @@ class AddEventViewModel(
                 location = Location(location.lat, location.lng)
             )
 
-            val response = createEventUseCase.createEvent(event)
-            when (response) {
-                is DataResponse.Success -> {
-                    response.data?.let { eventId ->
-                        _addEventState.value = AddEventState.AddEventSuccess()
-                        // createChannel(eventId, organizerId, title)
-                    } ?: run {
-                        _addEventState.value = AddEventState.AddEventFail()
-                    }
-                }
-                else -> _addEventState.value = AddEventState.AddEventFail()
-            }
+            createEventUseCase.createEvent(event).resolve(
+                onSuccess = {
+                    _addEventState.value = AddEventState.AddEventSuccess()
+                    // createChannel(it, organizerId, title)
+                },
+                onError = { _addEventState.value = AddEventState.AddEventFail() }
+            )
         }
     }
 
@@ -93,9 +85,8 @@ class AddEventViewModel(
         _addEventState.value = AddEventState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             val groupChat = GroupChat(chatId, listOf(organizerId))
-            val response = createEventChatUseCase.createEventChat(groupChat)
-            when (response) {
-                is cz.cvut.fukalhan.swap.eventsdata.data.Response.Success -> {
+            createEventChatUseCase.createEventChat(groupChat).resolve(
+                onSuccess = {
                     chatClient.createChannel(
                         channelId = chatId,
                         channelType = GROUP_CHAT,
@@ -107,14 +98,14 @@ class AddEventViewModel(
                         if (result.isSuccess) {
                             _addEventState.value = AddEventState.AddEventSuccess()
                         } else {
-                            Log.e("nfkdfn", result.toString())
+                            Log.e("CreateEventChat", result.toString())
                             _addEventState.value = AddEventState.CreateEventChatFail()
                             // TODO delete channel record from the db
                         }
                     }
-                }
-                else -> _addEventState.value = AddEventState.CreateEventChatFail()
-            }
+                },
+                onError = { _addEventState.value = AddEventState.CreateEventChatFail() }
+            )
         }
     }
 

@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.profile.presentation.items
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.cvut.fukalhan.swap.itemdata.data.resolve
 import cz.cvut.fukalhan.swap.itemdata.domain.GetUserLikedItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
 import kotlinx.coroutines.Dispatchers
@@ -20,20 +21,20 @@ class LikedItemListViewModel(
     fun getLikedItems(uid: String) {
         _itemListState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getUserLikedItemsUseCase.getUserLikedItems(uid)
-            response.data?.let { items ->
-                if (items.isNotEmpty()) {
-                    _itemListState.value = Success(
-                        items.map {
-                            it.toItemState()
-                        }
-                    )
-                } else {
-                    _itemListState.value = Empty()
-                }
-            } ?: run {
-                _itemListState.value = Failure()
-            }
+            getUserLikedItemsUseCase.getUserLikedItems(uid).resolve(
+                onSuccess = { items ->
+                    if (items.isNotEmpty()) {
+                        _itemListState.value = Success(
+                            items.map {
+                                it.toItemState()
+                            }
+                        )
+                    } else {
+                        _itemListState.value = Empty()
+                    }
+                },
+                onError = { _itemListState.value = Failure() }
+            )
         }
     }
 

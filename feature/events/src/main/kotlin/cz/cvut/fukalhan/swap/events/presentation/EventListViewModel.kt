@@ -3,7 +3,7 @@ package cz.cvut.fukalhan.swap.events.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.StringResources
-import cz.cvut.fukalhan.swap.eventsdata.data.DataResponse
+import cz.cvut.fukalhan.swap.eventsdata.data.resolve
 import cz.cvut.fukalhan.swap.eventsdata.domain.GetUpcomingEventsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,26 +25,20 @@ class EventListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             // Get current time as Long
             val time = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            val response = getUpcomingEventsUseCase.getUpcomingEvents(time)
-
-            when (response) {
-                is DataResponse.Success -> {
-                    response.data?.let { events ->
-                        if (events.isNotEmpty()) {
-                            _evenListState.value = EventListState.Success(
-                                events = events.map { event ->
-                                    event.toEventState(stringResources)
-                                }
-                            )
-                        } else {
-                            _evenListState.value = EventListState.Empty()
-                        }
-                    } ?: run {
-                        _evenListState.value = EventListState.Failure()
+            getUpcomingEventsUseCase.getUpcomingEvents(time).resolve(
+                onSuccess = { events ->
+                    if (events.isNotEmpty()) {
+                        _evenListState.value = EventListState.Success(
+                            events = events.map { event ->
+                                event.toEventState(stringResources)
+                            }
+                        )
+                    } else {
+                        _evenListState.value = EventListState.Empty()
                     }
-                }
-                else -> _evenListState.value = EventListState.Failure()
-            }
+                },
+                onError = { _evenListState.value = EventListState.Failure() }
+            )
         }
     }
 }

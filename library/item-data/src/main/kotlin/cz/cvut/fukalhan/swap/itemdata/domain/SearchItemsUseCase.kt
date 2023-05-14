@@ -1,7 +1,6 @@
 package cz.cvut.fukalhan.swap.itemdata.domain
 
 import cz.cvut.fukalhan.swap.itemdata.data.DataResponse
-import cz.cvut.fukalhan.swap.itemdata.data.ResponseFlag
 import cz.cvut.fukalhan.swap.itemdata.domain.repo.ItemRepository
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
@@ -14,10 +13,10 @@ class SearchItemsUseCase(private val itemRepository: ItemRepository) {
     suspend fun getSearchedItems(
         userId: String,
         searchQuery: SearchQuery
-    ): DataResponse<ResponseFlag, Pair<List<Item>, List<String>>> {
+    ): DataResponse<Pair<List<Item>, List<String>>> {
         val response = itemRepository.getItems(userId)
         val getItemsLikedByUserResponse = itemRepository.getItemIdsLikedByUser(userId)
-        return if (response.data != null && getItemsLikedByUserResponse.data != null) {
+        return if (response is DataResponse.Success && getItemsLikedByUserResponse is DataResponse.Success) {
             val items = response.data
             val itemsFilteredByCategory = if (searchQuery.category != Category.DEFAULT) {
                 items.filter { item ->
@@ -34,13 +33,9 @@ class SearchItemsUseCase(private val itemRepository: ItemRepository) {
             } else {
                 itemsFilteredByCategory
             }
-            DataResponse(
-                true,
-                ResponseFlag.SUCCESS,
-                Pair(itemsFilteredBySearchString, getItemsLikedByUserResponse.data)
-            )
+            DataResponse.Success(Pair(itemsFilteredBySearchString, getItemsLikedByUserResponse.data))
         } else {
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 

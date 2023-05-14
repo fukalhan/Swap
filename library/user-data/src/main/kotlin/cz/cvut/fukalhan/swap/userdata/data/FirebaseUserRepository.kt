@@ -17,25 +17,25 @@ class FirebaseUserRepository : UserRepository {
     private val storage = Firebase.storage
     private val db = Firebase.firestore
 
-    override suspend fun getUserProfileData(userId: String): DataResponse<ResponseFlag, User> {
+    override suspend fun getUserProfileData(userId: String): DataResponse<User> {
         return try {
             val docSnapshot = db.collection(USERS).document(userId).get().await()
             if (docSnapshot.exists()) {
                 val profilePic = docSnapshot.get(PROFILE_PIC) as String
                 val user = docSnapshot.toObject(User::class.java)
                 user?.profilePicUri = Uri.parse(profilePic)
-
-                DataResponse(ResponseFlag.SUCCESS, user)
-            } else {
-                DataResponse(ResponseFlag.FAIL, null)
+                user?.let {
+                    return DataResponse.Success(it)
+                }
             }
+            DataResponse.Error()
         } catch (e: FirebaseFirestoreException) {
             Log.e("getUserProfileData", "Exception $e")
-            DataResponse(ResponseFlag.FAIL, null)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun getUsersProfilePic(reviews: List<Review>): DataResponse<ResponseFlag, List<Review>> {
+    override suspend fun getUsersProfilePic(reviews: List<Review>): DataResponse<List<Review>> {
         return try {
             reviews.forEach { review ->
                 val docSnapshot = db.collection(USERS).document(review.reviewerId).get().await()
@@ -43,17 +43,17 @@ class FirebaseUserRepository : UserRepository {
                     review.reviewerProfilePic = Uri.parse(docSnapshot.get(PROFILE_PIC) as String)
                 }
             }
-            DataResponse(ResponseFlag.SUCCESS, reviews)
+            DataResponse.Success(reviews)
         } catch (e: StorageException) {
             Log.e("getUsersProfilePic", "Exception $e")
-            DataResponse(ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
     override suspend fun changeUserProfilePicture(
         userId: String,
         profilePic: Uri
-    ): Response<ResponseFlag> {
+    ): Response {
         return try {
             val imageRef = storage.reference.child(PROFILE_IMAGES_FOLDER + userId)
             val uploadTask = imageRef.putFile(profilePic)
@@ -71,29 +71,29 @@ class FirebaseUserRepository : UserRepository {
             val userRef = db.collection(USERS).document(userId)
             userRef.update(PROFILE_PIC, downloadUri)
 
-            Response(ResponseFlag.SUCCESS)
+            Response.Success
         } catch (e: StorageException) {
             Log.e("changeUserProfilePicture", "Exception $e")
-            Response(ResponseFlag.FAIL)
+            Response.Error
         }
     }
 
-    override suspend fun updateUserBio(userId: String, bio: String): Response<ResponseFlag> {
+    override suspend fun updateUserBio(userId: String, bio: String): Response {
         return try {
             val userRef = db.collection(USERS).document(userId)
             userRef.update(BIO, bio).await()
 
-            Response(ResponseFlag.SUCCESS)
+            Response.Success
         } catch (e: FirebaseFirestoreException) {
             Log.e("updateUserBio", "Exception $e")
-            Response(ResponseFlag.FAIL)
+            Response.Error
         }
     }
 
     override suspend fun getNotificationData(
         userId: String,
         itemId: String
-    ): DataResponse<ResponseFlag, Notification> {
+    ): DataResponse<Notification> {
         return try {
             val userDoc = db.collection(USERS).document(userId).get().await()
             val itemDoc = db.collection(ITEMS).document(itemId).get().await()
@@ -102,20 +102,20 @@ class FirebaseUserRepository : UserRepository {
                 val username = userDoc.getString(USERNAME) ?: EMPTY_FIELD
                 val itemName = itemDoc.getString(NAME) ?: EMPTY_FIELD
 
-                DataResponse(ResponseFlag.SUCCESS, Notification(userId, userProfilePic, username, itemId, itemName))
+                DataResponse.Success(Notification(userId, userProfilePic, username, itemId, itemName))
             } else {
-                DataResponse(ResponseFlag.FAIL)
+                DataResponse.Error()
             }
         } catch (e: FirebaseFirestoreException) {
             Log.e("getNotificationData", "Exception $e")
-            DataResponse(ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun getUsersById(userIds: List<String>): DataResponse<ResponseFlag, List<User>> {
+    override suspend fun getUsersById(userIds: List<String>): DataResponse<List<User>> {
         return try {
             if (userIds.isEmpty()) {
-                return DataResponse(ResponseFlag.SUCCESS, emptyList())
+                return DataResponse.Success(emptyList())
             }
 
             val querySnapshot = db.collection(USERS).whereIn(ID, userIds).get().await()
@@ -129,10 +129,10 @@ class FirebaseUserRepository : UserRepository {
                     user
                 }
             }
-            DataResponse(ResponseFlag.SUCCESS, users)
+            DataResponse.Success(users)
         } catch (e: FirebaseFirestoreException) {
             Log.e("getUsersById", "Exception $e")
-            DataResponse(ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 }

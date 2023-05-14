@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.itemlist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.cvut.fukalhan.swap.itemdata.data.resolve
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.SearchItemsUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
@@ -23,23 +24,23 @@ class ItemListViewModel(
     fun getItems(uid: String) {
         _itemListState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getItemsUseCase.getItems(uid)
-            response.data?.let { data ->
-                val items = data.first
-                val likedItemsId = data.second
-                if (items.isNotEmpty()) {
-                    _itemListState.value =
-                        Success(
-                            items.map { item ->
-                                item.toItemState(likedItemsId.contains(item.id))
-                            }
-                        )
-                } else {
-                    _itemListState.value = Empty()
-                }
-            } ?: run {
-                _itemListState.value = Failure()
-            }
+            getItemsUseCase.getItems(uid).resolve(
+                onSuccess = {
+                    val items = it.first
+                    val likedItemsId = it.second
+                    if (items.isNotEmpty()) {
+                        _itemListState.value =
+                            Success(
+                                items.map { item ->
+                                    item.toItemState(likedItemsId.contains(item.id))
+                                }
+                            )
+                    } else {
+                        _itemListState.value = Empty()
+                    }
+                },
+                onError = { _itemListState.value = Failure() }
+            )
         }
     }
 
@@ -52,23 +53,23 @@ class ItemListViewModel(
     fun searchItems(userId: String, searchQuery: SearchQuery) {
         _itemListState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = searchItemsUseCase.getSearchedItems(userId, searchQuery)
-            response.data?.let { data ->
-                val items = data.first
-                val likedItemsId = data.second
-                if (items.isNotEmpty()) {
-                    _itemListState.value =
-                        Success(
-                            items.map { item ->
-                                item.toItemState(likedItemsId.contains(item.id))
-                            }
-                        )
-                } else {
-                    _itemListState.value = Empty()
-                }
-            } ?: run {
-                _itemListState.value = Failure()
-            }
+            searchItemsUseCase.getSearchedItems(userId, searchQuery).resolve(
+                onSuccess = {
+                    val items = it.first
+                    val likedItemsId = it.second
+                    if (items.isNotEmpty()) {
+                        _itemListState.value =
+                            Success(
+                                items.map { item ->
+                                    item.toItemState(likedItemsId.contains(item.id))
+                                }
+                            )
+                    } else {
+                        _itemListState.value = Empty()
+                    }
+                },
+                onError = { _itemListState.value = Failure() }
+            )
         }
     }
 }

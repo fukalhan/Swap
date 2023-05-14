@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.events.presentation.eventdetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.StringResources
+import cz.cvut.fukalhan.swap.userdata.data.resolve
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +21,10 @@ class OrganizerInfoViewModel(
     fun getOrganizerData(userId: String) {
         _organizerInfoState.value = OrganizerInfoState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getUserDataUseCase.getUserData(userId)
-            response.data?.let {
-                _organizerInfoState.value = it.toOrganizerInfoState(stringResources)
-            } ?: run {
-                _organizerInfoState.value = OrganizerInfoState.Failure()
-            }
+            getUserDataUseCase.getUserData(userId).resolve(
+                onSuccess = { _organizerInfoState.value = it.toOrganizerInfoState(stringResources) },
+                onError = { _organizerInfoState.value = OrganizerInfoState.Failure() }
+            )
         }
     }
 }
