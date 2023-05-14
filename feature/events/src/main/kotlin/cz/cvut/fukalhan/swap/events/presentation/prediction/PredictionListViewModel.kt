@@ -2,7 +2,7 @@ package cz.cvut.fukalhan.swap.events.presentation.prediction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.cvut.fukalhan.swap.placesdata.data.Response
+import cz.cvut.fukalhan.swap.placesdata.data.resolve
 import cz.cvut.fukalhan.swap.placesdata.domain.GetPlacesPredictionsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,18 +20,16 @@ class PredictionListViewModel(
 
     fun getPredictions(address: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getPlacesPredictionsUseCase.getPredictions(address)
-            when (response) {
-                is Response.Success -> {
-                    val data = response.data
-                    if (data.predictions.isNotEmpty()) {
-                        _predictionListState.value = data.toPredictionListState()
+            getPlacesPredictionsUseCase.getPredictions(address).resolve(
+                onSuccess = {
+                    if (it.predictions.isNotEmpty()) {
+                        _predictionListState.value = it.toPredictionListState()
                     } else {
                         _predictionListState.value = PredictionListState.Empty()
                     }
-                }
-                else -> _predictionListState.value = PredictionListState.Failure()
-            }
+                },
+                onError = { _predictionListState.value = PredictionListState.Failure() }
+            )
         }
     }
 }

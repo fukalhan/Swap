@@ -10,8 +10,8 @@ import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventUseCase
 import cz.cvut.fukalhan.swap.eventsdata.model.Event
 import cz.cvut.fukalhan.swap.eventsdata.model.GroupChat
 import cz.cvut.fukalhan.swap.eventsdata.model.Location
-import cz.cvut.fukalhan.swap.placesdata.data.Response
 import cz.cvut.fukalhan.swap.placesdata.data.placedetail.Coordinates
+import cz.cvut.fukalhan.swap.placesdata.data.resolve
 import cz.cvut.fukalhan.swap.placesdata.domain.GetPlaceDetailUseCase
 import io.getstream.chat.android.client.ChatClient
 import kotlinx.coroutines.Dispatchers
@@ -34,15 +34,14 @@ class AddEventViewModel(
     fun getPlaceLocation(placeId: String) {
         _addEventState.value = AddEventState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getPlaceDetailUseCase.getPlaceDetail(placeId)
-            when (response) {
-                is Response.Success -> {
+            getPlaceDetailUseCase.getPlaceDetail(placeId).resolve(
+                onSuccess = {
                     _addEventState.value = AddEventState.GetLocationSuccess(
-                        LocationState(response.data.result.geometry.location)
+                        LocationState(it.result.geometry.location)
                     )
-                }
-                else -> _addEventState.value = AddEventState.GetLocationFail()
-            }
+                },
+                onError = { _addEventState.value = AddEventState.GetLocationFail() }
+            )
         }
     }
 
