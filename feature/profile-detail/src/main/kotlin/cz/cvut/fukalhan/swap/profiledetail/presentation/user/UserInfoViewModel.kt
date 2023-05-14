@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.profiledetail.presentation.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.StringResources
+import cz.cvut.fukalhan.swap.userdata.data.resolve
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +21,10 @@ class UserInfoViewModel(
     fun getUserInfo(userId: String) {
         _userInfoState.value = UserInfoState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getUserDataUseCase.getUserData(userId)
-            response.data?.let {
-                _userInfoState.value = it.toUserState(stringResources)
-            } ?: run {
-                _userInfoState.value = UserInfoState.Failure()
-            }
+            getUserDataUseCase.getUserData(userId).resolve(
+                onSuccess = { _userInfoState.value = it.toUserState(stringResources) },
+                onError = { _userInfoState.value = UserInfoState.Failure() }
+            )
         }
     }
 }

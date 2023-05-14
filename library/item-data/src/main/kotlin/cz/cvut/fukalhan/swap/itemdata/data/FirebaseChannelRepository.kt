@@ -11,17 +11,17 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseChannelRepository : ChannelRepository {
     private val db = Firebase.firestore
-    override suspend fun createChannel(channel: Channel): DataResponse<ResponseFlag, String> {
+    override suspend fun createChannel(channel: Channel): DataResponse<String> {
         return try {
             val docRef = db.collection(CHANNELS).add(channel).await()
-            DataResponse(true, ResponseFlag.SUCCESS, docRef.id)
+            DataResponse.Success(docRef.id)
         } catch (e: FirebaseFirestoreException) {
             Log.e("createChannel", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun channelExist(channel: Channel): DataResponse<ResponseFlag, String> {
+    override suspend fun channelExist(channel: Channel): DataResponse<String> {
         return try {
             val querySnapshot = db
                 .collection(CHANNELS)
@@ -32,29 +32,29 @@ class FirebaseChannelRepository : ChannelRepository {
                 .await()
 
             if (!querySnapshot.isEmpty) {
-                DataResponse(true, ResponseFlag.SUCCESS, querySnapshot.documents[0].id)
+                DataResponse.Success(querySnapshot.documents[0].id)
             } else {
-                DataResponse(true, ResponseFlag.SUCCESS)
+                DataResponse.Error()
             }
         } catch (e: FirebaseFirestoreException) {
             Log.e("channelExist", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun getItemFromChannel(channelId: String): DataResponse<ResponseFlag, Item> {
+    override suspend fun getItemFromChannel(channelId: String): DataResponse<Item> {
         return try {
             val docSnapshot = db.collection(CHANNELS).document(channelId).get().await()
             if (docSnapshot.exists()) {
                 val itemId = (docSnapshot.get(ITEM_ID) ?: EMPTY_FIELD).toString()
                 val itemSnapshot = db.collection(ITEMS).document(itemId).get().await()
-                DataResponse(true, ResponseFlag.SUCCESS, mapDocSnapshotToItem(itemSnapshot))
+                DataResponse.Success(mapDocSnapshotToItem(itemSnapshot))
             } else {
-                DataResponse(false, ResponseFlag.FAIL)
+                DataResponse.Error()
             }
         } catch (e: FirebaseFirestoreException) {
             Log.e("getItemFromChannel", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 }

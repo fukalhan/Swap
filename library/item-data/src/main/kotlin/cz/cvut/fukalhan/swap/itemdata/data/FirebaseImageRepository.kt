@@ -9,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 class FirebaseImageRepository : ImageRepository {
     private val storage = Firebase.storage
 
-    override suspend fun saveItemImages(itemId: String, imagesUri: List<Uri>): DataResponse<ResponseFlag, List<Uri>> {
+    override suspend fun saveItemImages(itemId: String, imagesUri: List<Uri>): DataResponse<List<Uri>> {
         val storageRef = storage.reference
 
         val downloadUris = imagesUri.map { uri ->
@@ -22,6 +22,6 @@ class FirebaseImageRepository : ImageRepository {
                 fileRef.downloadUrl
             }.await()
         }
-        return DataResponse(true, ResponseFlag.SUCCESS, downloadUris)
+        return DataResponse.Success(downloadUris)
     }
 }

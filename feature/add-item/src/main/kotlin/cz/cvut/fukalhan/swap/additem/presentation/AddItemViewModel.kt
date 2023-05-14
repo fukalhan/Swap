@@ -3,6 +3,7 @@ package cz.cvut.fukalhan.swap.additem.presentation
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.cvut.fukalhan.swap.itemdata.data.resolve
 import cz.cvut.fukalhan.swap.itemdata.domain.SaveItemUseCase
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.Item
@@ -32,12 +33,10 @@ class AddItemViewModel(private val saveItemUseCase: SaveItemUseCase) : ViewModel
                 imagesUri = imagesUri,
                 category = category
             )
-            val saveItemResponse = saveItemUseCase.saveItem(item)
-            _addItemState.value = if (saveItemResponse.success) {
-                Success()
-            } else {
-                Failure()
-            }
+            saveItemUseCase.saveItem(item).resolve(
+                onSuccess = { _addItemState.value = Success() },
+                onError = { _addItemState.value = Failure() }
+            )
         }
     }
 

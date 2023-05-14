@@ -15,20 +15,20 @@ class FirebaseReviewRepository : ReviewRepository {
 
     override suspend fun addReview(
         review: Review
-    ): Response<ResponseFlag> {
+    ): Response {
         return try {
             val docRef = db.collection(REVIEWS).document()
             review.id = docRef.id
 
             db.collection(REVIEWS).document(review.id).set(review).await()
-            Response(ResponseFlag.SUCCESS)
+            Response.Success
         } catch (e: FirebaseFirestoreException) {
             Log.e("addReview", "Exception $e")
-            Response(ResponseFlag.FAIL)
+            Response.Error
         }
     }
 
-    override suspend fun getUserRating(userId: String): DataResponse<ResponseFlag, Float> {
+    override suspend fun getUserRating(userId: String): DataResponse<Float> {
         return try {
             val querySnapshot = db.collection(REVIEWS).whereEqualTo(USER_ID, userId).get().await()
             val size = querySnapshot.size().toFloat()
@@ -37,17 +37,17 @@ class FirebaseReviewRepository : ReviewRepository {
                 cumulativeRating += (doc.getLong(RATING) ?: 0).toInt()
             }
             if (size != 0f) {
-                DataResponse(ResponseFlag.SUCCESS, cumulativeRating / size)
+                DataResponse.Success(cumulativeRating / size)
             } else {
-                DataResponse(ResponseFlag.SUCCESS, 0f)
+                DataResponse.Success(0f)
             }
         } catch (e: FirebaseFirestoreException) {
             Log.e("getUserRating", "Exception $e")
-            DataResponse(ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun getUserReviews(userId: String): DataResponse<ResponseFlag, List<Review>> {
+    override suspend fun getUserReviews(userId: String): DataResponse<List<Review>> {
         return try {
             val querySnapshot = db.collection(REVIEWS).whereEqualTo(USER_ID, userId).get().await()
             val reviews = if (querySnapshot.documents.isEmpty()) {
@@ -58,10 +58,10 @@ class FirebaseReviewRepository : ReviewRepository {
                 }
             }
 
-            DataResponse(ResponseFlag.SUCCESS, reviews)
+            DataResponse.Success(reviews)
         } catch (e: FirebaseFirestoreException) {
             Log.e("getUserReviews", "Exception $e")
-            DataResponse(ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 }

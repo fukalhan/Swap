@@ -29,7 +29,7 @@ class FirebaseItemRepository : ItemRepository {
         .add(UriAdapter)
         .build()
 
-    override suspend fun createItemRecord(item: Item): DataResponse<ResponseFlag, String> {
+    override suspend fun createItemRecord(item: Item): DataResponse<String> {
         val adapter: JsonAdapter<Item> = moshi.adapter(Item::class.java)
         val data = adapter.toJson(item)
 
@@ -40,37 +40,35 @@ class FirebaseItemRepository : ItemRepository {
                 .await()
 
             val result = response.data as HashMap<*, *>
-            val success = result[SUCCESS] as Boolean
-            val flag = result[FLAG] as Int
             val id = result[DATA] as String?
-            DataResponse(success, mapResponseFlag(flag), id)
+            id?.let {
+                DataResponse.Success(it)
+            } ?: run {
+                DataResponse.Error()
+            }
         } catch (e: FirebaseFunctionsException) {
             Log.e("createItemRecord", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun updateItemImages(saveImagesRequest: SaveImagesRequest): Response<ResponseFlag> {
+    override suspend fun updateItemImages(saveImagesRequest: SaveImagesRequest): Response {
         val adapter: JsonAdapter<SaveImagesRequest> = moshi.adapter(SaveImagesRequest::class.java)
         val data = adapter.toJson(saveImagesRequest)
 
         return try {
-            val response = functions
+            functions
                 .getHttpsCallable(UPDATE_ITEM)
                 .call(data)
                 .await()
-
-            val result = response.data as HashMap<*, *>
-            val success = result[SUCCESS] as Boolean
-            val flag = result[FLAG] as Int
-            Response(success, mapResponseFlag(flag))
+            Response.Success
         } catch (e: FirebaseFunctionsException) {
             Log.e("updateItemImages", "Exception $e")
-            Response(false, ResponseFlag.FAIL)
+            Response.Error
         }
     }
 
-    override suspend fun getUserItems(uid: String): DataResponse<ResponseFlag, List<Item>> {
+    override suspend fun getUserItems(uid: String): DataResponse<List<Item>> {
         return try {
             val querySnapshot = db.collection(ITEMS).whereEqualTo(OWNER_ID, uid).get().await()
             val items = if (querySnapshot.isEmpty) {
@@ -80,14 +78,14 @@ class FirebaseItemRepository : ItemRepository {
                     mapDocSnapshotToItem(doc)
                 }
             }
-            DataResponse(true, ResponseFlag.SUCCESS, items)
+            DataResponse.Success(items)
         } catch (e: FirebaseFirestoreException) {
             Log.e("getUserItems", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun getItems(uid: String): DataResponse<ResponseFlag, List<Item>> {
+    override suspend fun getItems(uid: String): DataResponse<List<Item>> {
         return try {
             val querySnapshot = db
                 .collection(ITEMS)
@@ -103,17 +101,17 @@ class FirebaseItemRepository : ItemRepository {
                     item.state != State.SWAPPED
                 }
             }
-            DataResponse(true, ResponseFlag.SUCCESS, items)
+            DataResponse.Success(items)
         } catch (e: FirebaseFirestoreException) {
             Log.e("getItems", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun getItemsById(ids: List<String>): DataResponse<ResponseFlag, List<Item>> {
+    override suspend fun getItemsById(ids: List<String>): DataResponse<List<Item>> {
         return try {
             if (ids.isEmpty()) {
-                return DataResponse(true, ResponseFlag.SUCCESS, emptyList())
+                return DataResponse.Success(emptyList())
             }
             val querySnapshot = db
                 .collection(ITEMS)
@@ -127,14 +125,14 @@ class FirebaseItemRepository : ItemRepository {
                     mapDocSnapshotToItem(doc)
                 }
             }
-            DataResponse(true, ResponseFlag.SUCCESS, items)
+            DataResponse.Success(items)
         } catch (e: FirebaseFirestoreException) {
             Log.e("getItemsById", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun getItemDetail(id: String): DataResponse<ResponseFlag, ItemDetail> {
+    override suspend fun getItemDetail(id: String): DataResponse<ItemDetail> {
         return try {
             val docSnapshot = db.collection(ITEMS).document(id).get().await()
             if (docSnapshot.exists()) {
@@ -144,50 +142,41 @@ class FirebaseItemRepository : ItemRepository {
                         imagesUri = imagesList?.map { Uri.parse(it as String?) } ?: emptyList()
                     )
                 }
-                DataResponse(
-                    true,
-                    ResponseFlag.SUCCESS,
-                    item
-                )
-            } else {
-                DataResponse(false, ResponseFlag.FAIL)
+                item?.let {
+                    return DataResponse.Success(it)
+                }
             }
+            DataResponse.Error()
         } catch (e: FirebaseFirestoreException) {
             Log.e("getItemDetail", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun getItemLikeState(
-        userId: String,
-        itemId: String
-    ): DataResponse<ResponseFlag, Boolean> {
+    override suspend fun getItemLikeState(userId: String, itemId: String): DataResponse<Boolean> {
         return try {
             val docSnapshot = db.collection(USERS).document(userId).get().await()
             val likedItems = docSnapshot.get(LIKED_ITEMS) as? List<*>
-            if (likedItems != null && likedItems.contains(itemId)) {
-                return DataResponse(true, ResponseFlag.SUCCESS, true)
-            } else {
-                DataResponse(true, ResponseFlag.SUCCESS, false)
-            }
+            val itemLike = likedItems != null && likedItems.contains(itemId)
+            DataResponse.Success(itemLike)
         } catch (e: FirebaseFirestoreException) {
             Log.e("getItemLikeState", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun likeItem(userId: String, itemId: String): Response<ResponseFlag> {
+    override suspend fun likeItem(userId: String, itemId: String): Response {
         return try {
             val userRef = db.collection(USERS).document(userId)
             userRef.update(LIKED_ITEMS, FieldValue.arrayUnion(itemId))
-            Response(true, ResponseFlag.SUCCESS)
+            Response.Success
         } catch (e: FirebaseFirestoreException) {
             Log.e("likeItem", "Exception $e")
-            Response(false, ResponseFlag.FAIL)
+            Response.Error
         }
     }
 
-    override suspend fun dislikeItem(userId: String, itemId: String): Response<ResponseFlag> {
+    override suspend fun dislikeItem(userId: String, itemId: String): Response {
         return try {
             val userRef = db.collection(USERS).document(userId)
             val docSnapshot = userRef.get().await()
@@ -195,32 +184,32 @@ class FirebaseItemRepository : ItemRepository {
             if (likedItems != null && itemId in likedItems) {
                 userRef.update(LIKED_ITEMS, FieldValue.arrayRemove(itemId)).await()
             }
-            Response(true, ResponseFlag.SUCCESS)
+            Response.Success
         } catch (e: FirebaseFirestoreException) {
             Log.e("dislikeItem", "Exception $e")
-            Response(false, ResponseFlag.FAIL)
+            Response.Error
         }
     }
 
-    override suspend fun getItemIdsLikedByUser(userId: String): DataResponse<ResponseFlag, List<String>> {
+    override suspend fun getItemIdsLikedByUser(userId: String): DataResponse<List<String>> {
         return try {
             val docSnapshot = db.collection(USERS).document(userId).get().await()
             val likedItems = (docSnapshot.get(LIKED_ITEMS) as? List<*>)?.mapNotNull { it?.toString() } ?: emptyList()
-            DataResponse(true, ResponseFlag.SUCCESS, likedItems)
+            DataResponse.Success(likedItems)
         } catch (e: FirebaseFirestoreException) {
             Log.e("getItemIdsLikedByUser", "Exception $e")
-            DataResponse(false, ResponseFlag.FAIL)
+            DataResponse.Error()
         }
     }
 
-    override suspend fun changeItemState(itemId: String, state: State): Response<ResponseFlag> {
+    override suspend fun changeItemState(itemId: String, state: State): Response {
         return try {
             val itemRef = db.collection(ITEMS).document(itemId)
             itemRef.update(STATE, state).await()
-            Response(true, ResponseFlag.SUCCESS)
+            Response.Success
         } catch (e: FirebaseFirestoreException) {
             Log.e("changeItemState", "Exception $e")
-            Response(false, ResponseFlag.FAIL)
+            Response.Error
         }
     }
 }
