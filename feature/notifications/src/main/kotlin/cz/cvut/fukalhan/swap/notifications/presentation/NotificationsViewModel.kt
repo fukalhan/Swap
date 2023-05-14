@@ -2,6 +2,7 @@ package cz.cvut.fukalhan.swap.notifications.presentation
 
 import androidx.lifecycle.ViewModel
 import cz.cvut.fukalhan.design.presentation.StringResources
+import cz.cvut.fukalhan.swap.userdata.data.resolve
 import cz.cvut.fukalhan.swap.userdata.domain.GetNotificationUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -28,15 +29,15 @@ class NotificationsViewModel(
     fun getNotification(userId: String, itemId: String) {
         _notificationState.value = Loading
         MainScope().launch(Dispatchers.IO) {
-            val response = getNotificationUseCase.getNotification(userId, itemId)
-            response.data?.let {
-                val notification = it.toNotificationState(stringResources)
-                _notificationState.value = it.toNotificationState(stringResources)
-                _notifications.value += notification.data
-                _newNotificationsCount.value += 1
-            } ?: run {
-                _notificationState.value = Failure()
-            }
+            getNotificationUseCase.getNotification(userId, itemId).resolve(
+                onSuccess = {
+                    val notification = it.toNotificationState(stringResources)
+                    _notificationState.value = notification
+                    _notifications.value += notification.data
+                    _newNotificationsCount.value += 1
+                },
+                onError = { _notificationState.value = Failure() }
+            )
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.StringResources
 import cz.cvut.fukalhan.swap.auth.domain.GetStreamChatUserTokenUseCase
+import cz.cvut.fukalhan.swap.userdata.data.resolve
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,15 +27,15 @@ class ProfileInfoViewModel(
     fun initProfile(uid: String) {
         _profileInfoState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val userProfileResponse = getUserDataUseCase.getUserData(uid)
-            userProfileResponse.data?.let {
-                _profileInfoState.value = it.toProfileInfoState(stringResources)
-                if (chatToken.value == "") {
-                    getChatToken()
-                }
-            } ?: run {
-                _profileInfoState.value = Failure()
-            }
+            getUserDataUseCase.getUserData(uid).resolve(
+                onSuccess = {
+                    _profileInfoState.value = it.toProfileInfoState(stringResources)
+                    if (chatToken.value == "") {
+                        getChatToken()
+                    }
+                },
+                onError = { _profileInfoState.value = Failure() }
+            )
         }
     }
 

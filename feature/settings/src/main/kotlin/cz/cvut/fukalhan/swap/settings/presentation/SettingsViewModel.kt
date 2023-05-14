@@ -3,7 +3,7 @@ package cz.cvut.fukalhan.swap.settings.presentation
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.cvut.fukalhan.swap.userdata.data.ResponseFlag
+import cz.cvut.fukalhan.swap.userdata.data.resolve
 import cz.cvut.fukalhan.swap.userdata.domain.ChangeProfilePictureUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import cz.cvut.fukalhan.swap.userdata.domain.UpdateBioUseCase
@@ -24,24 +24,20 @@ class SettingsViewModel(
     fun getUserData(userId: String) {
         _settingsState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = getUserDataUseCase.getUserData(userId)
-            response.data?.let {
-                _settingsState.value = it.toUserData()
-            } ?: run {
-                _settingsState.value = Failure()
-            }
+            getUserDataUseCase.getUserData(userId).resolve(
+                onSuccess = { _settingsState.value = it.toUserData() },
+                onError = { _settingsState.value = Failure() }
+            )
         }
     }
 
     fun changeProfilePicture(userId: String, uri: Uri) {
         _settingsState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = changeProfilePictureUseCase.changeProfilePic(userId, uri)
-            if (response.flag == ResponseFlag.SUCCESS) {
-                _settingsState.value = ProfilePictureChangeSuccess()
-            } else {
-                _settingsState.value = ProfilePictureChangeFailed()
-            }
+            changeProfilePictureUseCase.changeProfilePic(userId, uri).resolve(
+                onSuccess = { _settingsState.value = ProfilePictureChangeSuccess() },
+                onError = { _settingsState.value = ProfilePictureChangeFailed() }
+            )
             getUserData(userId)
         }
     }
@@ -49,12 +45,10 @@ class SettingsViewModel(
     fun updateBio(userId: String, bio: String) {
         _settingsState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val response = updateBioUseCase.updateUserBio(userId, bio)
-            if (response.flag == ResponseFlag.SUCCESS) {
-                _settingsState.value = BioChangeSuccess()
-            } else {
-                _settingsState.value = BioChangeFailed()
-            }
+            updateBioUseCase.updateUserBio(userId, bio).resolve(
+                onSuccess = { _settingsState.value = BioChangeSuccess() },
+                onError = { _settingsState.value = BioChangeFailed() }
+            )
             getUserData(userId)
         }
     }

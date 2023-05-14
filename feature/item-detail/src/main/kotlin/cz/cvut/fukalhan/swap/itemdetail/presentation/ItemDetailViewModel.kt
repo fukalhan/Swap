@@ -10,6 +10,7 @@ import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
 import cz.cvut.fukalhan.swap.itemdata.model.Channel
+import cz.cvut.fukalhan.swap.userdata.data.resolve
 import cz.cvut.fukalhan.swap.userdata.domain.GetUserDataUseCase
 import io.getstream.chat.android.client.ChatClient
 import kotlinx.coroutines.Dispatchers
@@ -33,12 +34,13 @@ class ItemDetailViewModel(
         _itemDetailState.value = Loading
         viewModelScope.launch(Dispatchers.IO) {
             getItemDetailUseCase.getItemDetail(userId, itemId).data?.let { itemDetail ->
-                getUserDataUseCase.getUserData(itemDetail.ownerId).data?.let { user ->
-                    val ownerInfo = user.toOwnerInfo(stringResources)
-                    _itemDetailState.value = itemDetail.toItemDetailState(ownerInfo)
-                } ?: run {
-                    _itemDetailState.value = Failure()
-                }
+                getUserDataUseCase.getUserData(itemDetail.ownerId).resolve(
+                    onSuccess = {
+                        val ownerInfo = it.toOwnerInfo(stringResources)
+                        _itemDetailState.value = itemDetail.toItemDetailState(ownerInfo)
+                    },
+                    onError = { _itemDetailState.value = Failure() }
+                )
             } ?: run {
                 _itemDetailState.value = Failure()
             }
