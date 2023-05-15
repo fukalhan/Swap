@@ -80,7 +80,6 @@ fun TopBar(onScreenInit: (ScreenState) -> Unit) {
             Text(
                 text = stringResource(R.string.addItem),
                 style = SwapAppTheme.typography.screenTitle,
-                color = SwapAppTheme.colors.buttonText,
                 modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
             )
         }
@@ -136,7 +135,7 @@ fun ItemData(
                 selectedImagesUri = it
             }
             Divider(
-                color = SwapAppTheme.colors.component,
+                color = SwapAppTheme.colors.onBackground,
                 thickness = SwapAppTheme.dimensions.borderWidth,
             )
 
@@ -183,7 +182,6 @@ fun ItemData(
                             Text(
                                 text = stringResource(it.labelId),
                                 style = SwapAppTheme.typography.titleSecondary,
-                                color = SwapAppTheme.colors.textPrimary,
                             )
                         }
                     )

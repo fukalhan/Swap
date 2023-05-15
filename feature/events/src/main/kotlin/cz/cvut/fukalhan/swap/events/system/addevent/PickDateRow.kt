@@ -51,7 +51,6 @@ fun PickDateRow(
             Text(
                 text = stringResource(id = R.string.date),
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.smallSpacer))
 
@@ -60,7 +59,6 @@ fun PickDateRow(
             Text(
                 text = date,
                 style = SwapAppTheme.typography.body,
-                color = SwapAppTheme.colors.textSecondary
             )
         }
 
@@ -74,11 +72,18 @@ fun PickDateRow(
                     .clip(CircleShape)
                     .background(SwapAppTheme.colors.primary)
             ) {
-                Icon(painter = painterResource(R.drawable.edit_calendar), null, tint = SwapAppTheme.colors.buttonText)
+                Icon(
+                    painter = painterResource(R.drawable.edit_calendar),
+                    null,
+                    tint = SwapAppTheme.colors.onPrimary,
+                )
             }
         }
     }
 }
+
+const val DATE_LOWER_BOUND: Long = 3
+const val DATE_UPPER_BOUND: Long = 1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,7 +91,9 @@ fun CalendarPicker(
     calendarState: UseCaseState,
     updateDates: (List<LocalDate>) -> Unit,
 ) {
-    val timeBoundary = LocalDate.now().let { now -> now.plusDays(3)..now.plusYears(1) }
+    val timeBoundary = LocalDate.now().let { now ->
+        now.plusDays(DATE_LOWER_BOUND)..now.plusYears(DATE_UPPER_BOUND)
+    }
 
     CalendarDialog(
         state = calendarState,

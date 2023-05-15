@@ -37,6 +37,8 @@ import cz.cvut.fukalhan.swap.events.presentation.prediction.PredictionState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+const val RESULT_LOADING_DELAY: Long = 500
+
 @Composable
 fun AddressPredictionView(
     viewModel: PredictionListViewModel,
@@ -59,7 +61,7 @@ fun AddressPredictionView(
         ) {
             address = it
             scope.launch {
-                delay(500)
+                delay(RESULT_LOADING_DELAY)
             }
             listVisible = true
             viewModel.getPredictions(address)
@@ -72,7 +74,7 @@ fun AddressPredictionView(
                     .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners))
                     .border(
                         width = SwapAppTheme.dimensions.borderWidth,
-                        color = SwapAppTheme.colors.component,
+                        color = SwapAppTheme.colors.onBackground,
                         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners)
                     )
                     .fillMaxWidth()
@@ -108,7 +110,7 @@ fun PredictionList(
     LazyColumn {
         items(predictions) {
             PredictionCard(it, onAddressClick)
-            Divider(color = SwapAppTheme.colors.component, thickness = SwapAppTheme.dimensions.borderWidth)
+            Divider(color = SwapAppTheme.colors.onBackground, thickness = SwapAppTheme.dimensions.borderWidth)
         }
     }
 }
@@ -128,7 +130,6 @@ fun PredictionCard(
         Text(
             text = prediction.description,
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )

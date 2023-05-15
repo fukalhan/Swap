@@ -47,7 +47,6 @@ fun ProfileInfo(
 
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
-        color = SwapAppTheme.colors.backgroundSecondary,
         modifier = Modifier
             .padding(bottom = SwapAppTheme.dimensions.smallSidePadding)
             .fillMaxWidth()
@@ -79,7 +78,7 @@ fun ResolveState(
             InitChatClient(getKoin().get(), chatToken, state)
         }
         is Failure -> FailureView(state.message)
-        else -> {}
+        else -> Unit
     }
 }
 

@@ -61,7 +61,6 @@ fun ParticipantListView(
             Text(
                 text = stringResource(id = R.string.participants),
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary,
             )
 
             Box(
@@ -106,10 +105,10 @@ fun ParticipantList(
         Text(
             text = participantsCount,
             style = SwapAppTheme.typography.body,
-            color = SwapAppTheme.colors.textPrimary
+            color = SwapAppTheme.colors.onBackground
         )
 
-        Divider(color = SwapAppTheme.colors.component, thickness = SwapAppTheme.dimensions.borderWidth)
+        Divider(color = SwapAppTheme.colors.onBackground, thickness = SwapAppTheme.dimensions.borderWidth)
 
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -123,7 +122,7 @@ fun ParticipantList(
                         onParticipantClick(it)
                     }
                 )
-                Divider(color = SwapAppTheme.colors.component, thickness = SwapAppTheme.dimensions.borderWidth)
+                Divider(color = SwapAppTheme.colors.onBackground, thickness = SwapAppTheme.dimensions.borderWidth)
             }
         }
     }

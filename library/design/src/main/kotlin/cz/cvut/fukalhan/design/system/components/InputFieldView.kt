@@ -38,7 +38,6 @@ fun InputFieldView(
         Text(
             text = stringResource(label),
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary,
             modifier = Modifier.padding(
                 top = SwapAppTheme.dimensions.smallSidePadding,
                 bottom = SwapAppTheme.dimensions.smallSidePadding
@@ -62,7 +61,6 @@ fun RegularTextFieldView(
             Text(
                 text = stringResource(label),
                 style = SwapAppTheme.typography.body,
-                color = SwapAppTheme.colors.textSecondary
             )
         },
         singleLine = true,
@@ -92,7 +90,6 @@ fun DescriptionView(
                 Text(
                     text = stringResource(label),
                     style = SwapAppTheme.typography.body,
-                    color = SwapAppTheme.colors.textSecondary
                 )
             },
             modifier = inputFieldModifier.height(120.dp),
@@ -104,7 +101,7 @@ fun DescriptionView(
         Text(
             text = "${description.length}/$charLimit",
             style = SwapAppTheme.typography.body,
-            color = SwapAppTheme.colors.textPrimary,
+            color = SwapAppTheme.colors.onSurface,
             modifier = Modifier
                 .padding(SwapAppTheme.dimensions.sidePadding)
                 .align(Alignment.BottomEnd)
@@ -116,7 +113,7 @@ val inputFieldModifier = Modifier
     .fillMaxWidth()
     .border(
         width = SwapAppTheme.dimensions.borderWidth,
-        color = SwapAppTheme.colors.component,
+        color = SwapAppTheme.colors.onBackground,
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners)
     )
     .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners))

@@ -111,14 +111,12 @@ fun EventDetailTopBar(
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
                         contentDescription = null,
-                        tint = SwapAppTheme.colors.buttonText,
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 }
                 Text(
                     text = stringResource(R.string.eventDetail),
                     style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
                 )
             }
@@ -170,13 +168,11 @@ fun EventDetail(
             Text(
                 text = event.title,
                 style = SwapAppTheme.typography.titlePrimary,
-                color = SwapAppTheme.colors.textPrimary
             )
 
             Text(
                 text = event.date,
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textSecondary
             )
 
             Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.smallSpacer))
@@ -184,13 +180,11 @@ fun EventDetail(
             Text(
                 text = stringResource(R.string.eventDescription),
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary
             )
 
             Text(
                 text = event.description,
                 style = SwapAppTheme.typography.body,
-                color = SwapAppTheme.colors.textSecondary
             )
         }
 
@@ -220,15 +214,19 @@ fun EventDetail(
     }
 }
 
+const val DEFAULT_ZOOM = 10f
+const val DEFAULT_TILT = 0f
+const val DEFAULT_BEARING = 0f
+
 @Composable
 fun MapView(eventLocation: LatLng) {
     val markerState = rememberMarkerState(position = eventLocation)
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition(
             eventLocation,
-            10f,
-            0f,
-            0f
+            DEFAULT_ZOOM,
+            DEFAULT_TILT,
+            DEFAULT_BEARING
         )
     }
 
@@ -268,7 +266,6 @@ fun EventSubscription(
                 Text(
                     text = stringResource(R.string.userRegisteredToEvent),
                     style = SwapAppTheme.typography.titleSecondary,
-                    color = SwapAppTheme.colors.textPrimary
                 )
 
                 Button(
@@ -278,7 +275,6 @@ fun EventSubscription(
                     Text(
                         text = stringResource(R.string.unsubscribe),
                         style = SwapAppTheme.typography.button,
-                        color = SwapAppTheme.colors.buttonText
                     )
                 }
             } else {
@@ -293,7 +289,6 @@ fun EventSubscription(
                         Text(
                             text = stringResource(R.string.participate),
                             style = SwapAppTheme.typography.button,
-                            color = SwapAppTheme.colors.buttonText
                         )
                     }
                 }

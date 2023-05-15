@@ -12,7 +12,6 @@ fun FailureView(message: Int) {
     Text(
         text = stringResource(message),
         style = SwapAppTheme.typography.titleSecondary,
-        color = SwapAppTheme.colors.textPrimary
     )
 }
 

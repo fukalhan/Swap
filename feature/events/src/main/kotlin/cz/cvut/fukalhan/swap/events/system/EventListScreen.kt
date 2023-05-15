@@ -74,7 +74,6 @@ fun TopBar(
             Text(
                 text = stringResource(R.string.swapEvents),
                 style = SwapAppTheme.typography.screenTitle,
-                color = SwapAppTheme.colors.buttonText,
                 modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
             )
 
@@ -82,7 +81,7 @@ fun TopBar(
                 Icon(
                     painter = painterResource(R.drawable.plus),
                     contentDescription = null,
-                    tint = SwapAppTheme.colors.buttonText,
+                    tint = SwapAppTheme.colors.onPrimary,
                     modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                 )
             }
@@ -114,7 +113,7 @@ fun EventList(
     ) {
         items(events) { event ->
             EventCard(event, onEventClick)
-            Divider(color = SwapAppTheme.colors.component, thickness = SwapAppTheme.dimensions.borderWidth)
+            Divider(color = SwapAppTheme.colors.onBackground, thickness = SwapAppTheme.dimensions.borderWidth)
         }
     }
 }
@@ -134,17 +133,14 @@ fun EventCard(
         Text(
             text = event.title,
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary
         )
         Text(
             text = event.date,
             style = SwapAppTheme.typography.body,
-            color = SwapAppTheme.colors.textSecondary
         )
         Text(
             text = event.description,
             style = SwapAppTheme.typography.body,
-            color = SwapAppTheme.colors.textSecondary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )

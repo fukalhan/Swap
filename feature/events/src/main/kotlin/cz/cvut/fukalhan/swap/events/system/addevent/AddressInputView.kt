@@ -51,7 +51,6 @@ fun AddressInputView(
             Text(
                 text = stringResource(id = R.string.address),
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary
             )
             if (isEditMode) {
                 AddressPredictionView(koinViewModel()) {
@@ -63,7 +62,6 @@ fun AddressInputView(
                 Text(
                     text = address,
                     style = SwapAppTheme.typography.body,
-                    color = SwapAppTheme.colors.textSecondary
                 )
             }
         }
@@ -82,7 +80,7 @@ fun AddressInputView(
                     Icon(
                         painter = painterResource(R.drawable.edit_location),
                         null,
-                        tint = SwapAppTheme.colors.buttonText
+                        tint = SwapAppTheme.colors.onPrimary
                     )
                 }
             }

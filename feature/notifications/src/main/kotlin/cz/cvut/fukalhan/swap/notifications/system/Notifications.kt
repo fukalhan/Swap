@@ -110,14 +110,13 @@ fun TopBar(
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
                         contentDescription = null,
-                        tint = SwapAppTheme.colors.buttonText,
+                        tint = SwapAppTheme.colors.onPrimary,
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 }
                 Text(
                     text = stringResource(R.string.notifications),
                     style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
                 )
             }
@@ -150,7 +149,6 @@ fun NotificationsList(
         Text(
             stringResource(R.string.noData),
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary
         )
     } else {
         LazyColumn(
@@ -185,7 +183,6 @@ fun NotificationCard(
         Text(
             text = notification.notificationMessage,
             style = SwapAppTheme.typography.body,
-            color = SwapAppTheme.colors.textSecondary
         )
     }
 }

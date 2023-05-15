@@ -89,16 +89,19 @@ fun InfoView(text: String, style: TextStyle) {
     Text(
         text = text,
         style = style,
-        color = SwapAppTheme.colors.textPrimary,
         modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
     )
 }
 
+const val MIN_RATING = 1
+const val MAX_RATING = 5
+const val HALF_STAR_VALUE = 0.5f
+
 @Composable
 fun RatingView(rating: Float) {
     val fullStars = rating.toInt()
-    val halfStar = (rating - fullStars >= 0.5f)
-    val emptyStar = if (halfStar) 5 - (fullStars + 1) else 5 - fullStars
+    val halfStar = (rating - fullStars >= HALF_STAR_VALUE)
+    val emptyStar = if (halfStar) MAX_RATING - (fullStars + MIN_RATING) else MAX_RATING - fullStars
 
     Row(
         modifier = Modifier.padding(
