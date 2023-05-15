@@ -51,13 +51,7 @@ fun NavigationComponent() {
     var bottomBarVisible by remember { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    bottomBarVisible = when (navBackStackEntry?.destination?.route) {
-        MainScreen.Profile.route -> true
-        MainScreen.Messages.route -> true
-        MainScreen.Items.route -> true
-        MainScreen.Events.route -> true
-        else -> false
-    }
+    bottomBarVisible = isBottomBarVisible(navBackStackEntry?.destination?.route)
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -86,10 +80,11 @@ fun NavigationComponent() {
             composable(MainScreen.Items.route) {
                 ItemListScreen(
                     koinViewModel(),
-                    { screenState = it }
-                ) { itemId ->
-                    navController.navigate("${SecondaryScreen.ItemDetail.route}/$itemId")
-                }
+                    onScreenInit = { screenState = it },
+                    navigateToItemDetail = { itemId ->
+                        navController.navigate("${SecondaryScreen.ItemDetail.route}/$itemId")
+                    }
+                )
             }
 
             composable(
@@ -141,7 +136,6 @@ fun NavigationComponent() {
                 "${SecondaryScreen.ProfileDetail.route}/{$USER_ID}",
                 arguments = listOf(navArgument(USER_ID) { type = NavType.StringType })
             ) { backStackEntry ->
-
                 backStackEntry.arguments?.getString(USER_ID)?.let { userId ->
                     ProfileDetailScreen(
                         userId,
@@ -188,10 +182,9 @@ fun NavigationComponent() {
             composable(MainScreen.AddItem.route) {
                 AddItemScreen(
                     koinViewModel(),
-                    { screenState = it }
-                ) {
-                    navController.navigate(MainScreen.Profile.route)
-                }
+                    onScreenInit = { screenState = it },
+                    navigateBack = { navController.navigate(MainScreen.Profile.route) }
+                )
             }
 
             composable(MainScreen.Messages.route) {
@@ -220,10 +213,13 @@ fun NavigationComponent() {
                             getKoin().get(),
                             onScreenInit = { screenState = it },
                             navigateBack = { navController.popBackStack() },
-                            onNavigateToItemDetail = { navController.navigate("${SecondaryScreen.ItemDetail.route}/$it") }
-                        ) {
-                            navController.navigate("${SecondaryScreen.AddReview.route}/$it")
-                        }
+                            onNavigateToItemDetail = {
+                                navController.navigate("${SecondaryScreen.ItemDetail.route}/$it")
+                            },
+                            onNavigateToAddReview = {
+                                navController.navigate("${SecondaryScreen.AddReview.route}/$it")
+                            }
+                        )
                     }
                 }
             }
@@ -261,10 +257,9 @@ fun NavigationComponent() {
             composable(SecondaryScreen.AddEvent.route) {
                 AddEventScreen(
                     koinViewModel(),
-                    onScreenInit = { screenState = it }
-                ) {
-                    navController.popBackStack()
-                }
+                    onScreenInit = { screenState = it },
+                    navigateBack = { navController.popBackStack() }
+                )
             }
 
             composable(
@@ -284,5 +279,15 @@ fun NavigationComponent() {
                 }
             }
         }
+    }
+}
+
+private fun isBottomBarVisible(currentDestination: String?): Boolean {
+    return when (currentDestination) {
+        MainScreen.Profile.route -> true
+        MainScreen.Messages.route -> true
+        MainScreen.Items.route -> true
+        MainScreen.Events.route -> true
+        else -> false
     }
 }

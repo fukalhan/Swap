@@ -214,15 +214,19 @@ fun EventDetail(
     }
 }
 
+const val DEFAULT_ZOOM = 10f
+const val DEFAULT_TILT = 0f
+const val DEFAULT_BEARING = 0f
+
 @Composable
 fun MapView(eventLocation: LatLng) {
     val markerState = rememberMarkerState(position = eventLocation)
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition(
             eventLocation,
-            10f,
-            0f,
-            0f
+            DEFAULT_ZOOM,
+            DEFAULT_TILT,
+            DEFAULT_BEARING
         )
     }
 

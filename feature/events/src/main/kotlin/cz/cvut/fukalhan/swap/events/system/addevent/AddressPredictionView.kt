@@ -37,6 +37,8 @@ import cz.cvut.fukalhan.swap.events.presentation.prediction.PredictionState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+const val RESULT_LOADING_DELAY: Long = 500
+
 @Composable
 fun AddressPredictionView(
     viewModel: PredictionListViewModel,
@@ -59,7 +61,7 @@ fun AddressPredictionView(
         ) {
             address = it
             scope.launch {
-                delay(500)
+                delay(RESULT_LOADING_DELAY)
             }
             listVisible = true
             viewModel.getPredictions(address)

@@ -82,7 +82,11 @@ fun AddEventScreen(
                 val user = Firebase.auth.currentUser
                 if (user != null && coordinates != null) {
                     if (title.isBlank() || description.isBlank() || selectedDates.isEmpty()) {
-                        Toast.makeText(context, context.getText(R.string.allFieldsMustBeFilled), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getText(R.string.allFieldsMustBeFilled),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         viewModel.createEvent(
                             title,

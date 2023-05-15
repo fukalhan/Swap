@@ -13,7 +13,7 @@ internal class GooglePlacesRepository(private val api: GooglePlacesApiService) :
             val response = api.getPredictions(input = input)
             Response.Success(response)
         } catch (e: Exception) {
-            Log.e("getPlacesPredictions", "Exceptiop $e")
+            Log.e("getPlacesPredictions", "Exception $e")
             Response.Error()
         }
     }
@@ -23,7 +23,7 @@ internal class GooglePlacesRepository(private val api: GooglePlacesApiService) :
             val response = api.getPlaceDetails(placeId = placeId)
             Response.Success(response)
         } catch (e: Exception) {
-            Log.e("getPlaceDetail", "Exceptiop $e")
+            Log.e("getPlaceDetail", "Exception $e")
             Response.Error()
         }
     }
