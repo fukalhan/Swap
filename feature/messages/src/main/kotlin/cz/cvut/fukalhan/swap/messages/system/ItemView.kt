@@ -61,7 +61,6 @@ fun ItemView(
 
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
-        color = SwapAppTheme.colors.backgroundSecondary,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
@@ -128,13 +127,11 @@ fun Item(
             Text(
                 text = itemState.name,
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary
             )
             if (itemState.state == State.RESERVED || itemState.state == State.SWAPPED) {
                 Text(
                     text = stringResource(itemState.state.label),
                     style = SwapAppTheme.typography.titleSecondary,
-                    color = SwapAppTheme.colors.textSecondary
                 )
             }
 
@@ -191,7 +188,6 @@ fun ItemViewButton(
                         Text(
                             text = stringResource(R.string.cancelReservation),
                             style = SwapAppTheme.typography.button,
-                            color = SwapAppTheme.colors.buttonText
                         )
                     }
                 }
@@ -215,7 +211,6 @@ fun ItemViewButton(
                     Text(
                         text = stringResource(label),
                         style = SwapAppTheme.typography.button,
-                        color = SwapAppTheme.colors.buttonText
                     )
                 }
             }

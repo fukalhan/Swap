@@ -1,6 +1,5 @@
 package cz.cvut.fukalhan.swap.messages.system
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -53,7 +52,6 @@ fun TopBar(
             Text(
                 text = stringResource(R.string.messages),
                 style = SwapAppTheme.typography.screenTitle,
-                color = SwapAppTheme.colors.buttonText,
                 modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
             )
         }
@@ -69,7 +67,6 @@ fun Channels(
     val channelsState = listViewModel.channelsState
     Box(
         modifier = Modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
             .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
             .fillMaxSize(),
     ) {

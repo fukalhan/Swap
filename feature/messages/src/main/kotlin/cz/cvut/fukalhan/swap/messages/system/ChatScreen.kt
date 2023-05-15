@@ -1,6 +1,5 @@
 package cz.cvut.fukalhan.swap.messages.system
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -174,7 +173,6 @@ fun MessageScreenHeader(
                 Icon(
                     painter = painterResource(R.drawable.arrow_back),
                     contentDescription = null,
-                    tint = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                 )
             }
@@ -190,7 +188,6 @@ fun MessageList(
 ) {
     MessageList(
         modifier = Modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
             .padding(padding)
             .fillMaxSize(),
         viewModel = listViewModel,

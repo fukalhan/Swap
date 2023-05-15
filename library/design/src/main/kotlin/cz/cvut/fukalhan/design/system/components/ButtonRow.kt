@@ -1,6 +1,5 @@
 package cz.cvut.fukalhan.design.system.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +22,6 @@ fun ButtonRow(
 ) {
     Row(
         modifier = Modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
             .padding(SwapAppTheme.dimensions.sidePadding)
             .fillMaxWidth()
             .wrapContentHeight(),
@@ -31,13 +29,13 @@ fun ButtonRow(
     ) {
         ButtonView(
             R.string.cancel,
-            ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonSecondary),
+            ButtonDefaults.buttonColors(SwapAppTheme.colors.onBackground),
             onCancelClick
         )
 
         ButtonView(
             R.string.save,
-            ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary),
+            ButtonDefaults.buttonColors(SwapAppTheme.colors.primary),
             onSaveClick
         )
     }
@@ -56,7 +54,6 @@ fun ButtonView(
         Text(
             text = stringResource(labelRes),
             style = SwapAppTheme.typography.button,
-            color = SwapAppTheme.colors.buttonText
         )
     }
 }

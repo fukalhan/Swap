@@ -213,7 +213,6 @@ fun TopBar(
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
                         contentDescription = null,
-                        tint = SwapAppTheme.colors.buttonText,
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 }
@@ -221,7 +220,6 @@ fun TopBar(
                 Text(
                     text = stringResource(R.string.addReview),
                     style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
                 )
             }

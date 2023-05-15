@@ -41,13 +41,12 @@ fun CategoryListHeader(
             .fillMaxWidth()
             .wrapContentHeight(),
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
-        border = BorderStroke(SwapAppTheme.dimensions.borderWidth, SwapAppTheme.colors.component),
-        colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.backgroundSecondary),
+        border = BorderStroke(SwapAppTheme.dimensions.borderWidth, SwapAppTheme.colors.onBackground),
+        colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.background),
     ) {
         Text(
             text = label,
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary,
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(
@@ -59,7 +58,7 @@ fun CategoryListHeader(
                 )
             },
             contentDescription = null,
-            tint = SwapAppTheme.colors.component
+            tint = SwapAppTheme.colors.onBackground
         )
     }
 }
@@ -77,7 +76,7 @@ fun <C> CollapsingList(
             .padding(padding)
             .border(
                 width = SwapAppTheme.dimensions.borderWidth,
-                color = SwapAppTheme.colors.component,
+                color = SwapAppTheme.colors.onBackground,
                 shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners)
             )
             .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners))
@@ -104,9 +103,9 @@ fun <C> ListItem(
             .clickable { onItemClick(item) }
             .background(
                 color = if (item == selectedCategory) {
-                    SwapAppTheme.colors.componentBackground
+                    SwapAppTheme.colors.surface
                 } else {
-                    SwapAppTheme.colors.backgroundSecondary
+                    SwapAppTheme.colors.background
                 }
             )
             .fillMaxWidth()

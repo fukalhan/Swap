@@ -17,8 +17,6 @@ fun TopBar(
 ) {
     screenState.topBarContent?.let { topBarContent ->
         TopAppBar(
-            backgroundColor = SwapAppTheme.colors.primary,
-            contentColor = SwapAppTheme.colors.buttonText,
             elevation = SwapAppTheme.dimensions.elevation,
             modifier = Modifier.height(SwapAppTheme.dimensions.topBar),
         ) {

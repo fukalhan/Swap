@@ -59,7 +59,8 @@ fun TopBar(
                         text = {
                             Text(
                                 title,
-                                style = SwapAppTheme.typography.titleSecondary
+                                style = SwapAppTheme.typography.titleSecondary,
+                                color = SwapAppTheme.colors.onPrimary
                             )
                         },
                         modifier = Modifier.background(SwapAppTheme.colors.primary),

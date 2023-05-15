@@ -89,7 +89,7 @@ fun CancelIcon(
     Icon(
         painter = painterResource(R.drawable.cancel),
         contentDescription = null,
-        tint = SwapAppTheme.colors.backgroundSecondary,
+        tint = SwapAppTheme.colors.background,
         modifier = modifier
             .padding(SwapAppTheme.dimensions.sidePadding)
             .padding(top = SwapAppTheme.dimensions.sidePadding)

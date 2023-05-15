@@ -107,7 +107,7 @@ fun ItemImage(uri: Uri) {
             .padding(SwapAppTheme.dimensions.smallSidePadding)
             .border(
                 width = SwapAppTheme.dimensions.borderWidth,
-                color = SwapAppTheme.colors.component,
+                color = SwapAppTheme.colors.onSurface,
                 shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners)
             )
             .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners)),
@@ -123,11 +123,11 @@ fun CancelIcon(
     Icon(
         painter = painterResource(R.drawable.cancel),
         contentDescription = null,
-        tint = SwapAppTheme.colors.backgroundSecondary,
+        tint = SwapAppTheme.colors.surface,
         modifier = modifier
             .padding(SwapAppTheme.dimensions.sidePadding)
             .clip(CircleShape)
-            .background(color = SwapAppTheme.colors.component)
+            .background(color = SwapAppTheme.colors.onSurface)
             .clickable(onClick = onClick)
     )
 }
@@ -148,20 +148,19 @@ fun InstructionRow(
         Icon(
             painter = painterResource(id = R.drawable.add),
             contentDescription = null,
-            tint = SwapAppTheme.colors.textSecondary,
             modifier = Modifier.size(SwapAppTheme.dimensions.icon)
         )
         Spacer(modifier = Modifier.size(SwapAppTheme.dimensions.smallSpacer))
         Text(
             text = stringResource(R.string.addImage),
             style = SwapAppTheme.typography.titlePrimary,
-            color = SwapAppTheme.colors.textSecondary
+            color = SwapAppTheme.colors.onSurface
         )
         Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.largeSpacer))
         Text(
             text = "${selectedImagesUri.size}/$PICTURES_LIMIT",
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textSecondary
+            color = SwapAppTheme.colors.onSurface
         )
     }
 }

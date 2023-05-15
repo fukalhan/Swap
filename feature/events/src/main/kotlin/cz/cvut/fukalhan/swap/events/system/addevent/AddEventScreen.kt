@@ -82,7 +82,11 @@ fun AddEventScreen(
                 val user = Firebase.auth.currentUser
                 if (user != null && coordinates != null) {
                     if (title.isBlank() || description.isBlank() || selectedDates.isEmpty()) {
-                        Toast.makeText(context, context.getText(R.string.allFieldsMustBeFilled), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getText(R.string.allFieldsMustBeFilled),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         viewModel.createEvent(
                             title,
@@ -116,14 +120,13 @@ fun AddEventTopBar(
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
                         contentDescription = null,
-                        tint = SwapAppTheme.colors.buttonText,
+                        tint = SwapAppTheme.colors.onPrimary,
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 }
                 Text(
                     text = stringResource(R.string.addEvent),
                     style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
                 )
             }

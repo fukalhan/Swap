@@ -55,11 +55,7 @@ fun BottomBar(navController: NavController) {
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 },
-                label = {
-                    Text(
-                        text = stringResource(screen.label),
-                    )
-                },
+                label = { Text(text = stringResource(screen.label)) },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                 onClick = {
                     navController.navigate(screen.route) {

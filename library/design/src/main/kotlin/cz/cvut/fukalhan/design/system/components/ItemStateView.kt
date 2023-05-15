@@ -27,7 +27,6 @@ fun ItemStateView(isVisible: Boolean, label: Int, modifier: Modifier) {
             Text(
                 text = stringResource(label),
                 style = SwapAppTheme.typography.button,
-                color = SwapAppTheme.colors.buttonText
             )
         }
     }

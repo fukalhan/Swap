@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
@@ -121,14 +120,13 @@ fun TopBar(
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
                         contentDescription = null,
-                        tint = SwapAppTheme.colors.buttonText,
+                        tint = SwapAppTheme.colors.onPrimary,
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 }
                 Text(
                     text = stringResource(R.string.settings),
                     style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
                 )
             }
@@ -209,7 +207,7 @@ fun Settings(
                     Icon(
                         painter = painterResource(R.drawable.edit),
                         contentDescription = null,
-                        tint = SwapAppTheme.colors.component,
+                        tint = SwapAppTheme.colors.onBackground,
                         modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
                     )
                 }
@@ -268,7 +266,6 @@ fun Bio(
         Text(
             text = stringResource(R.string.aboutMe),
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary,
         )
         Row(
             modifier = Modifier.wrapContentSize()
@@ -298,7 +295,7 @@ fun Bio(
                 Icon(
                     if (editMode) painterResource(R.drawable.done) else painterResource(R.drawable.edit),
                     null,
-                    tint = if (editMode) Color.Green else SwapAppTheme.colors.component
+                    tint = if (editMode) Color.Green else SwapAppTheme.colors.onBackground
                 )
             }
         }
@@ -322,7 +319,6 @@ fun Bio(
                 .wrapContentHeight(),
             text = content,
             style = SwapAppTheme.typography.body,
-            color = SwapAppTheme.colors.textSecondary
         )
     }
 }
@@ -334,12 +330,10 @@ fun SignOutButton(
     Button(
         modifier = Modifier.padding(SwapAppTheme.dimensions.sidePadding),
         onClick = signOut,
-        colors = ButtonDefaults.buttonColors(SwapAppTheme.colors.buttonPrimary)
     ) {
         Text(
             text = stringResource(R.string.signOut),
             style = SwapAppTheme.typography.button,
-            color = SwapAppTheme.colors.buttonText
         )
     }
 }

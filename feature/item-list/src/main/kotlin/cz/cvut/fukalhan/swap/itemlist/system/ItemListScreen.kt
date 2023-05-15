@@ -1,6 +1,5 @@
 package cz.cvut.fukalhan.swap.itemlist.system
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -90,7 +89,6 @@ fun TopBar(
             Text(
                 text = stringResource(R.string.items),
                 style = SwapAppTheme.typography.screenTitle,
-                color = SwapAppTheme.colors.buttonText,
                 modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
             )
 
@@ -100,7 +98,7 @@ fun TopBar(
                         Icon(
                             painter = painterResource(R.drawable.search),
                             contentDescription = null,
-                            tint = SwapAppTheme.colors.buttonText,
+                            tint = SwapAppTheme.colors.onPrimary,
                             modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                         )
                     }
@@ -137,7 +135,6 @@ fun ItemList(
 
     LazyVerticalGrid(
         modifier = Modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
             .padding(bottom = SwapAppTheme.dimensions.bottomScreenPadding)
             .fillMaxSize(),
         columns = GridCells.Fixed(2)
