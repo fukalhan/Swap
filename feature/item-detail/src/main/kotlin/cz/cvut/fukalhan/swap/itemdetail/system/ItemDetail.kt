@@ -28,7 +28,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -123,16 +122,21 @@ fun ItemInfo(
                 Text(
                     text = itemDetailState.name,
                     style = SwapAppTheme.typography.titlePrimary,
-                    color = SwapAppTheme.colors.textPrimary,
                 )
-                TextView(stringResource(itemDetailState.category.labelId), SwapAppTheme.typography.titleSecondary)
+                Text(
+                    text = stringResource(itemDetailState.category.labelId),
+                    style = SwapAppTheme.typography.titleSecondary,
+                )
             }
             if (displayLikeButton) {
                 LikeButton(itemDetailState, onLikeButtonClick)
             }
         }
         Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
-        TextView(itemDetailState.description, SwapAppTheme.typography.body)
+        Text(
+            text = itemDetailState.description,
+            style = SwapAppTheme.typography.body,
+        )
         Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
     }
 }
@@ -168,7 +172,6 @@ fun SendMessageButton(
 ) {
     Box(
         modifier = modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
             .padding(SwapAppTheme.dimensions.sidePadding)
             .fillMaxSize(),
         contentAlignment = Alignment.BottomEnd
@@ -189,18 +192,8 @@ fun SendMessageButton(
                 Icon(
                     painter = painterResource(R.drawable.message),
                     contentDescription = null,
-                    tint = SwapAppTheme.colors.buttonText
                 )
             }
         }
     }
-}
-
-@Composable
-fun TextView(text: String, style: TextStyle) {
-    Text(
-        text = text,
-        style = style,
-        color = SwapAppTheme.colors.textPrimary
-    )
 }

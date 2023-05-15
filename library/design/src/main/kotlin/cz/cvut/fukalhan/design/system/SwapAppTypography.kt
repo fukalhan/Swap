@@ -19,27 +19,32 @@ val swapAppTypography = SwapAppTypography(
     screenTitle = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 25.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        color = white
     ),
     titlePrimary = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 30.sp,
-        letterSpacing = 0.15.sp
+        letterSpacing = 0.15.sp,
+        color = darkGrey
     ),
     titleSecondary = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
-        letterSpacing = 0.15.sp
+        letterSpacing = 0.15.sp,
+        color = darkGrey
     ),
     body = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 15.sp,
-        letterSpacing = 0.15.sp
+        letterSpacing = 0.15.sp,
+        color = grey
     ),
     button = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
         letterSpacing = 0.15.sp,
+        color = white
     ),
     smallText = TextStyle(
         fontWeight = FontWeight.Normal,

@@ -32,14 +32,12 @@ fun Bio(bio: String) {
             Text(
                 text = stringResource(R.string.bio),
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary,
                 modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
             )
             val content = bio.ifEmpty { stringResource(R.string.emptyBio) }
             Text(
                 text = content,
                 style = SwapAppTheme.typography.body,
-                color = SwapAppTheme.colors.textSecondary,
                 modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
             )
         }

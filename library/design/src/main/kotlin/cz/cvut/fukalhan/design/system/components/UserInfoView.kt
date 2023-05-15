@@ -89,7 +89,6 @@ fun InfoView(text: String, style: TextStyle) {
     Text(
         text = text,
         style = style,
-        color = SwapAppTheme.colors.textPrimary,
         modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
     )
 }

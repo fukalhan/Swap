@@ -41,7 +41,7 @@ fun ProfileDetailScreen(
         TabsView(
             userId,
             Modifier
-                .background(SwapAppTheme.colors.backgroundSecondary)
+                .background(SwapAppTheme.colors.background)
                 .weight(1f)
                 .fillMaxWidth(),
             navigateToProfileDetail,
@@ -65,14 +65,13 @@ fun TopBar(
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
                         contentDescription = null,
-                        tint = SwapAppTheme.colors.buttonText,
+                        tint = SwapAppTheme.colors.onPrimary,
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 }
                 Text(
                     text = stringResource(R.string.profileDetail),
                     style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
                 )
             }

@@ -1,6 +1,5 @@
 package cz.cvut.fukalhan.swap.profile.system.items.liked
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -15,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
@@ -46,9 +44,7 @@ fun LikedItemList(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(SwapAppTheme.colors.backgroundSecondary),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         ResolveState(itemListState, navigateToItemDetail) { itemId, isLiked ->
@@ -81,9 +77,7 @@ fun LikedItemListContent(
     onItemLikeButtonClick: (String, Boolean) -> Unit
 ) {
     LazyVerticalGrid(
-        modifier = Modifier
-            .background(SwapAppTheme.colors.backgroundSecondary)
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         columns = GridCells.Fixed(2),
     ) {
         items(items) { itemState ->

@@ -30,7 +30,6 @@ fun ItemsView(
 
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
-        color = SwapAppTheme.colors.backgroundSecondary,
         modifier = modifier
     ) {
         Column(
@@ -46,15 +45,15 @@ fun ItemsView(
                             Text(
                                 title,
                                 style = SwapAppTheme.typography.button,
-                                color = SwapAppTheme.colors.textPrimary
+                                color = SwapAppTheme.colors.onBackground
                             )
                         },
                         modifier = Modifier
                             .background(
                                 if (tabIndex == index) {
-                                    SwapAppTheme.colors.backgroundSecondary
+                                    SwapAppTheme.colors.background
                                 } else {
-                                    SwapAppTheme.colors.componentBackground
+                                    SwapAppTheme.colors.secondaryVariant
                                 }
                             ),
                         selected = tabIndex == index,

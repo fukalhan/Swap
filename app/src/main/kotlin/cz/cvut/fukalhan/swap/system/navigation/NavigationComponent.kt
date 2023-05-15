@@ -20,7 +20,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.ScreenState
-import cz.cvut.fukalhan.design.system.SwapAppTheme
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
 import cz.cvut.fukalhan.swap.events.system.EventListScreen
 import cz.cvut.fukalhan.swap.events.system.addevent.AddEventScreen
@@ -62,7 +61,6 @@ fun NavigationComponent() {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = SwapAppTheme.colors.background,
         topBar = { TopBar(screenState) },
         bottomBar = { AnimatedBottomBar(navController, bottomBarVisible) }
     ) {

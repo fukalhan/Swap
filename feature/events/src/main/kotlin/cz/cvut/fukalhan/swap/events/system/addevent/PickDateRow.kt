@@ -51,7 +51,6 @@ fun PickDateRow(
             Text(
                 text = stringResource(id = R.string.date),
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.smallSpacer))
 
@@ -60,7 +59,6 @@ fun PickDateRow(
             Text(
                 text = date,
                 style = SwapAppTheme.typography.body,
-                color = SwapAppTheme.colors.textSecondary
             )
         }
 
@@ -74,7 +72,11 @@ fun PickDateRow(
                     .clip(CircleShape)
                     .background(SwapAppTheme.colors.primary)
             ) {
-                Icon(painter = painterResource(R.drawable.edit_calendar), null, tint = SwapAppTheme.colors.buttonText)
+                Icon(
+                    painter = painterResource(R.drawable.edit_calendar),
+                    null,
+                    tint = SwapAppTheme.colors.onPrimary,
+                )
             }
         }
     }

@@ -116,14 +116,13 @@ fun AddEventTopBar(
                     Icon(
                         painter = painterResource(R.drawable.arrow_back),
                         contentDescription = null,
-                        tint = SwapAppTheme.colors.buttonText,
+                        tint = SwapAppTheme.colors.onPrimary,
                         modifier = Modifier.size(SwapAppTheme.dimensions.icon)
                     )
                 }
                 Text(
                     text = stringResource(R.string.addEvent),
                     style = SwapAppTheme.typography.screenTitle,
-                    color = SwapAppTheme.colors.buttonText,
                     modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
                 )
             }

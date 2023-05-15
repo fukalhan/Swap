@@ -20,7 +20,7 @@ fun ItemCard(
 ) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
-        color = SwapAppTheme.colors.backgroundSecondary,
+        color = SwapAppTheme.colors.background,
         modifier = Modifier
             .padding(SwapAppTheme.dimensions.smallSidePadding)
             .clickable(enabled = enabled, onClick = onClick)

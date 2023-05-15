@@ -78,7 +78,7 @@ fun SearchScreen(
                 // Workaround to make the search view rounded only on bottom side
                 Box(
                     modifier = Modifier
-                        .background(SwapAppTheme.colors.backgroundSecondary)
+                        .background(SwapAppTheme.colors.background)
                         .fillMaxWidth()
                         .height(SwapAppTheme.dimensions.mediumSpacer)
                 )
@@ -106,7 +106,7 @@ fun SearchView(
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(SwapAppTheme.dimensions.roundCorners))
-            .background(SwapAppTheme.colors.backgroundSecondary)
+            .background(SwapAppTheme.colors.background)
             .fillMaxWidth()
             .wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -154,7 +154,6 @@ fun SearchBar(
             Icon(
                 painter = painterResource(R.drawable.search),
                 contentDescription = null,
-                tint = SwapAppTheme.colors.buttonText
             )
         }
     )
@@ -168,7 +167,6 @@ fun SortBar(
     Text(
         text = stringResource(R.string.sorting),
         style = SwapAppTheme.typography.titleSecondary,
-        color = SwapAppTheme.colors.textPrimary,
         modifier = Modifier
             .padding(
                 start = SwapAppTheme.dimensions.sidePadding,
@@ -184,9 +182,9 @@ fun SortBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         val (color1, color2) = when (sorting) {
-            Sorting.RELEVANCE -> SwapAppTheme.colors.componentBackground to SwapAppTheme.colors.backgroundSecondary
-            Sorting.NEWEST -> SwapAppTheme.colors.backgroundSecondary to SwapAppTheme.colors.componentBackground
-            else -> SwapAppTheme.colors.backgroundSecondary to SwapAppTheme.colors.backgroundSecondary
+            Sorting.RELEVANCE -> SwapAppTheme.colors.surface to SwapAppTheme.colors.background
+            Sorting.NEWEST -> SwapAppTheme.colors.background to SwapAppTheme.colors.surface
+            else -> SwapAppTheme.colors.background to SwapAppTheme.colors.background
         }
 
         SortButton(R.string.accordingToRelevance, color1) {
@@ -208,13 +206,12 @@ fun SortButton(
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(SwapAppTheme.dimensions.roundCorners),
-        border = BorderStroke(SwapAppTheme.dimensions.borderWidth, SwapAppTheme.colors.component),
+        border = BorderStroke(SwapAppTheme.dimensions.borderWidth, SwapAppTheme.colors.onBackground),
         colors = ButtonDefaults.buttonColors(color)
     ) {
         Text(
             text = stringResource(label),
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary
         )
     }
 }
@@ -247,7 +244,6 @@ fun CategoryList(
                 Text(
                     text = stringResource(it.labelId),
                     style = SwapAppTheme.typography.titleSecondary,
-                    color = SwapAppTheme.colors.textPrimary,
                 )
             },
             padding = SwapAppTheme.dimensions.sidePadding
@@ -267,7 +263,6 @@ fun SearchButton(
         Text(
             text = stringResource(R.string.search),
             style = SwapAppTheme.typography.button,
-            color = SwapAppTheme.colors.buttonText
         )
     }
 }

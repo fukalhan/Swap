@@ -67,7 +67,6 @@ fun OrganizerInfo(
             Text(
                 text = stringResource(id = R.string.organizer),
                 style = SwapAppTheme.typography.titleSecondary,
-                color = SwapAppTheme.colors.textPrimary,
             )
 
             ResolveState(organizerInfoState) {
@@ -117,7 +116,6 @@ fun UserInfo(
         Text(
             text = username,
             style = SwapAppTheme.typography.titleSecondary,
-            color = SwapAppTheme.colors.textPrimary,
         )
     }
 }
