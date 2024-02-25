@@ -27,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.presentation.ScreenState
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.swap.notifications.presentation.NotificationsViewModel
 import cz.cvut.fukalhan.swap.profile.R
 import cz.cvut.fukalhan.swap.profile.system.items.ItemsView

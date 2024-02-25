@@ -25,11 +25,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import cz.cvut.fukalhan.design.presentation.ScreenState
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.theme.semiTransparentBlack
 import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.presentation.EventListState
 import cz.cvut.fukalhan.swap.events.presentation.EventListViewModel

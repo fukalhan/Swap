@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.design.system
+package cz.cvut.fukalhan.design.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.ButtonRow
 import cz.cvut.fukalhan.design.system.components.DescriptionView
 import cz.cvut.fukalhan.design.system.components.InputFieldView
@@ -37,7 +37,7 @@ import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.system.components.screenstate.SuccessSnackMessage
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.theme.semiTransparentBlack
 import cz.cvut.fukalhan.swap.review.R
 import cz.cvut.fukalhan.swap.review.presentation.AddReviewState
 import cz.cvut.fukalhan.swap.review.presentation.ReviewViewModel

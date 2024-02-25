@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import cz.cvut.fukalhan.design.R
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 
 @Composable
 fun ButtonRow(

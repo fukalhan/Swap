@@ -27,7 +27,7 @@ import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.tools.DateFormatter
 import org.koin.androidx.compose.getKoin

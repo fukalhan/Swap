@@ -24,8 +24,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.design.system.lightGrey
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.lightGrey
 
 @Composable
 fun InputFieldView(

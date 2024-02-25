@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.theme.semiTransparentBlack
 import cz.cvut.fukalhan.swap.login.R
 import cz.cvut.fukalhan.swap.login.presentation.common.Failure
 import cz.cvut.fukalhan.swap.login.presentation.common.Loading

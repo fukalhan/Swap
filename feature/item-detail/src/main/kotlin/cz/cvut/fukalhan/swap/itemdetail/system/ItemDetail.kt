@@ -31,7 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.UserInfoView
 import cz.cvut.fukalhan.swap.itemdetail.R
 import cz.cvut.fukalhan.swap.itemdetail.presentation.ItemDetailViewModel

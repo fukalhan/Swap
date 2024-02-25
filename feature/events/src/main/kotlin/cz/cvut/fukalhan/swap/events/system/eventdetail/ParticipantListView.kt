@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView

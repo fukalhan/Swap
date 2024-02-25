@@ -20,9 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.design.system.darkGrey
-import cz.cvut.fukalhan.design.system.grey
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.darkGrey
+import cz.cvut.fukalhan.design.theme.grey
 import cz.cvut.fukalhan.swap.login.R
 
 @Composable

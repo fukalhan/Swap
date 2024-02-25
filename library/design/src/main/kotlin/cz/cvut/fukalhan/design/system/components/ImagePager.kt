@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.zIndex
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.model.CarouselVo
 import cz.cvut.fukalhan.design.system.model.ImagePagerVo
 import cz.cvut.fukalhan.design.system.model.ItemImageVo

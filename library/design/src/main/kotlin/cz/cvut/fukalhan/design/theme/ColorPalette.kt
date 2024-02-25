@@ -1,9 +1,9 @@
-package cz.cvut.fukalhan.design.system
+package cz.cvut.fukalhan.design.theme
 
 import androidx.compose.material.Colors
 import androidx.compose.ui.graphics.Color
 
-val swapAppColorPalette = Colors(
+val colorPalette = Colors(
     primary = darkPeach,
     primaryVariant = peach,
     secondary = orange,

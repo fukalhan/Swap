@@ -24,9 +24,9 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.ScreenState
-import cz.cvut.fukalhan.design.system.CustomChatTheme
-import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.design.system.lightGrey
+import cz.cvut.fukalhan.design.theme.CustomChatTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.lightGrey
 import cz.cvut.fukalhan.swap.messages.R
 import cz.cvut.fukalhan.swap.messages.presentation.ChatViewModelFactory
 import io.getstream.chat.android.client.models.Channel

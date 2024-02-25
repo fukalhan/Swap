@@ -39,10 +39,10 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.presentation.ScreenState
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.theme.semiTransparentBlack
 import cz.cvut.fukalhan.swap.notifications.R
 import cz.cvut.fukalhan.swap.notifications.presentation.Failure
 import cz.cvut.fukalhan.swap.notifications.presentation.Loading

@@ -36,11 +36,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.zIndex
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.CategoryListHeader
 import cz.cvut.fukalhan.design.system.components.CollapsingList
 import cz.cvut.fukalhan.design.system.components.getTextFieldColors
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.theme.semiTransparentBlack
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.SearchQuery
 import cz.cvut.fukalhan.swap.itemdata.model.Sorting

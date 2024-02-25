@@ -38,12 +38,12 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import cz.cvut.fukalhan.design.presentation.ScreenState
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.system.components.screenstate.SuccessSnackMessage
-import cz.cvut.fukalhan.design.system.semiTransparentBlack
+import cz.cvut.fukalhan.design.theme.semiTransparentBlack
 import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventDetailState
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventDetailViewModel
