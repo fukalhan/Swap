@@ -16,12 +16,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,16 +30,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import cz.cvut.fukalhan.design.system.SwapAppTheme
-import cz.cvut.fukalhan.swap.additem.R
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
+import cz.cvut.fukalhan.design.R
 
-const val PICTURES_LIMIT = 6
-
+/**
+ * Component for image picking
+ *
+ * @param selectedImages uris of selected images
+ * @param maxImages limit of images to be picked
+ * @param onSelectImages callback on images select
+ * @param onRemoveImage callback on remove image
+ */
 @Composable
-fun PictureSelectionView(
-    selectedImagesUri: List<Uri>,
-    setSelectedImagesUri: (List<Uri>) -> Unit
+fun ImagePicker(
+    selectedImages: List<Uri>,
+    maxImages: Int,
+    onSelectImages: (List<Uri>) -> Unit,
+    onRemoveImage: (Uri) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -49,30 +58,26 @@ fun PictureSelectionView(
         horizontalAlignment = Alignment.Start,
     ) {
         val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickMultipleVisualMedia(),
-            onResult = { uris ->
-                val prevImagesSize = selectedImagesUri.size
-                setSelectedImagesUri(
-                    selectedImagesUri.take(PICTURES_LIMIT) + uris.take(PICTURES_LIMIT - prevImagesSize)
-                )
+            contract = ActivityResultContracts.PickMultipleVisualMedia(
+                maxItems = maxImages
+            ),
+            onResult = {
+                onSelectImages(it)
             }
         )
 
         LazyRow {
-            items(selectedImagesUri) { uri ->
+            items(selectedImages) { uri ->
                 ImageView(uri) {
-                    setSelectedImagesUri(
-                        selectedImagesUri.filter {
-                            it != uri
-                        }
-                    )
+                    onRemoveImage(it)
                 }
             }
         }
 
         InstructionRow(
-            selectedImagesUri,
-            Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            imagesCount = selectedImages.size,
+            maxImages = maxImages
         ) {
             multiplePhotoPickerLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -84,16 +89,28 @@ fun PictureSelectionView(
 @Composable
 fun ImageView(
     uri: Uri,
-    onCancelClick: () -> Unit
+    onRemoveClick: (Uri) -> Unit
 ) {
     Box(
         modifier = Modifier.size(SwapAppTheme.dimensions.image)
     ) {
         ItemImage(uri)
-        CancelIcon(
-            modifier = Modifier.align(Alignment.TopEnd),
-            onClick = onCancelClick
-        )
+
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(5.dp),
+            onClick = { onRemoveClick(uri) }
+        ) {
+            Icon(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(color = SwapAppTheme.colors.onSurface),
+                painter = painterResource(R.drawable.ic_cancel),
+                contentDescription = null,
+                tint = SwapAppTheme.colors.surface
+            )
+        }
     }
 }
 
@@ -116,26 +133,10 @@ fun ItemImage(uri: Uri) {
 }
 
 @Composable
-fun CancelIcon(
-    modifier: Modifier,
-    onClick: () -> Unit
-) {
-    Icon(
-        painter = painterResource(R.drawable.cancel),
-        contentDescription = null,
-        tint = SwapAppTheme.colors.surface,
-        modifier = modifier
-            .padding(SwapAppTheme.dimensions.sidePadding)
-            .clip(CircleShape)
-            .background(color = SwapAppTheme.colors.onSurface)
-            .clickable(onClick = onClick)
-    )
-}
-
-@Composable
 fun InstructionRow(
-    selectedImagesUri: List<Uri>,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    imagesCount:Int,
+    maxImages: Int,
     onClick: () -> Unit
 ) {
     Row(
@@ -146,19 +147,24 @@ fun InstructionRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.add),
+            painter = painterResource(id = R.drawable.ic_add),
             contentDescription = null,
             modifier = Modifier.size(SwapAppTheme.dimensions.icon)
         )
+
         Spacer(modifier = Modifier.size(SwapAppTheme.dimensions.smallSpacer))
+
         Text(
             text = stringResource(R.string.addImage),
             style = SwapAppTheme.typography.titlePrimary,
             color = SwapAppTheme.colors.onSurface
         )
-        Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.largeSpacer))
+
+        Spacer(modifier = Modifier.weight(1f))
+
         Text(
-            text = "${selectedImagesUri.size}/$PICTURES_LIMIT",
+            modifier = Modifier.padding(end = 10.dp),
+            text = "$imagesCount/$maxImages",
             style = SwapAppTheme.typography.titleSecondary,
             color = SwapAppTheme.colors.onSurface
         )

@@ -221,7 +221,7 @@ fun mapDocSnapshotToItem(doc: DocumentSnapshot): Item {
         name = doc.getString(NAME) ?: EMPTY_FIELD,
         description = doc.getString(DESCRIPTION) ?: EMPTY_FIELD,
         imagesUri = (doc.get(IMAGES) as? List<*>)?.mapNotNull { Uri.parse(it.toString()) } ?: emptyList(),
-        category = Category.valueOf(doc.getString(CATEGORY) ?: Category.DEFAULT.name),
+        category = Category.valueOf(doc.getString(CATEGORY) ?: Category.OTHER.name),
         state = State.valueOf(doc.getString(STATE) ?: State.AVAILABLE.name),
     )
 }

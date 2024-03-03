@@ -21,12 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.tools.DateFormatter
 import org.koin.androidx.compose.getKoin
@@ -106,5 +107,16 @@ fun CalendarPicker(
             style = CalendarStyle.MONTH,
             boundary = timeBoundary
         ),
+    )
+}
+
+@Composable
+@Preview
+fun PickDateRowPreview() {
+    PickDateRow(
+        selectedDates = listOf(
+            LocalDate.MIN
+        ),
+        onButtonClick = {}
     )
 }

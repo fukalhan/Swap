@@ -1,23 +1,25 @@
 package cz.cvut.fukalhan.swap.itemdata.model
 
 import cz.cvut.fukalhan.swap.itemdata.R
-enum class Category(val labelId: Int) {
-    DEFAULT(R.string.category),
-    WOMEN_CLOTHES(R.string.womenClothes),
-    MEN_CLOTHES(R.string.menClothes),
-    CHILDREN_CLOTHES(R.string.childrenClothes),
-    COSMETICS(R.string.cosmetics),
-    ACCESSORIES(R.string.accessories),
-    HOUSEHOLD_SUPPLIES(R.string.householdSupplies),
-    APPLIANCES(R.string.appliances),
-    ELECTRONICS(R.string.electronics),
-    TOYS(R.string.toys),
-    BOOKS_MOVIES_MUSIC(R.string.booksMoviesMusic),
-    SHOES(R.string.shoes),
-    SPORT_EQUIPMENT(R.string.sportsEquipment),
-    GARDEN_EQUIPMENT(R.string.gardenEquipment),
-    PLANTS(R.string.plants),
-    OTHER(R.string.others)
+enum class Category(
+    val id: Long,
+    val labelId: Int
+) {
+    WOMEN_CLOTHES(1, R.string.womenClothes),
+    MEN_CLOTHES(2, R.string.menClothes),
+    CHILDREN_CLOTHES(3, R.string.childrenClothes),
+    COSMETICS(4, R.string.cosmetics),
+    ACCESSORIES(5, R.string.accessories),
+    HOUSEHOLD_SUPPLIES(6, R.string.householdSupplies),
+    APPLIANCES(7, R.string.appliances),
+    ELECTRONICS(8, R.string.electronics),
+    TOYS(9, R.string.toys),
+    BOOKS_MOVIES_MUSIC(10, R.string.booksMoviesMusic),
+    SHOES(11, R.string.shoes),
+    SPORT_EQUIPMENT(12, R.string.sportsEquipment),
+    GARDEN_EQUIPMENT(13, R.string.gardenEquipment),
+    PLANTS(14, R.string.plants),
+    OTHER(15, R.string.others)
 }
 
 val categories = listOf(
@@ -31,7 +33,6 @@ val categories = listOf(
     Category.HOUSEHOLD_SUPPLIES,
     Category.GARDEN_EQUIPMENT,
     Category.PLANTS,
-    Category.APPLIANCES,
     Category.ELECTRONICS,
     Category.TOYS,
     Category.SPORT_EQUIPMENT,

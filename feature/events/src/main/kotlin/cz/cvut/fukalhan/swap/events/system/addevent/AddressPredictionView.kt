@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.RegularTextFieldView
 import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView

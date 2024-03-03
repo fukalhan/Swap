@@ -24,7 +24,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.lightGrey
 
 @Composable
 fun InputFieldView(
@@ -127,6 +128,7 @@ val keyBoardOptions = KeyboardOptions(
 @Composable
 fun getTextFieldColors(): TextFieldColors {
     return TextFieldDefaults.textFieldColors(
+        backgroundColor = lightGrey,
         cursorColor = SwapAppTheme.colors.primary,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent

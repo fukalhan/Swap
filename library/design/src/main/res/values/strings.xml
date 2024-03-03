@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Categories -->
+    <string name="category_title">Categories</string>
+
+    <!-- Add Item -->
+    <string name="addItem">Add item</string>
+    <string name="addImage">Add images</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="itemSaveSuccess">Item successfully saved</string>
+    <string name="itemSaveFail">Item saving failed</string>
+    <string name="namePlaceholder">Choose an appropriate item name</string>
+    <string name="descriptionPlaceholder">Describe the item, indicate its condition, state the location of the exchange …</string>
+    <string name="allFieldsMustBeFilled">All fields must be filled</string>
+
+</resources>

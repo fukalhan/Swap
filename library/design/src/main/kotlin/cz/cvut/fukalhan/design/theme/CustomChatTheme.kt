@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.design.system
+package cz.cvut.fukalhan.design.theme
 
 import androidx.compose.runtime.Composable
 import io.getstream.chat.android.compose.ui.theme.ChatTheme

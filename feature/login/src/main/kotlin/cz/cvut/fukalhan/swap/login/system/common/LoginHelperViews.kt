@@ -20,7 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.darkGrey
+import cz.cvut.fukalhan.design.theme.grey
 import cz.cvut.fukalhan.swap.login.R
 
 @Composable
@@ -28,6 +30,7 @@ fun LoginInputView(loginField: String, loginFieldLabel: Int, onValueChange: (Str
     Column {
         Text(
             text = stringResource(loginFieldLabel),
+            color = darkGrey
         )
 
         TextField(
@@ -36,8 +39,11 @@ fun LoginInputView(loginField: String, loginFieldLabel: Int, onValueChange: (Str
             onValueChange = onValueChange,
             colors = TextFieldDefaults
                 .textFieldColors(
+                    textColor = darkGrey,
+                    backgroundColor = SwapAppTheme.colors.secondaryVariant,
                     cursorColor = SwapAppTheme.colors.primary,
-                    focusedIndicatorColor = SwapAppTheme.colors.primary
+                    focusedIndicatorColor = SwapAppTheme.colors.primary,
+                    trailingIconColor = grey
                 )
         )
 
@@ -69,7 +75,8 @@ fun PasswordView(label: Int, password: String, onValueChange: (String) -> Unit) 
 
     Column {
         Text(
-            text = stringResource(label)
+            text = stringResource(label),
+            color = darkGrey
         )
 
         TextField(
@@ -77,8 +84,11 @@ fun PasswordView(label: Int, password: String, onValueChange: (String) -> Unit) 
             singleLine = true,
             colors = TextFieldDefaults
                 .textFieldColors(
+                    textColor = darkGrey,
+                    backgroundColor = SwapAppTheme.colors.secondaryVariant,
                     cursorColor = SwapAppTheme.colors.primary,
-                    focusedIndicatorColor = SwapAppTheme.colors.primary
+                    focusedIndicatorColor = SwapAppTheme.colors.primary,
+                    trailingIconColor = grey
                 ),
             onValueChange = onValueChange,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),

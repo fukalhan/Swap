@@ -8,7 +8,7 @@ data class ItemDetail(
     var name: String = "",
     var description: String = "",
     var imagesUri: List<Uri> = emptyList(),
-    var category: Category = Category.DEFAULT,
+    var category: Category = Category.OTHER,
     var state: State = State.AVAILABLE,
     var isLiked: Boolean = false
 )

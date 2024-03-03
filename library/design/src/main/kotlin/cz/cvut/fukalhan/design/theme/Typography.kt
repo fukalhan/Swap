@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.design.system
+package cz.cvut.fukalhan.design.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.TextStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Immutable
-data class SwapAppTypography(
+data class Typography(
     val screenTitle: TextStyle,
     val titlePrimary: TextStyle,
     val titleSecondary: TextStyle,
@@ -15,7 +15,7 @@ data class SwapAppTypography(
     val smallText: TextStyle
 )
 
-val swapAppTypography = SwapAppTypography(
+val typography = Typography(
     screenTitle = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 25.sp,

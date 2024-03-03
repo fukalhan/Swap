@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace 'cz.cvut.fukalhan.design'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 26
-        targetSdk 33
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -41,12 +41,14 @@ android {
 dependencies {
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation "androidx.compose.material:material:$compose_version"
     implementation "io.insert-koin:koin-android:3.3.3"
 
     // Compose
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
+    implementation platform('androidx.compose:compose-bom:2023.10.01')
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.material3:material3"
+    implementation "androidx.compose.ui:ui-tooling"
 
     // Coil
     implementation "io.coil-kt:coil:2.3.0"

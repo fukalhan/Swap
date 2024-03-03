@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import cz.cvut.fukalhan.design.system.SwapAppTheme
+import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.swap.profiledetail.R
 import org.koin.androidx.compose.koinViewModel
 
