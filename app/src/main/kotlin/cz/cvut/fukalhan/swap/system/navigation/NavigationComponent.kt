@@ -182,7 +182,6 @@ fun NavigationComponent() {
             composable(MainScreen.AddItem.route) {
                 AddItemScreen(
                     koinViewModel(),
-                    onScreenInit = { screenState = it },
                     navigateBack = { navController.navigate(MainScreen.Profile.route) }
                 )
             }

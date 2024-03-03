@@ -29,12 +29,13 @@ import cz.cvut.fukalhan.design.theme.SwapAppTheme
 fun RadioCheckboxRow(
     modifier: Modifier = Modifier,
     model: RadioCheckboxRowVo,
-    onClick: () -> Unit
+    onClick: (RadioCheckboxRowVo) -> Unit
 ) {
     Row(
         modifier = modifier
+            .padding(vertical = 10.dp)
             .clickable {
-                onClick.invoke()
+                onClick(model)
             }
             .padding(horizontal = 20.dp)
     ) {

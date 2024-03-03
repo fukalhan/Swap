@@ -51,11 +51,9 @@ fun CategoryListHeader(
         Spacer(modifier = Modifier.weight(1f))
         Icon(
             painter = if (expanded) {
-                painterResource(R.drawable.arrow_drop_up)
+                painterResource(id = R.drawable.ic_arrow_up)
             } else {
-                painterResource(
-                    R.drawable.arrow_drop_down
-                )
+                painterResource(id = R.drawable.ic_arrow_down)
             },
             contentDescription = null,
             tint = SwapAppTheme.colors.onBackground

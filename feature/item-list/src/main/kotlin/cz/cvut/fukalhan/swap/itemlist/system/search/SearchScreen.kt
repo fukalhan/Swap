@@ -113,7 +113,7 @@ fun SearchView(
     ) {
         var searchQuery by remember { mutableStateOf("") }
         var sorting by remember { mutableStateOf(Sorting.DEFAULT) }
-        var category by remember { mutableStateOf(Category.DEFAULT) }
+        var category by remember { mutableStateOf(Category.OTHER) }
         var expanded by remember { mutableStateOf(false) }
 
         SearchBar(searchQuery, onSearchQueryChange = { searchQuery = it })

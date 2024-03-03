@@ -18,7 +18,7 @@ class SearchItemsUseCase(private val itemRepository: ItemRepository) {
         val getItemsLikedByUserResponse = itemRepository.getItemIdsLikedByUser(userId)
         return if (response is DataResponse.Success && getItemsLikedByUserResponse is DataResponse.Success) {
             val items = response.data
-            val itemsFilteredByCategory = if (searchQuery.category != Category.DEFAULT) {
+            val itemsFilteredByCategory = if (searchQuery.category != Category.OTHER) {
                 items.filter { item ->
                     item.category == searchQuery.category
                 }
