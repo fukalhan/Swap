@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.additem.presentation
+package cz.cvut.fukalhan.swap.additem.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
+import cz.cvut.fukalhan.swap.additem.view.AddItemScreen
 
 class AddItemViewModel(
     private val saveItemUseCase: SaveItemUseCase

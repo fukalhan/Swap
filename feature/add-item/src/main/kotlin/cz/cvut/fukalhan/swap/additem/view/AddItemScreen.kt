@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.additem.system
+package cz.cvut.fukalhan.swap.additem.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

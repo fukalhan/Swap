@@ -1,7 +1,7 @@
 package cz.cvut.fukalhan.swap.additem.model
 
 import android.net.Uri
-import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
+import cz.cvut.fukalhan.swap.additem.view.AddItemScreen
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 
 /**
