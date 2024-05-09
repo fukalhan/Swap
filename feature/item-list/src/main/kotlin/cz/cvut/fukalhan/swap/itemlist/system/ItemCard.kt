@@ -49,11 +49,13 @@ fun ItemCard(
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            ItemStateView(
-                itemState.state == State.RESERVED || itemState.state == State.SWAPPED,
-                itemState.state.label,
-                Modifier.align(Alignment.TopCenter)
-            )
+            if (itemState.state == State.RESERVED || itemState.state == State.SWAPPED) {
+                ItemStateView(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    label = itemState.state.label
+                )
+            }
+
             ItemPicture(itemState.imageUri)
             LikeButton(
                 enabled,

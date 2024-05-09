@@ -38,6 +38,7 @@ import cz.cvut.fukalhan.design.system.components.screenstate.FailSnackMessage
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.system.components.screenstate.SuccessSnackMessage
+import cz.cvut.fukalhan.design.system.model.UserInfoViewVo
 import cz.cvut.fukalhan.design.theme.semiTransparentBlack
 import cz.cvut.fukalhan.swap.review.R
 import cz.cvut.fukalhan.swap.review.presentation.AddReviewState
@@ -108,15 +109,17 @@ fun ReviewScreenContent(
         modifier = Modifier.fillMaxSize()
     ) {
         UserInfoView(
-            state.profilePic,
-            state.username,
-            StringModel.String(state.joinDate),
-            state.rating,
-            true,
+            model = UserInfoViewVo(
+                username = state.username,
+                profilePicUri = state.profilePic,
+                joinDate = StringModel.String(state.joinDate),
+                rating = state.rating
+            ),
             onClick = {
                 navigateToProfileDetail(state.id)
             }
         )
+
         Column(
             modifier = Modifier
                 .padding(top = SwapAppTheme.dimensions.sidePadding)

@@ -1,21 +1,18 @@
 package cz.cvut.fukalhan.swap.itemdetail.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,20 +21,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ComposeViewModel
 import cz.cvut.fukalhan.design.presentation.PreviewViewModel
 import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.presentation.UiState
 import cz.cvut.fukalhan.design.system.components.UserInfoView
+import cz.cvut.fukalhan.design.system.model.UserInfoViewVo
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.wrappers.ScreenContentWrapper
 import cz.cvut.fukalhan.swap.itemdata.model.Category
@@ -86,9 +82,6 @@ private fun ItemDetailContent(
     createChatChannel: () -> Unit,
     navigateToOwnerProfileDetail: (String) -> Unit
 ) {
-    val isUserTheOwner = Firebase.auth.currentUser?.let {
-        it.uid == data.ownerInfoVo.id
-    } ?: false
     var isFullSizeImageViewVisible by remember { mutableStateOf(false) }
 
     Box(
@@ -106,6 +99,7 @@ private fun ItemDetailContent(
             modifier = Modifier.fillMaxSize()
         ) {
             ImageView(
+                modifier = Modifier.fillMaxHeight(fraction = 0.5f),
                 images = data.images,
                 itemState = data.state,
                 onClick = {
@@ -119,26 +113,23 @@ private fun ItemDetailContent(
                 description = data.description,
                 category = data.category,
                 isLiked = data.isLiked,
-                displayLikeButton = !isUserTheOwner,
+                displayLikeButton = !data.isUserTheOwner,
                 onLikeButtonClick = onLikeButtonClick
             )
 
-            if (!isUserTheOwner) {
+            if (!data.isUserTheOwner) {
                 UserInfoView(
-                    uri = data.ownerInfoVo.profilePic,
-                    username = data.ownerInfoVo.username,
-                    joinDate = data.ownerInfoVo.joinDate,
-                    rating = data.ownerInfoVo.rating,
-                    clickEnabled = true,
+                    model = UserInfoViewVo(
+                        profilePicUri = data.ownerInfoVo.profilePic,
+                        username = data.ownerInfoVo.username,
+                        joinDate = data.ownerInfoVo.joinDate,
+                        rating = data.ownerInfoVo.rating,
+                        endIcon = R.drawable.message
+                    ),
                     onClick = {
                         navigateToOwnerProfileDetail(data.ownerInfoVo.id)
                     },
-                    additionalContent = {
-                        SendMessageButton(
-                            modifier = Modifier.weight(1f),
-                            onClick = createChatChannel
-                        )
-                    }
+                    onEndIconClick = createChatChannel
                 )
             }
         }
@@ -158,12 +149,13 @@ private fun ItemInfo(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(SwapAppTheme.dimensions.sidePadding)
+            .padding(all = 20.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
@@ -181,10 +173,20 @@ private fun ItemInfo(
             }
 
             if (displayLikeButton) {
-                LikeButton(
-                    isLiked = isLiked,
-                    onClick = onLikeButtonClick
-                )
+                IconButton(
+                    modifier = Modifier.size(50.dp),
+                    onClick = {
+                        onLikeButtonClick(!isLiked)
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            if (isLiked) R.drawable.colored_heart else R.drawable.heart
+                        ),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                }
             }
         }
 
@@ -194,68 +196,12 @@ private fun ItemInfo(
             text = description,
             style = SwapAppTheme.typography.body,
         )
-
-        Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.mediumSpacer))
-    }
-}
-
-@Composable
-private fun LikeButton(
-    isLiked: Boolean,
-    onClick: (Boolean) -> Unit,
-) {
-    IconButton(
-        onClick = {
-            onClick(!isLiked)
-        },
-        modifier = Modifier
-            .padding(start = SwapAppTheme.dimensions.smallSidePadding)
-            .size(50.dp)
-    ) {
-        Icon(
-            painter = painterResource(if (isLiked) R.drawable.colored_heart else R.drawable.heart),
-            contentDescription = null,
-            tint = Color.Unspecified
-        )
-    }
-}
-
-@Composable
-private fun SendMessageButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .padding(SwapAppTheme.dimensions.sidePadding)
-            .fillMaxSize(),
-        contentAlignment = Alignment.BottomEnd
-    ) {
-        Surface(
-            shape = CircleShape,
-            color = SwapAppTheme.colors.primary,
-            elevation = SwapAppTheme.dimensions.elevation,
-            modifier = Modifier.wrapContentSize()
-        ) {
-            IconButton(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(SwapAppTheme.colors.primary)
-                    .wrapContentSize(),
-                onClick = onClick
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.message),
-                    contentDescription = null,
-                )
-            }
-        }
     }
 }
 
 @Composable
 @Preview
-fun ItemDetailScreenPreview() {
+internal fun ItemDetailScreenPreview() {
     ItemDetailScreen(
         viewModel = PreviewViewModel(
             state = UiState(
@@ -267,7 +213,6 @@ fun ItemDetailScreenPreview() {
                         username = "User",
                         joinDate = StringModel.String("Joined 25.6.2020"),
                         rating = 4.5f
-
                     )
                 )
             )

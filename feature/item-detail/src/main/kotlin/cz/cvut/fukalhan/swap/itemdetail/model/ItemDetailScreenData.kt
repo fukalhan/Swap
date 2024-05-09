@@ -1,6 +1,8 @@
 package cz.cvut.fukalhan.swap.itemdetail.model
 
 import android.net.Uri
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.swap.itemdata.model.Category
 import cz.cvut.fukalhan.swap.itemdata.model.State
 
@@ -25,4 +27,8 @@ data class ItemDetailScreenData(
     val state: State = State.AVAILABLE,
     val isLiked: Boolean = false,
     val ownerInfoVo: OwnerInfoVo = OwnerInfoVo()
-)
+) {
+    val isUserTheOwner = Firebase.auth.currentUser?.let {
+        it.uid == ownerInfoVo.id
+    } ?: false
+}

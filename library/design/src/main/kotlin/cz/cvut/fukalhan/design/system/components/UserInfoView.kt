@@ -3,17 +3,18 @@ package cz.cvut.fukalhan.design.system.components
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,45 +24,79 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.design.presentation.StringModel
+import cz.cvut.fukalhan.design.system.model.UserInfoViewVo
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 
 @Composable
 fun UserInfoView(
-    uri: Uri,
-    username: String,
-    joinDate: StringModel,
-    rating: Float,
-    clickEnabled: Boolean,
-    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
+    model: UserInfoViewVo,
+    onClick: (() -> Unit)? = null,
+    onEndIconClick: (() -> Unit)? = null,
     additionalContent: (@Composable RowScope.() -> Unit)? = null
 ) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(150.dp)
-            .clickable(clickEnabled, onClick = onClick)
+            .clickable(
+                enabled = onClick != null,
+                onClick = { onClick?.invoke() }
+            )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(SwapAppTheme.dimensions.smallSidePadding),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(all = 12.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            ProfilePicture(uri)
-            Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
-            Column {
-                InfoView(text = username, style = SwapAppTheme.typography.titleSecondary)
-                InfoView(text = joinDate.getString(), style = SwapAppTheme.typography.body)
-                RatingView(rating)
+            ProfilePicture(
+                pictureUri = model.profilePicUri
+            )
+
+            Column(
+                modifier = Modifier.padding(vertical = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    text = model.username,
+                    style = SwapAppTheme.typography.titleSecondary,
+                )
+
+                Text(
+                    text = model.joinDate.getString(),
+                    style = SwapAppTheme.typography.body
+                )
+
+                RatingView(
+                    rating = model.rating
+                )
             }
 
+            model.endIcon?.let { icon ->
+                FloatingActionButton(
+                    modifier = Modifier.padding(bottom = 20.dp),
+                    backgroundColor = SwapAppTheme.colors.primary,
+                    onClick = {
+                        onEndIconClick?.invoke()
+                    },
+                ) {
+                    Icon(
+                        modifier = Modifier.size(32.dp),
+                        painter = painterResource(id = icon),
+                        contentDescription = null,
+                        tint = SwapAppTheme.colors.background
+                    )
+                }
+            }
             // Display additional content like buttons etc
             additionalContent?.invoke(this)
         }
@@ -85,15 +120,6 @@ fun ProfilePicture(pictureUri: Uri) {
     )
 }
 
-@Composable
-fun InfoView(text: String, style: TextStyle) {
-    Text(
-        text = text,
-        style = style,
-        modifier = Modifier.padding(SwapAppTheme.dimensions.smallSidePadding)
-    )
-}
-
 const val MIN_RATING = 1
 const val MAX_RATING = 5
 const val HALF_STAR_VALUE = 0.5f
@@ -104,12 +130,7 @@ fun RatingView(rating: Float) {
     val halfStar = (rating - fullStars >= HALF_STAR_VALUE)
     val emptyStar = if (halfStar) MAX_RATING - (fullStars + MIN_RATING) else MAX_RATING - fullStars
 
-    Row(
-        modifier = Modifier.padding(
-            start = SwapAppTheme.dimensions.smallSidePadding,
-            top = SwapAppTheme.dimensions.smallSidePadding
-        )
-    ) {
+    Row {
         repeat(fullStars) {
             Image(
                 painter = painterResource(R.drawable.filled_star),
@@ -138,4 +159,18 @@ fun RatingView(rating: Float) {
             )
         }
     }
+}
+
+@Composable
+@Preview
+fun UserInfoViewPreview() {
+    UserInfoView(
+        model = UserInfoViewVo(
+            username = "Username",
+            profilePicUri = Uri.EMPTY,
+            joinDate = StringModel.String("Joined on 12.5.2020"),
+            rating = 4f,
+            endIcon = R.drawable.ic_add
+        )
+    )
 }

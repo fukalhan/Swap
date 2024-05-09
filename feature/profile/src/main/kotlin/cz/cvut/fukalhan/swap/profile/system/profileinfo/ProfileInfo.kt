@@ -19,6 +19,7 @@ import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.UserInfoView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
+import cz.cvut.fukalhan.design.system.model.UserInfoViewVo
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Failure
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.Loading
 import cz.cvut.fukalhan.swap.profile.presentation.profileinfo.ProfileInfoState
@@ -67,11 +68,12 @@ fun ResolveState(
         is Loading -> LoadingView()
         is Success -> {
             UserInfoView(
-                uri = state.profilePicUri,
-                username = state.username,
-                joinDate = StringModel.String(state.joinDate),
-                rating = state.rating,
-                true,
+                model = UserInfoViewVo(
+                    profilePicUri = state.profilePicUri,
+                    username = state.username,
+                    joinDate = StringModel.String(state.joinDate),
+                    rating = state.rating,
+                ),
                 onClick = {
                     navigateToProfileDetail(state.id)
                 }

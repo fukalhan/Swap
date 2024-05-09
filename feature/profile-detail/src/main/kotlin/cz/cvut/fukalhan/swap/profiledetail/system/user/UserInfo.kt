@@ -22,6 +22,7 @@ import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.UserInfoView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
+import cz.cvut.fukalhan.design.system.model.UserInfoViewVo
 import cz.cvut.fukalhan.swap.profiledetail.presentation.user.UserInfoState
 import cz.cvut.fukalhan.swap.profiledetail.presentation.user.UserInfoViewModel
 
@@ -63,11 +64,12 @@ fun ResolveState(state: UserInfoState) {
             ) {
                 val user = state.user
                 UserInfoView(
-                    uri = user.profilePic,
-                    username = user.username,
-                    joinDate = StringModel.String(user.joinDate),
-                    rating = user.rating,
-                    false,
+                    model = UserInfoViewVo(
+                        profilePicUri = user.profilePic,
+                        username = user.username,
+                        joinDate = StringModel.String(user.joinDate),
+                        rating = user.rating
+                    )
                 )
 
                 Bio(state.user.bio)
