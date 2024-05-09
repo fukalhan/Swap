@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.itemdetail.system
+package cz.cvut.fukalhan.swap.itemdetail.view
 
 import android.net.Uri
 import androidx.compose.foundation.clickable

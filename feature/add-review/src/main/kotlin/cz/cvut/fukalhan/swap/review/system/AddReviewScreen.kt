@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.ScreenState
+import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.ButtonRow
 import cz.cvut.fukalhan.design.system.components.DescriptionView
@@ -109,7 +110,7 @@ fun ReviewScreenContent(
         UserInfoView(
             state.profilePic,
             state.username,
-            state.joinDate,
+            StringModel.String(state.joinDate),
             state.rating,
             true,
             onClick = {

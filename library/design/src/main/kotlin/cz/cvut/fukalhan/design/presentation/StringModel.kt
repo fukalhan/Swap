@@ -22,7 +22,25 @@ sealed interface StringModel {
      *
      * @param id of the stored resource
      */
-    data class Resource(@StringRes val id: Int): StringModel
+    data class Resource(@StringRes val id: Int): StringModel {
+        /**
+         * Array of variable number of values that needs to be provided to dynamic strings.
+         */
+        var params: Array<Any>? = null
+            private set
+
+        /**
+         * Constructor with variable arguments to support dynamic strings.
+         */
+        constructor(id: Int, vararg params: Any) : this(id) {
+            this.params = arrayOf(*params)
+        }
+    }
+
+    /**
+     * Empty string
+     */
+    data object Empty : StringModel
 
     /**
      * Retrieve string from StringModel in Composable screens.
@@ -31,7 +49,19 @@ sealed interface StringModel {
     fun getString(): KotlinString {
         return when(this) {
             is String -> value
-            is Resource -> stringResource(id = id)
+            is Resource -> params?.map {
+                if (it is StringModel) {
+                    it.getString()
+                } else {
+                    it
+                }
+            }?.let {
+                stringResource(
+                    id = id,
+                    formatArgs = it.toTypedArray()
+                )
+            } ?: stringResource(id = id)
+            Empty -> ""
         }
     }
 }

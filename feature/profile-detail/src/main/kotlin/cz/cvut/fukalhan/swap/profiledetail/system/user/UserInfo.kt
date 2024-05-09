@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cz.cvut.fukalhan.design.R
+import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.UserInfoView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
@@ -64,7 +65,7 @@ fun ResolveState(state: UserInfoState) {
                 UserInfoView(
                     uri = user.profilePic,
                     username = user.username,
-                    joinDate = user.joinDate,
+                    joinDate = StringModel.String(user.joinDate),
                     rating = user.rating,
                     false,
                 )

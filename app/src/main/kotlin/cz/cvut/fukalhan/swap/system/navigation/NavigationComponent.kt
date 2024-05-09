@@ -25,7 +25,8 @@ import cz.cvut.fukalhan.swap.additem.view.AddItemScreen
 import cz.cvut.fukalhan.swap.events.system.EventListScreen
 import cz.cvut.fukalhan.swap.events.system.addevent.AddEventScreen
 import cz.cvut.fukalhan.swap.events.system.eventdetail.EventDetailScreen
-import cz.cvut.fukalhan.swap.itemdetail.system.ItemDetailScreen
+import cz.cvut.fukalhan.swap.itemdetail.viewmodel.ItemDetailViewModel
+import cz.cvut.fukalhan.swap.itemdetail.view.ItemDetailScreen
 import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
 import cz.cvut.fukalhan.swap.login.system.LoginTabScreen
 import cz.cvut.fukalhan.swap.messages.system.ChannelsScreen
@@ -37,6 +38,7 @@ import cz.cvut.fukalhan.swap.review.system.AddReviewScreen
 import cz.cvut.fukalhan.swap.settings.system.SettingsScreen
 import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 const val ITEM_ID = "itemId"
 const val CHANNEL_TYPE = "channelType"
@@ -94,10 +96,16 @@ fun NavigationComponent() {
             ) { backStackEntry ->
                 backStackEntry.arguments?.getString(ITEM_ID)?.let { itemId ->
                     ItemDetailScreen(
-                        itemId,
-                        koinViewModel(),
+                        viewModel = koinViewModel<ItemDetailViewModel>(
+                            parameters = {
+                                parametersOf(
+                                    ItemDetailViewModel.Args(
+                                        itemId = itemId
+                                    )
+                                )
+                            }
+                        ),
                         onNavigateBack = { navController.popBackStack() },
-                        onScreenInit = { screenState = it },
                         navigateToOwnerProfileDetail = {
                             navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
                         },

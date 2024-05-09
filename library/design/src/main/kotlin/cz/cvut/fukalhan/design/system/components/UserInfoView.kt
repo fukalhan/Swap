@@ -28,13 +28,14 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import cz.cvut.fukalhan.design.R
+import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 
 @Composable
 fun UserInfoView(
     uri: Uri,
     username: String,
-    joinDate: String,
+    joinDate: StringModel,
     rating: Float,
     clickEnabled: Boolean,
     onClick: () -> Unit = {},
@@ -57,7 +58,7 @@ fun UserInfoView(
             Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.mediumSpacer))
             Column {
                 InfoView(text = username, style = SwapAppTheme.typography.titleSecondary)
-                InfoView(text = joinDate, style = SwapAppTheme.typography.body)
+                InfoView(text = joinDate.getString(), style = SwapAppTheme.typography.body)
                 RatingView(rating)
             }
 

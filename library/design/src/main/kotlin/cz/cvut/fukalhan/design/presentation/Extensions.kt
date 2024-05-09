@@ -10,3 +10,15 @@ fun <T> MutableStateFlow<UiState<T>>.hideAllOverlays() {
         data = this.value.data
     )
 }
+
+/**
+ * Remove errors and show loading, keep data in UIState.
+ *
+ * @param T UIState date type
+ */
+fun <T> MutableStateFlow<UiState<T>>.showLoading() {
+    value = UiState(
+        data = this.value.data,
+        loading = true
+    )
+}

@@ -22,10 +22,10 @@ import cz.cvut.fukalhan.design.theme.semiTransparentBlack
 @Composable
 fun ScreenContentWrapper(
     state: UiState<*>,
-    content: @Composable () -> Unit,
     onSuccessAction: (() -> Unit)? = null,
     onErrorAction: (() -> Unit)? = null,
-    onWarningAction: (() -> Unit)? = null
+    onWarningAction: (() -> Unit)? = null,
+    content: @Composable () -> Unit
 ) {
     content()
     Crossfade(

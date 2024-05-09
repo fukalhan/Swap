@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="cannotLoadItemDetail">Předmět nelze načíst</string>
-    <string name="createChannelFailure">Zprávu nelze aktuálně poslat</string>
-    <string name="itemDetail">Detail předmětu</string>
-    <string name="sendMessage">Poslat zprávu</string>
-    <string name="memberSince">Členem od %1$s</string>
+    <string name="load_item_detail_error">Předmět se nepodařilo načíst</string>
+    <string name="create_chat_channel_error">Zprávu nelze aktuálně poslat</string>
+    <string name="join_date_info">Členem od %1$s</string>
+    <string name="change_item_like_state_error">Nepodařilo se změnit stav oblíbenosti předmětu, zkuste prosím později.</string>
 </resources>
