@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
@@ -28,11 +29,13 @@ import cz.cvut.fukalhan.design.system.components.ListBottomSheet
 import cz.cvut.fukalhan.design.system.components.RegularTextFieldView
 import cz.cvut.fukalhan.design.system.model.ListBottomSheetVo
 import cz.cvut.fukalhan.design.R
+import cz.cvut.fukalhan.design.presentation.ComposeViewModel
+import cz.cvut.fukalhan.design.presentation.PreviewViewModel
+import cz.cvut.fukalhan.design.presentation.UiState
 import cz.cvut.fukalhan.design.system.model.RadioCheckboxRowVo
 import cz.cvut.fukalhan.design.wrappers.ScreenContentWrapper
 import cz.cvut.fukalhan.swap.additem.model.AddItemScreenData
 import cz.cvut.fukalhan.swap.additem.model.AddItemScreenEvent
-import cz.cvut.fukalhan.swap.additem.presentation.AddItemViewModel
 import cz.cvut.fukalhan.swap.itemdata.model.categories
 
 /**
@@ -43,7 +46,7 @@ import cz.cvut.fukalhan.swap.itemdata.model.categories
  */
 @Composable
 fun AddItemScreen(
-    viewModel: AddItemViewModel,
+    viewModel: ComposeViewModel<AddItemScreenData, AddItemScreenEvent>,
     navigateBack: () -> Unit,
 ) {
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -146,5 +149,18 @@ fun AddItemScreen(
                 }
             }
         }
+    )
+}
+
+@Composable
+@Preview
+internal fun AddItemScreenPreview() {
+    AddItemScreen(
+        viewModel = PreviewViewModel(
+            state = UiState(
+                data = AddItemScreenData()
+            )
+        ),
+        navigateBack = {}
     )
 }

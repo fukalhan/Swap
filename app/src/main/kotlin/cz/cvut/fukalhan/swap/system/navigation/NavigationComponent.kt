@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.ScreenState
+import cz.cvut.fukalhan.swap.additem.presentation.AddItemViewModel
 import cz.cvut.fukalhan.swap.additem.system.AddItemScreen
 import cz.cvut.fukalhan.swap.events.system.EventListScreen
 import cz.cvut.fukalhan.swap.events.system.addevent.AddEventScreen
@@ -181,7 +182,7 @@ fun NavigationComponent() {
 
             composable(MainScreen.AddItem.route) {
                 AddItemScreen(
-                    koinViewModel(),
+                    viewModel = koinViewModel<AddItemViewModel>(),
                     navigateBack = { navController.navigate(MainScreen.Profile.route) }
                 )
             }
