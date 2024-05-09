@@ -18,4 +18,8 @@ data class AddItemScreenData(
     val description: String = "",
     val category: Category? = null,
     val imagesLimit: Int = 6
-)
+) {
+    companion object {
+        const val DESCRIPTION_CHAR_LIMIT = 150
+    }
+}
