@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,8 +38,7 @@ fun UserInfoView(
     modifier: Modifier = Modifier,
     model: UserInfoViewVo,
     onClick: (() -> Unit)? = null,
-    onEndIconClick: (() -> Unit)? = null,
-    additionalContent: (@Composable RowScope.() -> Unit)? = null
+    onEndIconClick: (() -> Unit)? = null
 ) {
     Surface(
         elevation = SwapAppTheme.dimensions.elevation,
@@ -55,15 +54,16 @@ fun UserInfoView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(all = 12.dp),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.Bottom
         ) {
             ProfilePicture(
                 pictureUri = model.profilePicUri
             )
 
             Column(
-                modifier = Modifier.padding(vertical = 20.dp),
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+                    .padding(start = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
@@ -82,23 +82,27 @@ fun UserInfoView(
             }
 
             model.endIcon?.let { icon ->
-                FloatingActionButton(
-                    modifier = Modifier.padding(bottom = 20.dp),
-                    backgroundColor = SwapAppTheme.colors.primary,
-                    onClick = {
-                        onEndIconClick?.invoke()
-                    },
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.CenterEnd
                 ) {
-                    Icon(
-                        modifier = Modifier.size(32.dp),
-                        painter = painterResource(id = icon),
-                        contentDescription = null,
-                        tint = SwapAppTheme.colors.background
-                    )
+                    FloatingActionButton(
+                        modifier = Modifier
+                            .padding(bottom = 20.dp),
+                        backgroundColor = SwapAppTheme.colors.primary,
+                        onClick = {
+                            onEndIconClick?.invoke()
+                        },
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(32.dp),
+                            painter = painterResource(id = icon),
+                            contentDescription = null,
+                            tint = SwapAppTheme.colors.background
+                        )
+                    }
                 }
             }
-            // Display additional content like buttons etc
-            additionalContent?.invoke(this)
         }
     }
 }
@@ -164,13 +168,27 @@ fun RatingView(rating: Float) {
 @Composable
 @Preview
 fun UserInfoViewPreview() {
-    UserInfoView(
-        model = UserInfoViewVo(
-            username = "Username",
-            profilePicUri = Uri.EMPTY,
-            joinDate = StringModel.String("Joined on 12.5.2020"),
-            rating = 4f,
-            endIcon = R.drawable.ic_add
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        UserInfoView(
+            model = UserInfoViewVo(
+                username = "Username",
+                profilePicUri = Uri.EMPTY,
+                joinDate = StringModel.String("Joined on 12.5.2020"),
+                rating = 4f,
+                endIcon = R.drawable.ic_add
+            )
         )
-    )
+
+        UserInfoView(
+            model = UserInfoViewVo(
+                username = "Username",
+                profilePicUri = Uri.EMPTY,
+                joinDate = StringModel.String("Joined on 12.5.2020"),
+                rating = 4f
+            )
+        )
+    }
+
 }
