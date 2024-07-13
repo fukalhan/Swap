@@ -70,7 +70,7 @@ fun AddItemScreen(
                                 onClick = {
                                     viewModel.onEvent(AddItemScreenEvent.OnSaveClick)
                                 },
-                                enabled = viewState.data.isSaveButtonEnabled
+                                enabled = viewState.data.allFieldsFilled
                             ),
                             secondaryButton = ButtonVo.Basic(
                                 label = StringModel.Resource(id = R.string.cancel),

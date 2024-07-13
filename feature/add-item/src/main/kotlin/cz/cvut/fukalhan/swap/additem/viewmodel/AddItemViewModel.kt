@@ -164,8 +164,7 @@ class AddItemViewModel(
         val itemData = viewState.value.data
         val user = Firebase.auth.currentUser
 
-        if (user != null && itemData.name.isNotEmpty()
-            && itemData.description.isNotEmpty() && itemData.category != null) {
+        if (user != null && itemData.allFieldsFilled) {
             _viewState.update {
                 it.copy(
                     loading = true
@@ -178,7 +177,7 @@ class AddItemViewModel(
                     name = itemData.name,
                     description = itemData.description,
                     imagesUri = itemData.selectedImages,
-                    category = itemData.category
+                    category = itemData.category ?: Category.OTHER
                 )
 
                 saveItemUseCase

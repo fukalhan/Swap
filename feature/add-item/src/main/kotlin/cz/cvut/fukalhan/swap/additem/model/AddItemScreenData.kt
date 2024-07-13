@@ -12,7 +12,7 @@ import cz.cvut.fukalhan.swap.itemdata.model.Category
  * @property category item category
  * @property imagesLimit limit of item images
  * @property showCategoryBottomSheet determine if the category picker bottom sheet is open
- * @property isSaveButtonEnabled determine if the save button should be enabled
+ * @property allFieldsFilled determine if the save button should be enabled
  * (when all fields are filled accordingly
  */
 data class AddItemScreenData(
@@ -23,7 +23,7 @@ data class AddItemScreenData(
     val imagesLimit: Int = 6,
     val showCategoryBottomSheet: Boolean = false
 ) {
-    val isSaveButtonEnabled =
+    val allFieldsFilled =
         selectedImages.isNotEmpty() && name.isNotBlank() && description.isNotBlank() && category != null
 
     companion object {
