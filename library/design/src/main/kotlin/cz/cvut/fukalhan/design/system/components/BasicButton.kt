@@ -1,13 +1,16 @@
 package cz.cvut.fukalhan.design.system.components
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,27 +51,32 @@ fun BasicButton(
         colors = colors,
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 1.dp)
     ) {
-        model.startIcon?.let { icon ->
-            Icon(
-                model = icon.copy(
-                    size = 20.dp
-                ),
-                modifier = Modifier.padding(end = 8.dp)
-            )
-        }
+        Row(
+            modifier = Modifier.padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            model.startIcon?.let { icon ->
+                Icon(
+                    model = icon.copy(
+                        size = 20.dp
+                    ),
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
 
-        Text(
-            text = model.label.getString(),
-            style = SwapAppTheme.typography.button
-        )
-
-        model.endIcon?.let { icon ->
-            Icon(
-                model = icon.copy(
-                    size = 20.dp
-                ),
-                modifier = Modifier.padding(start = 8.dp)
+            Text(
+                text = model.label.getString(),
+                style = SwapAppTheme.typography.button
             )
+
+            model.endIcon?.let { icon ->
+                Icon(
+                    model = icon.copy(
+                        size = 20.dp
+                    ),
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
         }
     }
 }

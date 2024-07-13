@@ -43,46 +43,13 @@ class AddItemViewModel(
      */
     override fun onEvent(event: AddItemScreenEvent) {
         when(event) {
-            is AddItemScreenEvent.ItemCategoryUpdate -> updateCategory(event.category)
-            is AddItemScreenEvent.ItemDescriptionUpdate -> updateDescription(event.description)
             is AddItemScreenEvent.AddItemImages -> updateItemImages(event.uris)
-            is AddItemScreenEvent.ItemNameUpdate -> updateName(event.name)
-            AddItemScreenEvent.OnSaveClick -> saveItem()
             is AddItemScreenEvent.RemoveItemImage -> removeItemImage(event.uri)
+            is AddItemScreenEvent.ItemNameUpdate -> updateName(event.name)
+            is AddItemScreenEvent.ItemDescriptionUpdate -> updateDescription(event.description)
+            is AddItemScreenEvent.ItemCategoryUpdate -> updateCategory(event.category)
+            AddItemScreenEvent.OnSaveClick -> saveItem()
             is AddItemScreenEvent.ChangeCategoryBottomSheetVisibility -> changeCategoryBottomSheetVisibility(visible = event.visible)
-        }
-    }
-
-    /**
-     * Update item's category
-     *
-     * @param category new item category
-     */
-    private fun updateCategory(category: Category?) {
-        category?.let {
-            _viewState.update {
-                UiState(
-                    data = it.data.copy(
-                        category = category,
-                        showCategoryBottomSheet = false
-                    )
-                )
-            }
-        }
-    }
-
-    /**
-     * Update item's description
-     *
-     * @param description new item description
-     */
-    private fun updateDescription(description: String) {
-        _viewState.update {
-            UiState(
-                data = it.data.copy(
-                    description = description
-                )
-            )
         }
     }
 
@@ -137,6 +104,41 @@ class AddItemViewModel(
                     name = name
                 )
             )
+        }
+    }
+
+    /**
+     * Update item's description
+     *
+     * @param description new item description
+     */
+    private fun updateDescription(description: String) {
+        if (description.length <= AddItemScreenData.DESCRIPTION_CHAR_LIMIT) {
+            _viewState.update {
+                UiState(
+                    data = it.data.copy(
+                        description = description
+                    )
+                )
+            }
+        }
+    }
+
+    /**
+     * Update item's category
+     *
+     * @param category new item category
+     */
+    private fun updateCategory(category: Category?) {
+        category?.let {
+            _viewState.update {
+                UiState(
+                    data = it.data.copy(
+                        category = category,
+                        showCategoryBottomSheet = false
+                    )
+                )
+            }
         }
     }
 

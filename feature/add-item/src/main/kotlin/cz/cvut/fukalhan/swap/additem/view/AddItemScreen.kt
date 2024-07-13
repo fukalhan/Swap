@@ -100,8 +100,10 @@ fun AddItemScreen(
                     )
 
                     Divider(
-                        color = SwapAppTheme.colors.onBackground,
-                        thickness = SwapAppTheme.dimensions.borderWidth,
+                        color = SwapAppTheme.colors.secondaryVariant.copy(
+                            alpha = 0.5f
+                        ),
+                        thickness = 8.dp,
                     )
 
                     Column(

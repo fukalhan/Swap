@@ -27,9 +27,9 @@ fun SecondaryButton(
     BasicButton(
         model = model,
         colors = ButtonDefaults.buttonColors(
-            containerColor = SwapAppTheme.colors.onBackground,
+            containerColor = SwapAppTheme.colors.secondaryVariant,
             contentColor = SwapAppTheme.colors.onPrimary,
-            disabledContainerColor = SwapAppTheme.colors.onBackground.copy(
+            disabledContainerColor = SwapAppTheme.colors.secondaryVariant.copy(
                 alpha = 0.75f
             ),
             disabledContentColor = SwapAppTheme.colors.onPrimary.copy(

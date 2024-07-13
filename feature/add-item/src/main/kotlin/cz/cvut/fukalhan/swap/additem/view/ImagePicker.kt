@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.R
+import cz.cvut.fukalhan.design.system.components.Icon
+import cz.cvut.fukalhan.design.system.model.IconVo
 
 /**
  * Component for image picking
@@ -54,7 +55,10 @@ fun ImagePicker(
         modifier = Modifier
             .fillMaxWidth()
             .height(SwapAppTheme.dimensions.imageView)
-            .padding(SwapAppTheme.dimensions.smallSidePadding),
+            .padding(
+                horizontal = 20.dp,
+                vertical = 12.dp
+            ),
         horizontalAlignment = Alignment.Start,
     ) {
         val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -87,7 +91,7 @@ fun ImagePicker(
 }
 
 @Composable
-fun ImageView(
+private fun ImageView(
     uri: Uri,
     onRemoveClick: (Uri) -> Unit
 ) {
@@ -106,16 +110,17 @@ fun ImageView(
                 modifier = Modifier
                     .clip(CircleShape)
                     .background(color = SwapAppTheme.colors.onSurface),
-                painter = painterResource(R.drawable.ic_cancel),
-                contentDescription = null,
-                tint = SwapAppTheme.colors.surface
+                model = IconVo(
+                    res = R.drawable.ic_cancel,
+                    tint = SwapAppTheme.colors.surface
+                )
             )
         }
     }
 }
 
 @Composable
-fun ItemImage(uri: Uri) {
+private fun ItemImage(uri: Uri) {
     AsyncImage(
         model = uri,
         contentDescription = null,
@@ -133,7 +138,7 @@ fun ItemImage(uri: Uri) {
 }
 
 @Composable
-fun InstructionRow(
+private fun InstructionRow(
     modifier: Modifier = Modifier,
     imagesCount:Int,
     maxImages: Int,
@@ -142,14 +147,14 @@ fun InstructionRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(SwapAppTheme.dimensions.smallSidePadding)
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_add),
-            contentDescription = null,
-            modifier = Modifier.size(SwapAppTheme.dimensions.icon)
+            model = IconVo(
+                res = R.drawable.ic_add,
+                size = 35.dp
+            )
         )
 
         Spacer(modifier = Modifier.size(SwapAppTheme.dimensions.smallSpacer))
@@ -163,7 +168,6 @@ fun InstructionRow(
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            modifier = Modifier.padding(end = 10.dp),
             text = "$imagesCount/$maxImages",
             style = SwapAppTheme.typography.titleSecondary,
             color = SwapAppTheme.colors.onSurface

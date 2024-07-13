@@ -43,7 +43,7 @@ val typography = Typography(
     ),
     button = TextStyle(
         fontWeight = FontWeight.Medium,
-        fontSize = 15.sp,
+        fontSize = 16.sp,
         letterSpacing = 0.15.sp,
         color = white
     ),
