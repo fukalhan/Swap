@@ -19,4 +19,13 @@
     <string name="descriptionPlaceholder">Popište předmět, uveďte v jakém je stavu, kde vyměnit …</string>
     <string name="allFieldsMustBeFilled">Všechny údaje musí být vyplněny</string>
 
+    <!-- Add review -->
+    <string name="addReview">Udělit hodnocení</string>
+    <string name="addReviewSuccess">Přidání hodnocení proběhlo úspěšně</string>
+    <string name="addReviewFailed">Přidání hodnocení se nezdařilo, zkuste to prosím znovu</string>
+    <string name="cannotLoadUserInfo">Přidání hodnocení se nezdařilo, zkuste to prosím znovu</string>
+    <string name="reviewDescription">Popis</string>
+    <string name="reviewDescriptionPlaceholder">Zde můžete popsat, jak jste byli spokojení s celkovým průběhem výměny předmětů s uživatelem </string>
+    <string name="memberSince">Členem od %1$s</string>
+
 </resources>

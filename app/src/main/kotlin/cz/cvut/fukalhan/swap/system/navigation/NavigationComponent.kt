@@ -34,7 +34,8 @@ import cz.cvut.fukalhan.swap.messages.system.ChatScreen
 import cz.cvut.fukalhan.swap.notifications.system.Notifications
 import cz.cvut.fukalhan.swap.profile.system.ProfileScreen
 import cz.cvut.fukalhan.swap.profiledetail.system.ProfileDetailScreen
-import cz.cvut.fukalhan.swap.review.system.AddReviewScreen
+import cz.cvut.fukalhan.swap.review.view.AddReviewScreen
+import cz.cvut.fukalhan.swap.review.viewmodel.AddReviewViewModel
 import cz.cvut.fukalhan.swap.settings.system.SettingsScreen
 import org.koin.androidx.compose.getKoin
 import org.koin.androidx.compose.koinViewModel
@@ -238,13 +239,19 @@ fun NavigationComponent() {
             ) { backStackEntry ->
                 backStackEntry.arguments?.getString(USER_ID)?.let { userId ->
                     AddReviewScreen(
-                        userId,
-                        koinViewModel(),
-                        onScreenInit = { screenState = it },
-                        onNavigateBack = { navController.popBackStack() },
-                        navigateToProfileDetail = {
-                            navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
-                        }
+                        viewModel = koinViewModel(
+                            parameters = {
+                                parametersOf(
+                                    AddReviewViewModel.Params(
+                                        reviewedUserId = userId,
+                                        navigateBack = { navController.popBackStack() },
+                                        navigateToUserProfile = {
+                                            navController.navigate("${SecondaryScreen.ProfileDetail.route}/$userId")
+                                        }
+                                    )
+                                )
+                            }
+                        )
                     )
                 }
             }
