@@ -11,6 +11,8 @@ import cz.cvut.fukalhan.design.presentation.ResultModel
 import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.presentation.UiState
 import cz.cvut.fukalhan.design.presentation.hideAllOverlays
+import cz.cvut.fukalhan.design.presentation.showLoading
+import cz.cvut.fukalhan.swap.additem.mapper.toDomain
 import cz.cvut.fukalhan.swap.additem.model.AddItemScreenData
 import cz.cvut.fukalhan.swap.additem.model.AddItemScreenEvent
 import cz.cvut.fukalhan.swap.itemdata.data.resolve
@@ -161,48 +163,37 @@ class AddItemViewModel(
      * Save item data
      */
     private fun saveItem() {
-        val itemData = viewState.value.data
         val user = Firebase.auth.currentUser
 
-        if (user != null && itemData.allFieldsFilled) {
-            _viewState.update {
-                it.copy(
-                    loading = true
-                )
-            }
+        if (user != null && viewState.value.data.allFieldsFilled) {
+            _viewState.showLoading()
 
             viewModelScope.launch(Dispatchers.IO) {
-                val item = Item(
-                    ownerId = user.uid,
-                    name = itemData.name,
-                    description = itemData.description,
-                    imagesUri = itemData.selectedImages,
-                    category = itemData.category ?: Category.OTHER
-                )
-
                 saveItemUseCase
-                    .saveItem(item)
+                    .saveItem(
+                        viewState.value.data.toDomain(user.uid)
+                    )
                     .resolve(
-                    onSuccess = {
-                        _viewState.hideAllOverlays()
-                        _viewState.update {
-                            it.copy(
-                                resultModel = ResultModel.Success(
-                                    StringModel.Resource(id = R.string.itemSaveSuccess)
+                        onSuccess = {
+                            _viewState.hideAllOverlays()
+                            _viewState.update {
+                                it.copy(
+                                    resultModel = ResultModel.Success(
+                                        StringModel.Resource(id = R.string.itemSaveSuccess)
+                                    )
                                 )
-                            )
-                        }
-                    },
-                    onError = {
-                        _viewState.hideAllOverlays()
-                        _viewState.update {
-                            it.copy(
-                                resultModel = ResultModel.Error(
-                                    StringModel.Resource(id = R.string.itemSaveFail)
+                            }
+                        },
+                        onError = {
+                            _viewState.hideAllOverlays()
+                            _viewState.update {
+                                it.copy(
+                                    resultModel = ResultModel.Error(
+                                        StringModel.Resource(id = R.string.itemSaveFail)
+                                    )
                                 )
-                            )
+                            }
                         }
-                    }
                 )
             }
         }
