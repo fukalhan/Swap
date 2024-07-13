@@ -12,7 +12,8 @@ data class Typography(
     val titleSecondary: TextStyle,
     val body: TextStyle,
     val button: TextStyle,
-    val smallText: TextStyle
+    val smallText: TextStyle,
+    val labelText: TextStyle
 )
 
 val typography = Typography(
@@ -51,4 +52,9 @@ val typography = Typography(
         fontSize = 10.sp,
         letterSpacing = 0.15.sp,
     ),
+
+    labelText = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp,
+    )
 )

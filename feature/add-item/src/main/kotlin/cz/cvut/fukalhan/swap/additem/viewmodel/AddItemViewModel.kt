@@ -49,6 +49,7 @@ class AddItemViewModel(
             is AddItemScreenEvent.ItemNameUpdate -> updateName(event.name)
             AddItemScreenEvent.OnSaveClick -> saveItem()
             is AddItemScreenEvent.RemoveItemImage -> removeItemImage(event.uri)
+            is AddItemScreenEvent.ChangeCategoryBottomSheetVisibility -> changeCategoryBottomSheetVisibility(visible = event.visible)
         }
     }
 
@@ -62,7 +63,8 @@ class AddItemViewModel(
             _viewState.update {
                 UiState(
                     data = it.data.copy(
-                        category = category
+                        category = category,
+                        showCategoryBottomSheet = false
                     )
                 )
             }
@@ -133,6 +135,21 @@ class AddItemViewModel(
             UiState(
                 data = it.data.copy(
                     name = name
+                )
+            )
+        }
+    }
+
+    /**
+     * Open/close category bottom sheet
+     *
+     * @param visible determine if the bottom sheet is visible/not visible
+     */
+    private fun changeCategoryBottomSheetVisibility(visible: Boolean) {
+        _viewState.update {
+            UiState(
+                data = it.data.copy(
+                    showCategoryBottomSheet = visible
                 )
             )
         }
