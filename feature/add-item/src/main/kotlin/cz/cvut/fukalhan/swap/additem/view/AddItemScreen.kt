@@ -20,10 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
-import cz.cvut.fukalhan.design.system.components.DescriptionView
-import cz.cvut.fukalhan.design.system.components.InputFieldView
 import cz.cvut.fukalhan.design.system.components.ListBottomSheet
-import cz.cvut.fukalhan.design.system.components.RegularTextFieldView
 import cz.cvut.fukalhan.design.system.model.ListBottomSheetVo
 import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.design.presentation.ComposeViewModel
@@ -31,11 +28,14 @@ import cz.cvut.fukalhan.design.presentation.PreviewViewModel
 import cz.cvut.fukalhan.design.presentation.UiState
 import cz.cvut.fukalhan.design.system.components.Footer
 import cz.cvut.fukalhan.design.system.components.SelectRow
+import cz.cvut.fukalhan.design.system.components.TextInput
 import cz.cvut.fukalhan.design.system.model.ButtonVo
+import cz.cvut.fukalhan.design.system.model.CharCounterVo
 import cz.cvut.fukalhan.design.system.model.FooterVo
 import cz.cvut.fukalhan.design.system.model.IconVo
 import cz.cvut.fukalhan.design.system.model.RadioCheckboxRowVo
 import cz.cvut.fukalhan.design.system.model.SelectRowVo
+import cz.cvut.fukalhan.design.system.model.TextInputVo
 import cz.cvut.fukalhan.design.wrappers.ScreenContentWrapper
 import cz.cvut.fukalhan.swap.additem.model.AddItemScreenData
 import cz.cvut.fukalhan.swap.additem.model.AddItemScreenEvent
@@ -107,26 +107,37 @@ fun AddItemScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
+                            .padding(top = 12.dp)
+                            .padding(horizontal = 20.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        InputFieldView(R.string.name) {
-                            RegularTextFieldView(
-                                R.string.namePlaceholder,
-                                viewState.data.name
-                            ) {
-                                viewModel.onEvent(AddItemScreenEvent.ItemNameUpdate(it))
-                            }
-                        }
+                        TextInput(
+                            model = TextInputVo(
+                                value = viewState.data.name,
+                                onValueChange = {
+                                    viewModel.onEvent(AddItemScreenEvent.ItemNameUpdate(it))
+                                },
+                                label = StringModel.Resource(id = R.string.name)
+                            )
+                        )
 
-                        InputFieldView(R.string.description) {
-                            DescriptionView(
-                                R.string.descriptionPlaceholder,
-                                AddItemScreenData.DESCRIPTION_CHAR_LIMIT,
-                                viewState.data.description
-                            ) {
-                                viewModel.onEvent(AddItemScreenEvent.ItemDescriptionUpdate(it))
-                            }
-                        }
+                        TextInput(
+                            model = TextInputVo(
+                                value = viewState.data.description,
+                                onValueChange = {
+                                    viewModel.onEvent(AddItemScreenEvent.ItemDescriptionUpdate(it))
+                                },
+                                label = StringModel.Resource(id = R.string.description),
+                                placeholder = StringModel.Resource(R.string.descriptionPlaceholder),
+                                singleLine = false,
+                                minLines = 3,
+                                maxLines = 3,
+                                charCounter = CharCounterVo(
+                                    current = viewState.data.description.length,
+                                    limit = AddItemScreenData.DESCRIPTION_CHAR_LIMIT
+                                )
+                            )
+                        )
 
                         SelectRow(
                             model = SelectRowVo(
