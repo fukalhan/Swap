@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="load_item_detail_error">Předmět se nepodařilo načíst</string>
-    <string name="create_chat_channel_error">Zprávu nelze aktuálně poslat</string>
-    <string name="join_date_info">Členem od %1$s</string>
-    <string name="change_item_like_state_error">Nepodařilo se změnit stav oblíbenosti předmětu, zkuste prosím později.</string>
-</resources>

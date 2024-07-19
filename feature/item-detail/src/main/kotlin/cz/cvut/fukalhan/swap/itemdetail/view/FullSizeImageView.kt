@@ -22,7 +22,7 @@ import androidx.compose.ui.zIndex
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.ImagePager
 import cz.cvut.fukalhan.design.system.model.ImagePagerVo
-import cz.cvut.fukalhan.swap.itemdetail.R
+import cz.cvut.fukalhan.design.R
 
 @Composable
 fun FullSizeImageView(
@@ -62,7 +62,7 @@ private fun CancelIcon(
     onClick: () -> Unit
 ) {
     Icon(
-        painter = painterResource(R.drawable.cancel),
+        painter = painterResource(R.drawable.ic_cancel_alternative),
         contentDescription = null,
         tint = SwapAppTheme.colors.background,
         modifier = modifier

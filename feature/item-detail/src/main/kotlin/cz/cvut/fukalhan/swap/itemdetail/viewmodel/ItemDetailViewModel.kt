@@ -17,7 +17,7 @@ import cz.cvut.fukalhan.swap.itemdata.domain.CreateChannelUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.GetItemDetailUseCase
 import cz.cvut.fukalhan.swap.itemdata.domain.ToggleItemLikeUseCase
 import cz.cvut.fukalhan.swap.itemdata.model.Channel
-import cz.cvut.fukalhan.swap.itemdetail.R
+import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.swap.itemdetail.mapper.toItemDetailScreenData
 import cz.cvut.fukalhan.swap.itemdetail.model.ItemDetailScreenData
 import cz.cvut.fukalhan.swap.itemdetail.model.ItemDetailScreenEvent
@@ -129,11 +129,11 @@ class ItemDetailViewModel(
                         }
                     },
                     onError = {
-                        showError(message = R.string.change_item_like_state_error)
+                        showError(message = R.string.item_like_error)
                     }
                 )
             }
-        } ?: showError(message = R.string.change_item_like_state_error)
+        } ?: showError(message = R.string.item_like_error)
     }
 
     /**

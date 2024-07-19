@@ -22,7 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +36,7 @@ import cz.cvut.fukalhan.design.system.model.UserInfoViewVo
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.wrappers.ScreenContentWrapper
 import cz.cvut.fukalhan.swap.itemdata.model.Category
-import cz.cvut.fukalhan.swap.itemdetail.R
+import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.swap.itemdetail.model.ItemDetailScreenData
 import cz.cvut.fukalhan.swap.itemdetail.model.ItemDetailScreenEvent
 import cz.cvut.fukalhan.swap.itemdetail.model.OwnerInfoVo
@@ -124,7 +123,7 @@ private fun ItemDetailContent(
                         username = data.ownerInfoVo.username,
                         joinDate = data.ownerInfoVo.joinDate,
                         rating = data.ownerInfoVo.rating,
-                        endIcon = R.drawable.message
+                        endIcon = R.drawable.ic_message
                     ),
                     onClick = {
                         navigateToOwnerProfileDetail(data.ownerInfoVo.id)

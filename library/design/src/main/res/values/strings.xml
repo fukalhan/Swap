@@ -3,6 +3,7 @@
     <!-- Common -->
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="memberSince">Member since %1$s</string>
 
     <!-- Categories -->
     <string name="category_title">Categories</string>
@@ -26,7 +27,6 @@
     <string name="cannotLoadUserInfo">Přidání hodnocení se nezdařilo, zkuste to prosím znovu</string>
     <string name="reviewDescription">Description</string>
     <string name="reviewDescriptionPlaceholder">You can describe in more detail how satisfied you are with the whole process of the item exchange</string>
-    <string name="memberSince">Member since %1$s</string>
 
     <!-- Item list -->
     <string name="items">Items</string>
@@ -36,5 +36,10 @@
     <string name="accordingToRelevance">Relevance</string>
     <string name="fromTheNewest">Newest</string>
     <string name="search">Search</string>
+
+    <!-- Item detail -->
+    <string name="load_item_detail_error">Item loading failed, couldn\'t load item detail</string>
+    <string name="create_chat_channel_error">Messaging is currently unavailable, please try again later</string>
+    <string name="item_like_error">Couldn\'t change item state, please try again later</string>
 
 </resources>
