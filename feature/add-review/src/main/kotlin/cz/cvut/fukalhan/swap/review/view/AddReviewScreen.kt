@@ -28,7 +28,6 @@ import cz.cvut.fukalhan.design.system.model.FooterVo
 import cz.cvut.fukalhan.design.wrappers.ScreenContentWrapper
 import cz.cvut.fukalhan.swap.review.model.AddReviewScreenData
 import cz.cvut.fukalhan.swap.review.model.AddReviewScreenEvent
-import cz.cvut.fukalhan.swap.review.R as ReviewResources
 import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.design.presentation.PreviewViewModel
 import cz.cvut.fukalhan.design.presentation.UiState
@@ -169,9 +168,9 @@ private fun RatingView(
                 Icon(
                     model = IconVo(
                         res = if (filled) {
-                            ReviewResources.drawable.filled_star
+                            R.drawable.filled_star
                         } else {
-                            ReviewResources.drawable.star
+                            R.drawable.star
                         },
                         size = 35.dp
                     )
