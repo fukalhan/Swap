@@ -31,21 +31,23 @@ val menuItems = listOf(
 // they are navigated to from the main screens
 sealed class SecondaryScreen(val route: String) {
 
-    object Login : SecondaryScreen("login")
+    data object Login : SecondaryScreen("login")
 
-    object ItemDetail : SecondaryScreen("itemDetail")
+    data object ItemDetail : SecondaryScreen("itemDetail")
 
-    object Message : SecondaryScreen("message")
+    data object SearchScreen : SecondaryScreen("searchScreen")
 
-    object Settings : SecondaryScreen("settings")
+    data object Message : SecondaryScreen("message")
 
-    object ProfileDetail : SecondaryScreen("profileDetail")
+    data object Settings : SecondaryScreen("settings")
 
-    object AddReview : SecondaryScreen("addReview")
+    data object ProfileDetail : SecondaryScreen("profileDetail")
 
-    object Notifications : SecondaryScreen("notifications")
+    data object AddReview : SecondaryScreen("addReview")
 
-    object AddEvent : SecondaryScreen("addEvent")
+    data object Notifications : SecondaryScreen("notifications")
 
-    object EventDetail : SecondaryScreen("eventDetail")
+    data object AddEvent : SecondaryScreen("addEvent")
+
+    data object EventDetail : SecondaryScreen("eventDetail")
 }

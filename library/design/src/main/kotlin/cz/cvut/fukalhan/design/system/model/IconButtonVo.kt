@@ -14,4 +14,15 @@ data class IconButtonVo(
     val iconVo: IconVo,
     val onClick: () -> Unit,
     val size: Dp = 44.dp,
-)
+) {
+    /**
+     * Additional constructor for simplifying IconButtonVo with icon resource id
+     */
+    constructor(res: Int, onClick: () -> Unit, size: Dp = 44.dp) : this(
+        iconVo = IconVo(
+            res = res
+        ),
+        onClick = onClick,
+        size = size
+    )
+}

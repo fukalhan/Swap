@@ -28,4 +28,13 @@
     <string name="reviewDescriptionPlaceholder">You can describe in more detail how satisfied you are with the whole process of the item exchange</string>
     <string name="memberSince">Member since %1$s</string>
 
+    <!-- Item list -->
+    <string name="items">Items</string>
+
+    <!-- Items search-->
+    <string name="sorting">Sort</string>
+    <string name="accordingToRelevance">Relevance</string>
+    <string name="fromTheNewest">Newest</string>
+    <string name="search">Search</string>
+
 </resources>

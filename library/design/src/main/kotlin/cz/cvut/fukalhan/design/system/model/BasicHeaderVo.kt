@@ -15,7 +15,7 @@ import cz.cvut.fukalhan.design.theme.SwapAppTheme
  * @property backButton back button model
  */
 data class BasicHeaderVo(
-    val title: StringModel,
+    val title: StringModel? = null,
     val onBackClick: (() -> Unit)? = null,
     val endIcons: List<IconButtonVo>? = null
 ) {

@@ -28,4 +28,13 @@
     <string name="reviewDescriptionPlaceholder">Zde můžete popsat, jak jste byli spokojení s celkovým průběhem výměny předmětů s uživatelem </string>
     <string name="memberSince">Členem od %1$s</string>
 
+    <!-- Item list -->
+    <string name="items">Předměty</string>
+
+    <!-- Item search -->
+    <string name="sorting">Seřadit</string>
+    <string name="accordingToRelevance">Podle relevance</string>
+    <string name="fromTheNewest">Od nejnovějších</string>
+    <string name="search">Hledat</string>
+
 </resources>

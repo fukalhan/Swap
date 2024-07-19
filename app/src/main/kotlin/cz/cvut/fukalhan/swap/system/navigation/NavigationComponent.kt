@@ -27,7 +27,8 @@ import cz.cvut.fukalhan.swap.events.system.addevent.AddEventScreen
 import cz.cvut.fukalhan.swap.events.system.eventdetail.EventDetailScreen
 import cz.cvut.fukalhan.swap.itemdetail.viewmodel.ItemDetailViewModel
 import cz.cvut.fukalhan.swap.itemdetail.view.ItemDetailScreen
-import cz.cvut.fukalhan.swap.itemlist.system.ItemListScreen
+import cz.cvut.fukalhan.swap.itemlist.view.ItemListScreen
+import cz.cvut.fukalhan.swap.itemlist.viewmodel.ItemListViewModel
 import cz.cvut.fukalhan.swap.login.system.LoginTabScreen
 import cz.cvut.fukalhan.swap.messages.system.ChannelsScreen
 import cz.cvut.fukalhan.swap.messages.system.ChatScreen
@@ -83,11 +84,20 @@ fun NavigationComponent() {
 
             composable(MainScreen.Items.route) {
                 ItemListScreen(
-                    koinViewModel(),
-                    onScreenInit = { screenState = it },
-                    navigateToItemDetail = { itemId ->
-                        navController.navigate("${SecondaryScreen.ItemDetail.route}/$itemId")
-                    }
+                    viewModel = koinViewModel<ItemListViewModel>(
+                        parameters = {
+                            parametersOf(
+                                ItemListViewModel.Params(
+                                    navigateToItemDetail = { id ->
+                                        navController.navigate("${SecondaryScreen.ItemDetail.route}/$id")
+                                    },
+                                    navigateToSearchScreen = {
+                                        navController.navigate("${SecondaryScreen.SearchScreen}")
+                                    }
+                                )
+                            )
+                        }
+                    )
                 )
             }
 

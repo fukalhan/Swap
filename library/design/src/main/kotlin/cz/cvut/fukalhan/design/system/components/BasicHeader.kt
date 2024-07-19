@@ -17,8 +17,11 @@ import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.system.model.BasicHeaderVo
 import cz.cvut.fukalhan.design.system.model.IconButtonVo
-import cz.cvut.fukalhan.design.system.model.IconVo
 
+/**
+ * Component for displaying basic header with title, back button and optional
+ * icons at the end
+ */
 @Composable
 fun BasicHeader(
     model: BasicHeaderVo,
@@ -38,12 +41,15 @@ fun BasicHeader(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            modifier = Modifier.weight(4f),
-            text = model.title.getString(),
-            style = SwapAppTheme.typography.screenTitle,
-            textAlign = TextAlign.Center
-        )
+        model.title?.let {
+            Text(
+                modifier = Modifier.weight(4f),
+                text = model.title.getString(),
+                style = SwapAppTheme.typography.screenTitle,
+                textAlign = TextAlign.Center
+            )
+        } ?: Spacer(modifier = Modifier.weight(4f))
+
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -74,15 +80,11 @@ internal fun BasicHeaderPreview() {
             onBackClick = {},
             endIcons = listOf(
                 IconButtonVo(
-                    iconVo = IconVo(
-                        res = R.drawable.ic_add
-                    ),
+                    res = R.drawable.ic_add,
                     onClick = {}
                 ),
                 IconButtonVo(
-                    iconVo = IconVo(
-                        res = R.drawable.ic_cancel
-                    ),
+                    res = R.drawable.ic_cancel,
                     onClick = {}
                 )
             )
