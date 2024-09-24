@@ -1,9 +1,15 @@
-package cz.cvut.fukalhan.swap.events.presentation.addevent
+package cz.cvut.fukalhan.swap.events.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.cvut.fukalhan.design.presentation.ComposeViewModel
 import cz.cvut.fukalhan.design.presentation.GROUP_CHAT
+import cz.cvut.fukalhan.design.presentation.UiState
+import cz.cvut.fukalhan.swap.events.model.AddEventScreenEvent
+import cz.cvut.fukalhan.swap.events.model.AddEventScreenVo
+import cz.cvut.fukalhan.swap.events.presentation.addevent.AddEventState
+import cz.cvut.fukalhan.swap.events.presentation.addevent.LocationState
 import cz.cvut.fukalhan.swap.eventsdata.data.resolve
 import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventChatUseCase
 import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventUseCase
@@ -22,11 +28,21 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 class AddEventViewModel(
+    private val params: Params,
     private val chatClient: ChatClient,
     private val getPlaceDetailUseCase: GetPlaceDetailUseCase,
     private val createEventUseCase: CreateEventUseCase,
     private val createEventChatUseCase: CreateEventChatUseCase,
-) : ViewModel() {
+) : ComposeViewModel<AddEventScreenVo, AddEventScreenEvent>,
+    ViewModel() {
+
+    override val viewState: StateFlow<UiState<AddEventScreenVo>>
+        get() = TODO("Not yet implemented")
+
+    override fun onEvent(event: AddEventScreenEvent) {
+        TODO("Not yet implemented")
+    }
+
     private val _addEventState: MutableStateFlow<AddEventState> = MutableStateFlow(AddEventState.Init)
     val addEventState: StateFlow<AddEventState>
         get() = _addEventState
@@ -112,4 +128,8 @@ class AddEventViewModel(
     fun setStateToInit() {
         _addEventState.value = AddEventState.Init
     }
+
+    data class Params(
+        val navigateBack: () -> Unit
+    )
 }

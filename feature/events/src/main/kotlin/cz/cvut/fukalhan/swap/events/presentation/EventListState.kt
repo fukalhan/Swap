@@ -1,7 +1,7 @@
 package cz.cvut.fukalhan.swap.events.presentation
 
 import cz.cvut.fukalhan.design.presentation.StringResources
-import cz.cvut.fukalhan.swap.events.R
+import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.swap.events.tools.DateFormatter
 import cz.cvut.fukalhan.swap.eventsdata.model.Event
 
@@ -14,9 +14,9 @@ sealed class EventListState {
         val events: List<EventState>
     ) : EventListState()
 
-    data class Empty(val message: Int = R.string.eventListEmpty) : EventListState()
+    data class Empty(val message: Int = R.string.event_list_empty) : EventListState()
 
-    data class Failure(val message: Int = R.string.addEventFail) : EventListState()
+    data class Failure(val message: Int = R.string.add_event_failed) : EventListState()
 }
 
 data class EventState(

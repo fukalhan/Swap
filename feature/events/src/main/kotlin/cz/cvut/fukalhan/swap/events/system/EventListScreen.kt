@@ -30,7 +30,7 @@ import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
 import cz.cvut.fukalhan.design.theme.semiTransparentBlack
-import cz.cvut.fukalhan.swap.events.R
+import cz.cvut.fukalhan.design.R
 import cz.cvut.fukalhan.swap.events.presentation.EventListState
 import cz.cvut.fukalhan.swap.events.presentation.EventListViewModel
 import cz.cvut.fukalhan.swap.events.presentation.EventState
@@ -72,14 +72,14 @@ fun TopBar(
     onScreenInit(
         ScreenState {
             Text(
-                text = stringResource(R.string.swapEvents),
+                text = stringResource(R.string.event_list),
                 style = SwapAppTheme.typography.screenTitle,
                 modifier = Modifier.padding(start = SwapAppTheme.dimensions.sidePadding)
             )
 
             IconButton(onClick = addEvent) {
                 Icon(
-                    painter = painterResource(R.drawable.plus),
+                    painter = painterResource(R.drawable.ic_plus),
                     contentDescription = null,
                     tint = SwapAppTheme.colors.onPrimary,
                     modifier = Modifier.size(SwapAppTheme.dimensions.icon)

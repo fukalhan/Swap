@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Event list -->
-    <string name="swapEvents">Swap akce</string>
-    <string name="eventListFail">Nepodařilo se načíst údaje</string>
-    <string name="eventListEmpty">Nejsou naplánovány žádné akce</string>
-
-    <!-- Add event -->
-    <string name="addEvent">Založení nové akce</string>
-    <string name="title">Název</string>
-    <string name="titlePlaceholder">Zadejte vhodné pojmenování akce</string>
-    <string name="description">Popis</string>
-    <string name="eventDescriptionPlaceholder">Popište detaily akce - jak bude probíhat, zda-li má nějakou tématiku a další informace …</string>
-    <string name="date">Datum konání:</string>
-    <string name="pickDate">Vybrat datum</string>
-    <string name="emptyDate">Není vybráno</string>
-    <string name="dateRange">%1$s - %2$s</string>
-    <string name="emptyAddress">Není zadáno místo konání</string>
-    <string name="getLocationFail">Nepodařilo se získat souřadnice místa konání</string>
-    <string name="addEventSuccess">Událost byla založena</string>
-    <string name="addEventFail">Událost se nepodařilo založit</string>
-    <string name="addressSaved">Adresa uložena</string>
-    <string name="createEventChatFail">Nepodařilo se vytvořit skupinový chat akce</string>
-    <string name="allFieldsMustBeFilled">Všechny údaje o události musí být vyplněny</string>
 
     <!-- Address prediction -->
     <string name="address">Místo konání:</string>

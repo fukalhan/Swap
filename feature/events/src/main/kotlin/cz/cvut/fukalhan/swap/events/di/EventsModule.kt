@@ -1,7 +1,7 @@
 package cz.cvut.fukalhan.swap.events.di
 
 import cz.cvut.fukalhan.swap.events.presentation.EventListViewModel
-import cz.cvut.fukalhan.swap.events.presentation.addevent.AddEventViewModel
+import cz.cvut.fukalhan.swap.events.viewmodel.AddEventViewModel
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.EventDetailViewModel
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.OrganizerInfoViewModel
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.ParticipantListViewModel

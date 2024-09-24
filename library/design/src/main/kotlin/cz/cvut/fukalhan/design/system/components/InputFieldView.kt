@@ -28,28 +28,6 @@ import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.theme.lightGrey
 
 @Composable
-fun InputFieldView(
-    label: Int,
-    padding: Dp = SwapAppTheme.dimensions.smallSidePadding,
-    textField: @Composable () -> Unit
-) {
-    Column(
-        modifier = Modifier.padding(padding)
-    ) {
-        Text(
-            text = stringResource(label),
-            style = SwapAppTheme.typography.titleSecondary,
-            modifier = Modifier.padding(
-                top = SwapAppTheme.dimensions.smallSidePadding,
-                bottom = SwapAppTheme.dimensions.smallSidePadding
-            )
-        )
-        textField()
-        Spacer(modifier = Modifier.size(SwapAppTheme.dimensions.smallSpacer))
-    }
-}
-
-@Composable
 fun RegularTextFieldView(
     label: Int,
     value: String,

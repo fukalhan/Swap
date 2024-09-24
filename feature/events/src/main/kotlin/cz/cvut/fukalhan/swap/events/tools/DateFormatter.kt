@@ -1,7 +1,7 @@
 package cz.cvut.fukalhan.swap.events.tools
 
 import cz.cvut.fukalhan.design.presentation.StringResources
-import cz.cvut.fukalhan.swap.events.R
+import cz.cvut.fukalhan.design.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -12,11 +12,11 @@ class DateFormatter(private val stringResources: StringResources) {
 
     fun formatEventSelectedDate(selectedDates: List<LocalDate>): String {
         return if (selectedDates.isEmpty()) {
-            stringResources.getString(R.string.emptyDate)
+            stringResources.getString(R.string.event_date_empty)
         } else {
             if (selectedDates.size > 1) {
                 stringResources.getString(
-                    R.string.dateRange,
+                    R.string.event_date_range,
                     selectedDates.first().format(formatter),
                     selectedDates.last().format(formatter)
                 )
@@ -36,7 +36,7 @@ class DateFormatter(private val stringResources: StringResources) {
             )
             val endDay = Instant.ofEpochMilli(end).atZone(ZoneId.systemDefault()).toLocalDateTime().format(formatter)
 
-            stringResources.getString(R.string.dateRange, startDay, endDay)
+            stringResources.getString(R.string.event_date_range, startDay, endDay)
         } else {
             val instant = Instant.ofEpochMilli(selectedDates.first())
             instant.atZone(ZoneId.systemDefault()).toLocalDateTime().format(formatter)

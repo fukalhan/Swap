@@ -42,4 +42,25 @@
     <string name="create_chat_channel_error">Messaging is currently unavailable, please try again later</string>
     <string name="item_like_error">Couldn\'t change item state, please try again later</string>
 
+    <!-- Add event -->
+    <string name="add_event">Create new event</string>
+    <string name="event_name">Name</string>
+    <string name="event_description">Description</string>
+    <string name="event_description_placeholder">Describe the event\'s details - the event\'s theme, the program and other information…</string>
+    <string name="date">Datum konání:</string>
+    <string name="pickDate">Vybrat datum</string>
+    <string name="event_date_empty">Není vybráno</string>
+    <string name="event_date_range">%1$s - %2$s</string>
+    <string name="emptyAddress">Není zadáno místo konání</string>
+    <string name="getLocationFail">Nepodařilo se získat souřadnice místa konání</string>
+    <string name="add_event_success">The event was successfully created.</string>
+    <string name="add_event_failed">Oops, something went wrong. The event couldn\'t be saved.</string>
+    <string name="addressSaved">Adresa uložena</string>
+    <string name="createEventChatFail">Nepodařilo se vytvořit skupinový chat akce</string>
+
+    <!-- Event list -->
+    <string name="event_list">Swap events</string>
+    <string name="event_list_loading_failed">Cannot load any events.</string>
+    <string name="event_list_empty">There are currently no planned events.</string>
+
 </resources>

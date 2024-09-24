@@ -31,9 +31,8 @@ import org.koin.androidx.compose.koinViewModel
 fun AddressInputView(
     onAddressPicked: (PredictionState) -> Unit
 ) {
-    val emptyAddress = stringResource(R.string.emptyAddress)
 
-    var address by remember { mutableStateOf(emptyAddress) }
+    var address by remember { mutableStateOf("") }
     var isEditMode by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier

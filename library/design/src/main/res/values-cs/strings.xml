@@ -42,4 +42,25 @@
     <string name="create_chat_channel_error">Zprávu nelze aktuálně poslat, zkuste to prosím později</string>
     <string name="item_like_error">Nepodařilo se změnit stav předmětu, zkuste to prosím později</string>
 
+    <!-- Add event -->
+    <string name="add_event">Založení nové události</string>
+    <string name="event_name">Název</string>
+    <string name="event_description">Popis</string>
+    <string name="event_description_placeholder">Popište detaily události - téma swapu, program a další informace …</string>
+    <string name="date">Datum konání:</string>
+    <string name="pickDate">Vybrat datum</string>
+    <string name="event_date_empty">Není vybráno</string>
+    <string name="event_date_range">%1$s - %2$s</string>
+    <string name="emptyAddress">Není zadáno místo konání</string>
+    <string name="getLocationFail">Nepodařilo se získat souřadnice místa konání</string>
+    <string name="add_event_success">Událost byla úspěšně založena.</string>
+    <string name="add_event_failed">Ups, něco se nepovedlo. Událost se nepodařilo založit.</string>
+    <string name="addressSaved">Adresa uložena</string>
+    <string name="createEventChatFail">Nepodařilo se vytvořit skupinový chat akce</string>
+
+    <!-- Event list -->
+    <string name="event_list">Swap události</string>
+    <string name="event_list_loading_failed">Nepodařilo se načíst údaje o událostech.</string>
+    <string name="event_list_empty">Aktuálně nejsou naplánovány žádné události.</string>
+
 </resources>

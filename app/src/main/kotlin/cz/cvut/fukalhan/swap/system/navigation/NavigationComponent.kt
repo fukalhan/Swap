@@ -23,7 +23,7 @@ import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.swap.additem.viewmodel.AddItemViewModel
 import cz.cvut.fukalhan.swap.additem.view.AddItemScreen
 import cz.cvut.fukalhan.swap.events.system.EventListScreen
-import cz.cvut.fukalhan.swap.events.system.addevent.AddEventScreen
+import cz.cvut.fukalhan.swap.events.view.AddEventScreen
 import cz.cvut.fukalhan.swap.events.system.eventdetail.EventDetailScreen
 import cz.cvut.fukalhan.swap.itemdetail.viewmodel.ItemDetailViewModel
 import cz.cvut.fukalhan.swap.itemdetail.view.ItemDetailScreen
@@ -282,7 +282,6 @@ fun NavigationComponent() {
             composable(SecondaryScreen.AddEvent.route) {
                 AddEventScreen(
                     koinViewModel(),
-                    onScreenInit = { screenState = it },
                     navigateBack = { navController.popBackStack() }
                 )
             }

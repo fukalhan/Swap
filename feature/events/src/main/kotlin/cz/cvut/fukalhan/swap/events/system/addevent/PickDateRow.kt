@@ -50,7 +50,7 @@ fun PickDateRow(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = stringResource(id = R.string.date),
+                text = "",
                 style = SwapAppTheme.typography.titleSecondary,
             )
             Spacer(modifier = Modifier.width(SwapAppTheme.dimensions.smallSpacer))
