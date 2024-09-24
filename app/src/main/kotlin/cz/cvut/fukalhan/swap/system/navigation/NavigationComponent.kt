@@ -22,9 +22,10 @@ import cz.cvut.fukalhan.design.presentation.PRIVATE_CHAT
 import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.swap.additem.viewmodel.AddItemViewModel
 import cz.cvut.fukalhan.swap.additem.view.AddItemScreen
-import cz.cvut.fukalhan.swap.events.system.EventListScreen
+import cz.cvut.fukalhan.swap.events.view.EventListScreen
 import cz.cvut.fukalhan.swap.events.view.AddEventScreen
 import cz.cvut.fukalhan.swap.events.system.eventdetail.EventDetailScreen
+import cz.cvut.fukalhan.swap.events.viewmodel.EventListViewModel
 import cz.cvut.fukalhan.swap.itemdetail.viewmodel.ItemDetailViewModel
 import cz.cvut.fukalhan.swap.itemdetail.view.ItemDetailScreen
 import cz.cvut.fukalhan.swap.itemlist.view.ItemListScreen
@@ -60,7 +61,6 @@ fun NavigationComponent() {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar(screenState) },
         bottomBar = { AnimatedBottomBar(navController, bottomBarVisible) }
     ) {
         NavHost(
@@ -268,14 +268,20 @@ fun NavigationComponent() {
 
             composable(MainScreen.Events.route) {
                 EventListScreen(
-                    koinViewModel(),
-                    onScreenInit = { screenState = it },
-                    navigateToAddEvent = {
-                        navController.navigate(SecondaryScreen.AddEvent.route)
-                    },
-                    navigateToEventDetail = {
-                        navController.navigate("${SecondaryScreen.EventDetail.route}/$it")
-                    }
+                    viewModel = koinViewModel(
+                        parameters = {
+                            parametersOf(
+                                EventListViewModel.Params(
+                                    navigateToEventDetail = {
+                                        navController.navigate("${SecondaryScreen.EventDetail.route}/$it")
+                                    },
+                                    navigateToAddEvent = {
+                                        navController.navigate(SecondaryScreen.AddEvent.route)
+                                    }
+                                )
+                            )
+                        }
+                    )
                 )
             }
 
