@@ -14,19 +14,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.maxkeppeker.sheets.core.models.base.UseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarConfig
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.tools.DateFormatter
@@ -83,32 +76,6 @@ fun PickDateRow(
     }
 }
 
-const val DATE_LOWER_BOUND: Long = 3
-const val DATE_UPPER_BOUND: Long = 1
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CalendarPicker(
-    calendarState: UseCaseState,
-    updateDates: (List<LocalDate>) -> Unit,
-) {
-    val timeBoundary = LocalDate.now().let { now ->
-        now.plusDays(DATE_LOWER_BOUND)..now.plusYears(DATE_UPPER_BOUND)
-    }
-
-    CalendarDialog(
-        state = calendarState,
-        selection = CalendarSelection.Period { startDate, endDate ->
-            updateDates(listOf(startDate, endDate))
-        },
-        config = CalendarConfig(
-            yearSelection = true,
-            monthSelection = true,
-            style = CalendarStyle.MONTH,
-            boundary = timeBoundary
-        ),
-    )
-}
 
 @Composable
 @Preview

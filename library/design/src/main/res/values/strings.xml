@@ -47,10 +47,12 @@
     <string name="event_name">Name</string>
     <string name="event_description">Description</string>
     <string name="event_description_placeholder">Describe the event\'s details - the event\'s theme, the program and other information…</string>
-    <string name="date">Datum konání:</string>
-    <string name="pickDate">Vybrat datum</string>
-    <string name="event_date_empty">Není vybráno</string>
+    <string name="event_date">Event date</string>
+    <string name="event_date_choose">Choose a date</string>
+    <string name="event_date_empty">Not selected</string>
     <string name="event_date_range">%1$s - %2$s</string>
+    <string name="event_location">Location</string>
+    <string name="event_location_choose">Choose event location</string>
     <string name="emptyAddress">Není zadáno místo konání</string>
     <string name="getLocationFail">Nepodařilo se získat souřadnice místa konání</string>
     <string name="add_event_success">The event was successfully created.</string>

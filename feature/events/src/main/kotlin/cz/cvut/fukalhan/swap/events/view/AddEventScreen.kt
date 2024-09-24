@@ -1,6 +1,6 @@
 package cz.cvut.fukalhan.swap.events.view
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,12 +18,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import cz.cvut.fukalhan.design.presentation.ScreenState
 import cz.cvut.fukalhan.design.presentation.StringModel
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.Footer
@@ -41,18 +39,19 @@ import cz.cvut.fukalhan.design.presentation.ComposeViewModel
 import cz.cvut.fukalhan.design.presentation.PreviewViewModel
 import cz.cvut.fukalhan.design.presentation.UiState
 import cz.cvut.fukalhan.design.system.components.BasicHeader
-import cz.cvut.fukalhan.design.system.components.SelectRow
+import cz.cvut.fukalhan.design.system.components.DatePicker
+import cz.cvut.fukalhan.design.system.components.SelectInput
 import cz.cvut.fukalhan.design.system.model.BasicHeaderVo
 import cz.cvut.fukalhan.design.system.model.CharCounterVo
+import cz.cvut.fukalhan.design.system.model.DatePickerVo
+import cz.cvut.fukalhan.design.system.model.IconVo
+import cz.cvut.fukalhan.design.system.model.SelectInputVo
 import cz.cvut.fukalhan.swap.events.model.AddEventScreenEvent
 import cz.cvut.fukalhan.swap.events.model.AddEventScreenVo
 import cz.cvut.fukalhan.swap.events.presentation.addevent.AddEventState
-import cz.cvut.fukalhan.swap.events.viewmodel.AddEventViewModel
 import cz.cvut.fukalhan.swap.events.presentation.addevent.LocationState
 import cz.cvut.fukalhan.swap.events.presentation.prediction.PredictionState
 import cz.cvut.fukalhan.swap.events.system.addevent.AddressInputView
-import cz.cvut.fukalhan.swap.events.system.addevent.CalendarPicker
-import cz.cvut.fukalhan.swap.events.system.addevent.PickDateRow
 import java.time.LocalDate
 
 @Composable
@@ -61,8 +60,6 @@ fun AddEventScreen(
     navigateBack: () -> Unit
 ) {
     val viewState by viewModel.viewState.collectAsState()
-    var location by remember { mutableStateOf(LocationState()) }
-    val context = LocalContext.current
 
     ScreenContentWrapper(
         state = viewState
@@ -83,7 +80,8 @@ fun AddEventScreen(
                             label = StringModel.Resource(id = R.string.save),
                             onClick = {
                                 viewModel.onEvent(AddEventScreenEvent.OnSaveEventClick)
-                            }
+                            },
+                            enabled = viewState.data.saveButtonEnabled
                         ),
                         secondaryButton = ButtonVo.Basic(
                             label = StringModel.Resource(id = R.string.cancel),
@@ -95,50 +93,94 @@ fun AddEventScreen(
                 )
             }
         ) { padding ->
-
-            Column(
+            Box(
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(20.dp),
             ) {
-                Text(
-                    modifier = Modifier.padding(bottom = 20.dp),
-                    text = stringResource(id = R.string.add_event),
-                    color = SwapAppTheme.colors.onBackground,
-                    style = SwapAppTheme.typography.screenTitle
-                )
-                
-                TextInput(
-                    model = TextInputVo(
-                        value = viewState.data.name,
-                        label = StringModel.Resource(id = R.string.event_name),
-                        onValueChange = {
-                            viewModel.onEvent(AddEventScreenEvent.EventNameChange(it))
+
+                if (viewState.data.showDatePicker) {
+                    DatePicker(
+                        model = DatePickerVo(),
+                        onDismiss = {
+                            viewModel.onEvent(
+                                AddEventScreenEvent.ChangeDatePickerVisibility(visible = false)
+                            )
                         }
                     )
-                )
+                }
 
-                TextInput(
-                    model = TextInputVo(
-                        value = viewState.data.description,
-                        label = StringModel.Resource(id = R.string.event_description),
-                        placeholder = StringModel.Resource(id = R.string.event_description_placeholder),
-                        charCounter = CharCounterVo(
-                            current = viewState.data.description.length,
-                            limit = AddEventScreenVo.DESCRIPTION_CHAR_LIMIT
+                Column(
+                    modifier = Modifier
+                        .padding(padding)
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(20.dp),
+                ) {
+                    Text(
+                        modifier = Modifier.padding(bottom = 20.dp),
+                        text = stringResource(id = R.string.add_event),
+                        color = SwapAppTheme.colors.onBackground,
+                        style = SwapAppTheme.typography.screenTitle
+                    )
+
+                    TextInput(
+                        model = TextInputVo(
+                            value = viewState.data.name,
+                            label = StringModel.Resource(id = R.string.event_name),
+                            onValueChange = {
+                                viewModel.onEvent(AddEventScreenEvent.EventNameChanged(it))
+                            }
+                        )
+                    )
+
+                    TextInput(
+                        model = TextInputVo(
+                            value = viewState.data.description,
+                            label = StringModel.Resource(id = R.string.event_description),
+                            placeholder = StringModel.Resource(id = R.string.event_description_placeholder),
+                            charCounter = CharCounterVo(
+                                current = viewState.data.description.length,
+                                limit = AddEventScreenVo.DESCRIPTION_CHAR_LIMIT
+                            ),
+                            singleLine = false,
+                            minLines = 3,
+                            maxLines = 3,
+                            onValueChange = {
+                                viewModel.onEvent(AddEventScreenEvent.EventNameChanged(it))
+                            }
+                        )
+                    )
+
+                    SelectInput(
+                        modifier = Modifier.padding(bottom = 15.dp),
+                        model = SelectInputVo(
+                            value = viewState.data.dateTime,
+                            placeholder = StringModel.Resource(id = R.string.event_date_choose),
+                            label = StringModel.Resource(id = R.string.event_date),
+                            endIcon = IconVo(res = R.drawable.ic_calendar)
                         ),
-                        singleLine = false,
-                        minLines = 3,
-                        maxLines = 3,
-                        onValueChange = {
-                            viewModel.onEvent(AddEventScreenEvent.EventNameChange(it))
+                        onClick = {
+                            viewModel.onEvent(
+                                AddEventScreenEvent.ChangeDatePickerVisibility(visible = true)
+                            )
                         }
                     )
-                )
 
-
+                    SelectInput(
+                        model = SelectInputVo(
+                            value = viewState.data.location,
+                            placeholder = StringModel.Resource(id = R.string.event_location_choose),
+                            label = StringModel.Resource(id = R.string.event_location),
+                            endIcon = IconVo(res = R.drawable.ic_location)
+                        ),
+                        onClick = {
+                            viewModel.onEvent(
+                                AddEventScreenEvent.ChangeLocationPickerVisibility(visible = true)
+                            )
+                        }
+                    )
+                }
             }
         }
     }
@@ -188,8 +230,6 @@ fun AddEvent(
 ) {
     val scrollState = rememberScrollState()
 
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
     val calendarState = rememberUseCaseState(visible = false)
     var selectedDates by remember { mutableStateOf<List<LocalDate>>(emptyList()) }
 
@@ -202,14 +242,6 @@ fun AddEvent(
                 .weight(1f)
                 .verticalScroll(scrollState)
         ) {
-
-            PickDateRow(selectedDates) {
-                calendarState.show()
-            }
-
-            CalendarPicker(calendarState) {
-                selectedDates = it
-            }
 
             Spacer(modifier = Modifier.height(SwapAppTheme.dimensions.smallSpacer))
             AddressInputView {

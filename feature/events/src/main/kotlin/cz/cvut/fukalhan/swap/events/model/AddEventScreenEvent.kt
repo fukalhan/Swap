@@ -1,6 +1,6 @@
 package cz.cvut.fukalhan.swap.events.model
 
-interface AddEventScreenEvent {
+sealed interface AddEventScreenEvent {
 
     data object OnBackClick : AddEventScreenEvent
 
@@ -8,5 +8,11 @@ interface AddEventScreenEvent {
 
     data object OnCancelEvent : AddEventScreenEvent
 
-    data class EventNameChange(val newName: String) : AddEventScreenEvent
+    data class EventNameChanged(val newName: String) : AddEventScreenEvent
+
+    data class EventDescriptionChanged(val newValue: String) : AddEventScreenEvent
+
+    data class ChangeDatePickerVisibility(val visible: Boolean) : AddEventScreenEvent
+
+    data class ChangeLocationPickerVisibility(val visible: Boolean) : AddEventScreenEvent
 }

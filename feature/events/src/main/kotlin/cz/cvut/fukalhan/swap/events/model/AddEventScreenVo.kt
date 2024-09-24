@@ -4,9 +4,13 @@ data class AddEventScreenVo(
     val name: String = "",
     val description: String = "",
     val dateTime: String = "",
-    val location: String = ""
+    val location: String = "",
+    val showDatePicker: Boolean = false
 ) {
-    companion object {
+    val saveButtonEnabled: Boolean =
+        name.isNotBlank() && description.isNotBlank() && dateTime.isNotBlank() && location.isNotBlank()
+
+        companion object {
         const val DESCRIPTION_CHAR_LIMIT = 200
     }
 }
