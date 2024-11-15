@@ -65,4 +65,11 @@
     <string name="event_list_loading_failed">Cannot load any events.</string>
     <string name="event_list_empty">There are currently no planned events.</string>
 
+    <!-- Event detail -->
+    <string name="event_detail_user_subscribed">You are registered to this event</string>
+    <string name="event_detail_user_not_subscribed">You are not registered for this event</string>
+    <string name="event_detail_unsubscribe">Unregister</string>
+    <string name="event_detail_subscribe">Register</string>
+    <string name="event_detail_description">Event description</string>
+
 </resources>

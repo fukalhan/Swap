@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.cvut.fukalhan.design.presentation.ComposeViewModel
 import cz.cvut.fukalhan.design.presentation.UiState
-import cz.cvut.fukalhan.swap.events.model.EventListScreenEvent
-import cz.cvut.fukalhan.swap.events.model.EventListScreenVo
+import cz.cvut.fukalhan.swap.events.model.eventlist.EventListScreenEvent
+import cz.cvut.fukalhan.swap.events.model.eventlist.EventListScreenVo
 import cz.cvut.fukalhan.swap.events.mapper.toListEventVo
 import cz.cvut.fukalhan.swap.eventsdata.data.resolve
 import cz.cvut.fukalhan.swap.eventsdata.domain.GetUpcomingEventsUseCase

@@ -7,15 +7,14 @@ import cz.cvut.fukalhan.design.presentation.ComposeViewModel
 import cz.cvut.fukalhan.design.presentation.GROUP_CHAT
 import cz.cvut.fukalhan.design.presentation.UiState
 import cz.cvut.fukalhan.design.presentation.showLoading
-import cz.cvut.fukalhan.swap.events.model.AddEventScreenEvent
-import cz.cvut.fukalhan.swap.events.model.AddEventScreenVo
+import cz.cvut.fukalhan.swap.events.model.addevent.AddEventScreenEvent
+import cz.cvut.fukalhan.swap.events.model.addevent.AddEventScreenVo
 import cz.cvut.fukalhan.swap.eventsdata.data.resolve
 import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventChatUseCase
 import cz.cvut.fukalhan.swap.eventsdata.domain.CreateEventUseCase
 import cz.cvut.fukalhan.swap.eventsdata.model.Event
 import cz.cvut.fukalhan.swap.eventsdata.model.GroupChat
 import cz.cvut.fukalhan.swap.eventsdata.model.Location
-import cz.cvut.fukalhan.swap.placesdata.data.placedetail.Coordinates
 import cz.cvut.fukalhan.swap.placesdata.data.resolve
 import cz.cvut.fukalhan.swap.placesdata.domain.GetPlaceDetailUseCase
 import io.getstream.chat.android.client.ChatClient
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.ZoneId
 
 class AddEventViewModel(
@@ -60,7 +58,7 @@ class AddEventViewModel(
                 visible = event.visible
             )
             AddEventScreenEvent.OnCancelEvent -> params.navigateBack
-            AddEventScreenEvent.OnSaveEventClick -> TODO()
+            AddEventScreenEvent.OnSaveEventClick -> createEvent()
         }
     }
 
@@ -113,7 +111,7 @@ class AddEventViewModel(
      * @param visible determine if the location picker bottom sheet is visible
      */
     private fun changeLocationPickerVisibility(visible: Boolean) {
-        // TODO
+       // TODO
     }
 
     fun getPlaceLocation(placeId: String) {
@@ -129,13 +127,7 @@ class AddEventViewModel(
         }
     }
 
-    private fun createEvent(
-        title: String,
-        description: String,
-        selectedDays: List<LocalDate>,
-        organizerId: String,
-        location: Coordinates
-    ) {
+    private fun createEvent() {
         _viewState.showLoading()
         viewModelScope.launch(Dispatchers.IO) {
             val selectedDaysAsLong = selectedDays.map {

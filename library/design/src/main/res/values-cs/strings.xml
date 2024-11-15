@@ -65,4 +65,11 @@
     <string name="event_list_loading_failed">Nepodařilo se načíst údaje o událostech.</string>
     <string name="event_list_empty">Aktuálně nejsou naplánovány žádné události.</string>
 
+    <!-- Event detail -->
+    <string name="event_detail_user_subscribed">Na akci jste přihlášeni</string>
+    <string name="event_detail_user_not_subscribed">Na tuto akci nejste přihlášeni</string>
+    <string name="event_detail_unsubscribe">Odhlásit se</string>
+    <string name="event_detail_subscribe">Přihlásit se</string>
+    <string name="event_detail_description">Popis události</string>
+
 </resources>

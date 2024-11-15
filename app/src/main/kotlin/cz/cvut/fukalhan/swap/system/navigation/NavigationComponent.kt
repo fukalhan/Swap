@@ -24,7 +24,8 @@ import cz.cvut.fukalhan.swap.additem.viewmodel.AddItemViewModel
 import cz.cvut.fukalhan.swap.additem.view.AddItemScreen
 import cz.cvut.fukalhan.swap.events.view.EventListScreen
 import cz.cvut.fukalhan.swap.events.view.AddEventScreen
-import cz.cvut.fukalhan.swap.events.system.eventdetail.EventDetailScreen
+import cz.cvut.fukalhan.swap.events.view.EventDetailScreen
+import cz.cvut.fukalhan.swap.events.viewmodel.EventDetailViewModel
 import cz.cvut.fukalhan.swap.events.viewmodel.EventListViewModel
 import cz.cvut.fukalhan.swap.itemdetail.viewmodel.ItemDetailViewModel
 import cz.cvut.fukalhan.swap.itemdetail.view.ItemDetailScreen
@@ -268,7 +269,7 @@ fun NavigationComponent() {
 
             composable(MainScreen.Events.route) {
                 EventListScreen(
-                    viewModel = koinViewModel(
+                    viewModel = koinViewModel<EventListViewModel>(
                         parameters = {
                             parametersOf(
                                 EventListViewModel.Params(
@@ -298,13 +299,21 @@ fun NavigationComponent() {
             ) { backStackEntry ->
                 backStackEntry.arguments?.getString(EVENT_ID)?.let { eventId ->
                     EventDetailScreen(
-                        eventId = eventId,
-                        viewModel = koinViewModel(),
-                        onScreenInit = { screenState = it },
-                        navigateBack = { navController.popBackStack() },
-                        navigateToUserProfile = {
-                            navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
-                        }
+                        viewModel = koinViewModel(
+                            parameters = {
+                                parametersOf(
+                                    EventDetailViewModel.Params(
+                                        eventId = eventId,
+                                        navigateBack = {
+                                            navController.popBackStack()
+                                        },
+                                        navigateToUserProfile = {
+                                            navController.navigate("${SecondaryScreen.ProfileDetail.route}/$it")
+                                        }
+                                    )
+                                )
+                            }
+                        )
                     )
                 }
             }

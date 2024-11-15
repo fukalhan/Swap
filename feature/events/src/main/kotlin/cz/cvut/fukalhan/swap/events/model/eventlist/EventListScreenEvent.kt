@@ -1,4 +1,4 @@
-package cz.cvut.fukalhan.swap.events.model
+package cz.cvut.fukalhan.swap.events.model.eventlist
 
 sealed interface EventListScreenEvent {
 

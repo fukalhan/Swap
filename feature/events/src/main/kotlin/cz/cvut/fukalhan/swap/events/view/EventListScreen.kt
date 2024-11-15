@@ -34,9 +34,9 @@ import cz.cvut.fukalhan.design.presentation.UiState
 import cz.cvut.fukalhan.design.system.components.Icon
 import cz.cvut.fukalhan.design.system.model.IconVo
 import cz.cvut.fukalhan.design.wrappers.ScreenContentWrapper
-import cz.cvut.fukalhan.swap.events.model.EventListScreenEvent
-import cz.cvut.fukalhan.swap.events.model.EventListScreenVo
-import cz.cvut.fukalhan.swap.events.model.EventVo
+import cz.cvut.fukalhan.swap.events.model.eventlist.EventListScreenEvent
+import cz.cvut.fukalhan.swap.events.model.eventlist.EventListScreenVo
+import cz.cvut.fukalhan.swap.events.model.eventlist.EventVo
 
 @Composable
 fun EventListScreen(

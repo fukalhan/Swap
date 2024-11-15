@@ -20,7 +20,6 @@
     <string name="emptyParticipantList">Na tuto akci se zatím nikdo nepřihlásil</string>
     <string name="participateSuccess">Jste přihlášeni na akci</string>
     <string name="participateFail">Přihlášení na akci se nezdařilo, zkuste to znovu</string>
-    <string name="userRegisteredToEvent">Na akci jste přihlášeni</string>
     <string name="unsubscribe">Odhlásit se</string>
     <string name="unsubscribeSuccess">Odhlášení z událost proběhlo v pořádku</string>
     <string name="unsubscribeFail">Odhlášení z události se nezdařilo</string>

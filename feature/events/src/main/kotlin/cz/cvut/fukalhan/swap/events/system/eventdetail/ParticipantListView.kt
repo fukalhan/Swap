@@ -21,10 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cz.cvut.fukalhan.design.system.components.SmallUserInfo
 import cz.cvut.fukalhan.design.theme.SwapAppTheme
 import cz.cvut.fukalhan.design.system.components.screenstate.EmptyView
 import cz.cvut.fukalhan.design.system.components.screenstate.FailureView
 import cz.cvut.fukalhan.design.system.components.screenstate.LoadingView
+import cz.cvut.fukalhan.design.system.model.SmallUserInfoVo
 import cz.cvut.fukalhan.swap.events.R
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.ParticipantInfo
 import cz.cvut.fukalhan.swap.events.presentation.eventdetail.ParticipantListState
@@ -114,11 +116,13 @@ fun ParticipantList(
             modifier = Modifier.fillMaxSize()
         ) {
             items(participants) { user ->
-                UserInfo(
-                    id = user.id,
-                    profilePic = user.profilePic,
-                    username = user.username,
-                    onUserClick = {
+                SmallUserInfo(
+                    model = SmallUserInfoVo(
+                        userId = user.id,
+                        profilePicUri = user.profilePic,
+                        username = user.username,
+                    ),
+                    onClick = {
                         onParticipantClick(it)
                     }
                 )
